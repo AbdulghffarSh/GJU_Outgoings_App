@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".activites.MainActivity">
+    tools:context=".activites.MainActivity"
+    >
 
     <RelativeLayout
         android:id="@+id/header"
@@ -25,13 +26,17 @@
             app:civ_border_color="@color/Primary_orange"
             app:civ_border_width="3dp" />
 
-        <ImageView
-            android:id="@+id/notifications"
+        <de.hdodenhof.circleimageview.CircleImageView
+
+        android:id="@+id/notifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_notifications" />
+            android:src="@drawable/ic_notifications"
+            app:civ_border_width="3dp"
+            app:civ_border_color="@color/Primary_orange"
+            />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -42,21 +47,24 @@
             android:src="@drawable/ic_chat" />
     </RelativeLayout>
 
+    <TextView
+        android:padding="10dp"
+        android:id="@+id/activityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:fontFamily="@font/ubuntu_bold"
+        android:text="Activity"
+        android:textSize="30sp" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingVertical="40dp"
-        android:paddingHorizontal="15dp"
-        android:layout_below="@+id/header"
-        android:layout_above="@+id/botNavBar">
-        <TextView
-            android:id="@+id/activityName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activity"
-            android:textSize="30sp"
-            android:fontFamily="@font/ubuntu_bold"
-            />
+        android:layout_above="@+id/botNavBar"
+        android:layout_below="@+id/activityName"
+        android:paddingVertical="40dp">
+
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -72,16 +80,12 @@
     </FrameLayout>
 
 
-
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/botNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu"
-      android:background="@color/white"
-        />
+        android:background="@color/white"
+        app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>

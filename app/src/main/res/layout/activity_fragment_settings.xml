@@ -1,15 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="100sp"
         android:layout_centerInParent="true"
-        android:gravity="center"
-        />
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/profileSettingsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CCE9FD"
+            android:padding="8dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileSettings"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_profile"
+                app:civ_border_color="@color/Primary_orange"
+                app:civ_border_width="3dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/profileSettings"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="10dp"
+                android:text="Account"
+                android:textColor="@color/Primary_blue"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <RelativeLayout
+            android:id="@+id/notificationsSettingsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CCE9FD"
+            android:padding="8dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/notificationsSettings"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_notifications"
+                app:civ_border_color="@color/Primary_orange"
+                app:civ_border_width="3dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/notificationsSettings"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="10dp"
+                android:text="Notifications"
+                android:textColor="@color/Primary_blue"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <RelativeLayout
+            android:id="@+id/contactUsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CCE9FD"
+            android:padding="8dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/contactUs"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_contact_us"
+                app:civ_border_color="@color/Primary_orange"
+                app:civ_border_width="3dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/contactUs"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="10dp"
+                android:text="Contact us"
+                android:textColor="@color/Primary_blue"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <RelativeLayout
+            android:id="@+id/signOutLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Primary_orange"
+            android:padding="8dp"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/signOut"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_signout"
+                app:civ_border_color="@color/Primary_blue"
+                app:civ_border_width="3dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/signOut"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="10dp"
+                android:text="Sign out"
+                android:textColor="@color/Primary_blue"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
 </RelativeLayout>
