@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.fragmentMoreInfo">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="35dp">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntu_regular"
+            android:gravity="center"
+            android:text="@string/moreInfoHeader"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <EditText
+            android:id="@+id/studentID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:autofillHints=""
+            android:background="@drawable/borders"
+            android:drawableStart="@drawable/ic_studentid"
+            android:drawablePadding="15dp"
+            android:fontFamily="@font/ubuntu_regular"
+            android:hint="@string/studentid"
+            android:inputType="number"
+            android:padding="10dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <EditText
+            android:id="@+id/major"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/borders"
+            android:drawableStart="@drawable/ic_study_field"
+            android:drawablePadding="15dp"
+            android:fontFamily="@font/ubuntu_regular"
+            android:hint="What is your field of study?"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:padding="10dp" />
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/doneButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/borders"
+            android:backgroundTint="#F2A832"
+            android:fontFamily="@font/ubuntu_bold"
+            android:text="Done"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

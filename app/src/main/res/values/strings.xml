@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">GJU_Outgoings_App</string>
+    <string name="create_an_account">Create An Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="e_mail">E-mail</string>
+    <string name="choosePassword">Choose password</string>
+    <string name="rePassword">Confirm password</string>
+    <string name="gender">Gender:</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="signup">SignUp</string>
+    <string name="do_you_have_an_account">Do you have an account?</string>
+    <string name="moreInfoHeader">You are registered please provide us with your Student ID and your field of study</string>
+    <string name="studentid">StudentID</string>
+    <string name="welcome_back">Welcome Back !</string>
+    <string name="sign_in">Sign in</string>
+    <string name="don_t_have_an_account">Don\'t have an account ?</string>
+    <string name="your_request_is_under_process_we_will_check_it_as_soon_as_possible">Your request is under process we will check it as soon as possible</string>
+
+    <string name="facebook_app_id">837197497649647</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">c2afa8db7103f0d8e4872c237eaf5b9e</string>
+    <string name="password">Password</string>
+
+
+</resources>
