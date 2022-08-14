@@ -49,8 +49,8 @@ public class fragmentSettings extends Fragment {
         // Setup any handles to view objects here
     }
 
-void setup(){
-    singOutLayout = (RelativeLayout) view.findViewById(R.id.signOutLayout);
+    void setup() {
+        singOutLayout = (RelativeLayout) view.findViewById(R.id.signOutLayout);
 
-}
+    }
 }
