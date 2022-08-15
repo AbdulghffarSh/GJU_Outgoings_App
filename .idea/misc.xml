@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/bottom_nav_bar_settings.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/d.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_features.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_home_screen.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_notifications.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.15" />
@@ -19,7 +20,7 @@
         <entry key="app/src/main/res/drawable/top_corners.xml" value="0.2085" />
         <entry key="app/src/main/res/layout/activity_fragment_add.xml" value="0.1390625" />
         <entry key="app/src/main/res/layout/activity_fragment_features.xml" value="0.14010416666666667" />
-        <entry key="app/src/main/res/layout/activity_fragment_home.xml" value="0.14010416666666667" />
+        <entry key="app/src/main/res/layout/activity_fragment_home.xml" value="0.25145365397135416" />
         <entry key="app/src/main/res/layout/activity_fragment_more_info.xml" value="0.27853260869565216" />
         <entry key="app/src/main/res/layout/activity_fragment_search.xml" value="0.1390625" />
         <entry key="app/src/main/res/layout/activity_fragment_settings.xml" value="0.32441558837890627" />

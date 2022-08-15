@@ -48,12 +48,12 @@
     </RelativeLayout>
 
     <TextView
-        android:padding="10dp"
         android:id="@+id/activityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header"
         android:fontFamily="@font/ubuntu_bold"
+        android:padding="10dp"
         android:text="Activity"
         android:textSize="30sp" />
 

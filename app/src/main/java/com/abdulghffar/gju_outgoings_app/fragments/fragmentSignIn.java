@@ -113,6 +113,7 @@ public class fragmentSignIn extends Fragment {
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
+
         db = FirebaseFirestore.getInstance();
 
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -142,7 +143,7 @@ public class fragmentSignIn extends Fragment {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            toast("Sign in Failed:\n"+ task.getException());
+                            toast("Sign in Failed:\n" + task.getException());
                         }
                     }
                 });
