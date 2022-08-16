@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.activites.authentication;
+import com.abdulghffar.gju_outgoings_app.activities.authentication;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

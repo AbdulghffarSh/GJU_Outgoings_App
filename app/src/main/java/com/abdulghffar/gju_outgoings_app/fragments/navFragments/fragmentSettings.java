@@ -10,10 +10,7 @@ import android.widget.RelativeLayout;
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.activites.MainActivity;
-import com.abdulghffar.gju_outgoings_app.activites.authentication;
-import com.abdulghffar.gju_outgoings_app.fragments.fragmentSignIn;
-import com.abdulghffar.gju_outgoings_app.fragments.fragmentSignUp;
+import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.annotation.Nullable;

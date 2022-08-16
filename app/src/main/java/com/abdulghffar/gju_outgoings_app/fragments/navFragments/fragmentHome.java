@@ -4,16 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.activites.authentication;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
 
 import javax.annotation.Nullable;
 

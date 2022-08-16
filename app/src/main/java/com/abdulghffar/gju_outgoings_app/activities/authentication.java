@@ -1,4 +1,4 @@
-package com.abdulghffar.gju_outgoings_app.activites;
+package com.abdulghffar.gju_outgoings_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

@@ -1,4 +1,4 @@
-package com.abdulghffar.gju_outgoings_app.activites;
+package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
 
@@ -10,7 +10,6 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 

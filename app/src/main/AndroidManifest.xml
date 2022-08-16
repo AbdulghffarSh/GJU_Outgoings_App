@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GJU_Outgoings_App">
         <activity
-            android:name=".activites.authentication"
+            android:name=".activities.navBarActivities"
+            android:exported="false" />
+        <activity
+            android:name=".activities.authentication"
             android:exported="false" />
 
         <meta-data
@@ -23,10 +26,10 @@
             android:value="@string/facebook_client_token" />
 
         <activity
-            android:name=".activites.MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activites.splashScreen"
+            android:name=".activities.splashScreen"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
             <intent-filter>

@@ -10,10 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.activites.authentication;
+import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import javax.annotation.Nullable;

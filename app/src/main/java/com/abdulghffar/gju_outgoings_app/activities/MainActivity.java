@@ -1,4 +1,4 @@
-package com.abdulghffar.gju_outgoings_app.activites;
+package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
 
