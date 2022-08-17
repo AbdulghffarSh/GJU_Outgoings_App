@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.adapters.citiesAdapter;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
@@ -85,6 +86,9 @@ public class fragmentRating extends Fragment {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
                                 citiesArrayList.add(dc.getDocument().toObject(city.class));
                             }
+                            navBarActivities navBarActivities = (navBarActivities) getActivity();
+                            assert navBarActivities != null;
+                            navBarActivities.setCitiesArrayList(citiesArrayList);
                             citiesAdapter.notifyDataSetChanged();
                         }
 

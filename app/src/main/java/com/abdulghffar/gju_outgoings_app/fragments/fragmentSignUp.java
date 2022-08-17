@@ -85,10 +85,10 @@ public class fragmentSignUp extends Fragment {
         signInTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                authentication registration = (authentication) getActivity();
+                authentication authentication = (authentication) getActivity();
                 fragmentSignIn fragmentSignIn = new fragmentSignIn();
-                assert registration != null;
-                registration.replaceFragment(fragmentSignIn);
+                assert authentication != null;
+                authentication.replaceFragment(fragmentSignIn);
             }
         });
 

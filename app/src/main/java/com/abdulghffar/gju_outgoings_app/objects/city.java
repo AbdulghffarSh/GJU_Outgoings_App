@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class city {
+public class city{
     String cityName;
     String zipCode;
     HashMap<String, Object> universities;

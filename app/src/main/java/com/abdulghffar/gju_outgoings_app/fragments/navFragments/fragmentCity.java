@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.squareup.picasso.Picasso;
@@ -22,7 +23,7 @@ import javax.annotation.Nullable;
 
 public class fragmentCity extends Fragment {
 
-    city cityData;
+    ArrayList<city> citiesData;
     TextView cityName;
     ImageView cityPic;
     View view;
@@ -36,9 +37,8 @@ public class fragmentCity extends Fragment {
         int position = bundle.getInt("cityPosition");
         navBarActivities navBarActivities = (navBarActivities) getActivity();
         assert navBarActivities != null;
-        ArrayList<city> citiesData = navBarActivities.getCitiesData();
-
-        cityData = citiesData.get(position);
+        citiesData = navBarActivities.getCitiesArrayList();
+        city cityData = citiesData.get(position);
         setData(cityData);
 
 
