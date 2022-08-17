@@ -51,9 +51,15 @@ public class fragmentRating extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         citiesArrayList = new ArrayList<city>();
-        citiesAdapter = new citiesAdapter(citiesArrayList, getActivity());
+        citiesAdapter = new citiesAdapter(citiesArrayList);
 
         recyclerView.setAdapter(citiesAdapter);
+        citiesAdapter.setOnItemClickListener(new citiesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                changeItem(position, "Clicked");
+
+            }});
 
         EventChangeListener();
 
@@ -94,6 +100,10 @@ public class fragmentRating extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
+    }
+    public void changeItem(int position, String text) {
+        citiesArrayList.get(position);
+        citiesAdapter.notifyItemChanged(position);
     }
 
 
