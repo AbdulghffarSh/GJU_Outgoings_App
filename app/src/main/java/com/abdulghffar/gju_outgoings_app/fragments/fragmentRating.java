@@ -1,6 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.adapters.citiesAdapter;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -22,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -59,7 +63,8 @@ public class fragmentRating extends Fragment {
             public void onItemClick(int position) {
                 changeItem(position, "Clicked");
 
-            }});
+            }
+        });
 
         EventChangeListener();
 
@@ -101,9 +106,18 @@ public class fragmentRating extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
     }
+
     public void changeItem(int position, String text) {
-        citiesArrayList.get(position);
-        citiesAdapter.notifyItemChanged(position);
+
+        navBarActivities navBarActivities = (navBarActivities) getActivity();
+        fragmentCity fragmentCity = new fragmentCity();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Cities", (Serializable) citiesArrayList);
+        fragmentCity.setArguments(bundle);
+        assert navBarActivities != null;
+        navBarActivities.replaceFragment(fragmentCity,citiesArrayList.get(position));
+
+
     }
 
 

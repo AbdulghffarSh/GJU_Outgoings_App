@@ -10,13 +10,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.fragmentRating;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
+import com.abdulghffar.gju_outgoings_app.objects.city;
+
+import org.w3c.dom.Text;
+
+import javax.annotation.Nullable;
 
 public class navBarActivities extends AppCompatActivity {
 
     ImageView backButton;
+    TextView label;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +32,12 @@ public class navBarActivities extends AppCompatActivity {
         setContentView(R.layout.activity_nav_bar_activites);
 
         backButton = (ImageView) findViewById(R.id.backButton);
+        label = (TextView) findViewById(R.id.activityLabel);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(navBarActivities.this,MainActivity.class);
+                Intent intent = new Intent(navBarActivities.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -36,13 +45,13 @@ public class navBarActivities extends AppCompatActivity {
         String newString;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                newString= null;
+            if (extras == null) {
+                newString = null;
             } else {
-                newString= extras.getString("fragmentName");
+                newString = extras.getString("fragmentName");
             }
         } else {
-            newString= (String) savedInstanceState.getSerializable("fragmentName");
+            newString = (String) savedInstanceState.getSerializable("fragmentName");
         }
 
 
@@ -53,7 +62,7 @@ public class navBarActivities extends AppCompatActivity {
     }
 
 
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment, @Nullable city CityData) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -64,11 +73,20 @@ public class navBarActivities extends AppCompatActivity {
     void pickFragment(String fragmentName) {
         switch (fragmentName) {
             case "Rating":
+                label.setText("Cities and Universities");
                 fragmentRating fragmentRating = new fragmentRating();
-                replaceFragment(fragmentRating);
+                replaceFragment(fragmentRating, null);
+                break;
+            case "City":
+                label.setText("Cities and Universities");
+                fragmentCity fragmentCity = new fragmentCity();
+                replaceFragment(fragmentCity, null);
                 break;
 
         }
+
+
     }
+
 
 }

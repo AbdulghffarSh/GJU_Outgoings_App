@@ -34,6 +34,7 @@ public class fragmentFeatures extends Fragment {
                 String fragmentName = "Rating";
                 intent.putExtra("fragmentName", fragmentName);
                 startActivity(intent);
+
             }
         });
 
