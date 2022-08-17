@@ -92,7 +92,6 @@ public class fragmentRating extends Fragment {
                 });
 
 
-
     }
 
     // This event is triggered soon after onCreateView().
@@ -105,11 +104,12 @@ public class fragmentRating extends Fragment {
     public void changeItem(int position, String text) {
 
         navBarActivities navBarActivities = (navBarActivities) getActivity();
+        assert navBarActivities != null;
+        navBarActivities.setCitiesData(citiesArrayList);
         fragmentCity fragmentCity = new fragmentCity();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("city", citiesArrayList.get(position));
+        bundle.putInt("cityPosition", position);
         fragmentCity.setArguments(bundle);
-        assert navBarActivities != null;
         navBarActivities.replaceFragment(fragmentCity);
 
 

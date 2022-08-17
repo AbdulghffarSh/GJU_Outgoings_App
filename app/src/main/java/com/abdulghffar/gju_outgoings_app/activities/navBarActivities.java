@@ -27,12 +27,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nullable;
 
 public class navBarActivities extends AppCompatActivity {
 
     ImageView backButton;
     TextView label;
+    ArrayList<city> citiesData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,5 +100,11 @@ public class navBarActivities extends AppCompatActivity {
 
     }
 
+    public ArrayList<city> getCitiesData() {
+        return citiesData;
+    }
 
+    public void setCitiesData(ArrayList<city> citiesData) {
+        this.citiesData = citiesData;
+    }
 }

@@ -11,9 +11,11 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.Nullable;
@@ -31,11 +33,13 @@ public class fragmentCity extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_city, parent, false);
         Bundle bundle = this.getArguments();
         assert bundle != null;
-        if (bundle.getSerializable("city") != null) {
-            cityData = (city) bundle.getSerializable("city");
-            setData(cityData);
+        int position = bundle.getInt("cityPosition");
+        navBarActivities navBarActivities = (navBarActivities) getActivity();
+        assert navBarActivities != null;
+        ArrayList<city> citiesData = navBarActivities.getCitiesData();
 
-        }
+        cityData = citiesData.get(position);
+        setData(cityData);
 
 
         return view;
