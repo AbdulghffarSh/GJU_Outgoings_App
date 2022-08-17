@@ -1,19 +1,23 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 
-public class city {
+public class city implements Serializable {
     String cityName;
     String zipCode;
     HashMap<String, Object> universities;
+    List<String> pics;
 
     public city() {
     }
 
-    public city(String cityName, String zipCode, HashMap<String, Object> universities) {
+    public city(String cityName, String zipCode, HashMap<String, Object> universities, List<String> pics) {
         this.cityName = cityName;
         this.zipCode = zipCode;
         this.universities = universities;
+        this.pics = pics;
     }
 
     public void setCityName(String cityName) {
@@ -38,5 +42,13 @@ public class city {
 
     public HashMap<String, Object> getUniversities() {
         return universities;
+    }
+
+    public void setPics(List<String> pics) {
+        this.pics = pics;
+    }
+
+    public List<String> getPics() {
+        return pics;
     }
 }

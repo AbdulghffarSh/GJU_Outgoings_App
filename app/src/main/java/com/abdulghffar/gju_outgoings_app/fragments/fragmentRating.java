@@ -36,7 +36,6 @@ public class fragmentRating extends Fragment {
     citiesAdapter citiesAdapter;
     ArrayList<city> citiesArrayList;
     FirebaseFirestore db;
-    ProgressBar progressBar;
 
     View view;
 
@@ -44,9 +43,6 @@ public class fragmentRating extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_rating, parent, false);
-
-        progressBar = new ProgressBar(getActivity());
-        progressBar.setVisibility(View.VISIBLE);
 
 
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -96,7 +92,6 @@ public class fragmentRating extends Fragment {
                 });
 
 
-        progressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -112,10 +107,10 @@ public class fragmentRating extends Fragment {
         navBarActivities navBarActivities = (navBarActivities) getActivity();
         fragmentCity fragmentCity = new fragmentCity();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("Cities", (Serializable) citiesArrayList);
+        bundle.putSerializable("city", citiesArrayList.get(position));
         fragmentCity.setArguments(bundle);
         assert navBarActivities != null;
-        navBarActivities.replaceFragment(fragmentCity,citiesArrayList.get(position));
+        navBarActivities.replaceFragment(fragmentCity);
 
 
     }

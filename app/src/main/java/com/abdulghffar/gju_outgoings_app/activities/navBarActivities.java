@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +18,12 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.fragmentRating;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.objects.city;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
@@ -33,6 +41,7 @@ public class navBarActivities extends AppCompatActivity {
 
         backButton = (ImageView) findViewById(R.id.backButton);
         label = (TextView) findViewById(R.id.activityLabel);
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +71,7 @@ public class navBarActivities extends AppCompatActivity {
     }
 
 
-    public void replaceFragment(Fragment fragment, @Nullable city CityData) {
+    public void replaceFragment(Fragment fragment) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -75,12 +84,12 @@ public class navBarActivities extends AppCompatActivity {
             case "Rating":
                 label.setText("Cities and Universities");
                 fragmentRating fragmentRating = new fragmentRating();
-                replaceFragment(fragmentRating, null);
+                replaceFragment(fragmentRating);
                 break;
             case "City":
                 label.setText("Cities and Universities");
                 fragmentCity fragmentCity = new fragmentCity();
-                replaceFragment(fragmentCity, null);
+                replaceFragment(fragmentCity);
                 break;
 
         }

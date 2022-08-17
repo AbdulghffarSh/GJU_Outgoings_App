@@ -1,14 +1,18 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.city;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -17,6 +21,8 @@ import javax.annotation.Nullable;
 public class fragmentCity extends Fragment {
 
     city cityData;
+    TextView cityName;
+    ImageView cityPic;
     View view;
 
     @Override
@@ -25,13 +31,26 @@ public class fragmentCity extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_city, parent, false);
         Bundle bundle = this.getArguments();
         assert bundle != null;
-        if (bundle.getSerializable("HashMap") != null) {
-            cityData = (city) bundle.getParcelable("city");
+        if (bundle.getSerializable("city") != null) {
+            cityData = (city) bundle.getSerializable("city");
+            setData(cityData);
 
         }
-        System.out.println("This is the message u asked for\n" + cityData.getCityName()+"\n"+cityData.getUniversities());
+
 
         return view;
+    }
+
+    private void setData(city cityData) {
+        cityName = view.findViewById(R.id.cityName);
+        cityPic = view.findViewById(R.id.img);
+
+        cityName.setText(cityData.getCityName());
+        if (cityData.getPics() != null) {
+            Picasso.get().load(cityData.getPics().get(0)).into(cityPic);
+        }
+
+
     }
 
     // This event is triggered soon after onCreateView().
