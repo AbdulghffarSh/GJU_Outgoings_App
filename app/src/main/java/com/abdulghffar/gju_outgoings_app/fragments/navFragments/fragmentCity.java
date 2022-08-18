@@ -38,13 +38,9 @@ public class fragmentCity extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_city, parent, false);
-        Bundle bundle = this.getArguments();
-        assert bundle != null;
-        int position = bundle.getInt("cityPosition");
         navBarActivities navBarActivities = (navBarActivities) getActivity();
         assert navBarActivities != null;
-        citiesData = navBarActivities.getCitiesArrayList();
-        city cityData = citiesData.get(position);
+        city cityData = navBarActivities.getCityData();
         setData(cityData);
 
         universityNames = new ArrayList<>(cityData.getUniversities().keySet());
@@ -54,8 +50,6 @@ public class fragmentCity extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(universityAdapter);
-
-
 
 
         return view;

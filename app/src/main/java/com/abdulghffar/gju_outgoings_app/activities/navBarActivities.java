@@ -41,7 +41,7 @@ public class navBarActivities extends AppCompatActivity {
     ImageView backButton;
     TextView label;
     ArrayList<city> citiesArrayList;
-
+    city cityData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +116,14 @@ public class navBarActivities extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void setCityData(city cityData) {
+        this.cityData = cityData;
+    }
+
+    public city getCityData() {
+        return cityData;
     }
 
 
