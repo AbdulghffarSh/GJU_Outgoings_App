@@ -1,19 +1,21 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class city{
+public class city {
     String cityName;
     String zipCode;
-    HashMap<String, Object> universities;
+    HashMap<String, DocumentReference> universities;
     List<String> pics;
 
     public city() {
     }
 
-    public city(String cityName, String zipCode, HashMap<String, Object> universities, List<String> pics) {
+    public city(String cityName, String zipCode, HashMap<String, DocumentReference> universities, List<String> pics) {
         this.cityName = cityName;
         this.zipCode = zipCode;
         this.universities = universities;
@@ -28,7 +30,7 @@ public class city{
         this.zipCode = zipCode;
     }
 
-    public void setUniversities(HashMap<String, Object> universities) {
+    public void setUniversities(HashMap<String, DocumentReference> universities) {
         this.universities = universities;
     }
 
@@ -40,7 +42,7 @@ public class city{
         return zipCode;
     }
 
-    public HashMap<String, Object> getUniversities() {
+    public HashMap<String, DocumentReference> getUniversities() {
         return universities;
     }
 

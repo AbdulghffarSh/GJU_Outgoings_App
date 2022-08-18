@@ -51,6 +51,14 @@ public class fragmentCity extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(universityAdapter);
 
+        universityAdapter.setOnItemClickListener(new universityAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                changeItem(position, "Clicked");
+
+            }
+        });
+
 
         return view;
     }
@@ -74,5 +82,15 @@ public class fragmentCity extends Fragment {
         // Setup any handles to view objects here
     }
 
+    public void changeItem(int position, String text) {
+
+        navBarActivities navBarActivities = (navBarActivities) getActivity();
+        assert navBarActivities != null;
+        navBarActivities.setUniversity(position);
+        fragmentUniversity fragmentUniversity = new fragmentUniversity();
+        navBarActivities.replaceFragment(fragmentUniversity);
+
+
+    }
 
 }
