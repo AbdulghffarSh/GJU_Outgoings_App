@@ -9,11 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
+import com.abdulghffar.gju_outgoings_app.adapters.cityAdapter;
+import com.abdulghffar.gju_outgoings_app.adapters.universityAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.city;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,6 +29,7 @@ import javax.annotation.Nullable;
 public class fragmentCity extends Fragment {
 
     ArrayList<city> citiesData;
+    ArrayList<String> universityNames;
     TextView cityName;
     ImageView cityPic;
     View view;
@@ -40,6 +46,14 @@ public class fragmentCity extends Fragment {
         citiesData = navBarActivities.getCitiesArrayList();
         city cityData = citiesData.get(position);
         setData(cityData);
+
+        universityNames = new ArrayList<>(cityData.getUniversities().keySet());
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.universitiesRecyclerView);
+        universityAdapter universityAdapter = new universityAdapter(universityNames);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(universityAdapter);
 
 
         return view;

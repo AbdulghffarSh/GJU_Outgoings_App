@@ -11,14 +11,10 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class universitiesAdapter extends RecyclerView.Adapter<universitiesAdapter.viewHolder> {
-    private final city cityData;
+public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> {
+    private final ArrayList<city> citiesArrayList;
     private OnItemClickListener mListener;
-    private final List<String> universityNames;
-    private List<Object> universityRefs;
-
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -29,12 +25,12 @@ public class universitiesAdapter extends RecyclerView.Adapter<universitiesAdapte
     }
 
     public static class viewHolder extends RecyclerView.ViewHolder {
-        public TextView universityNameField;
+        public TextView cityNameFiled;
 
 
         public viewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
-            universityNameField = itemView.findViewById(R.id.universityName);
+            cityNameFiled = itemView.findViewById(R.id.cityName);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -53,30 +49,26 @@ public class universitiesAdapter extends RecyclerView.Adapter<universitiesAdapte
         }
     }
 
-    public universitiesAdapter(city cityData) {
-        this.cityData = cityData;
-        universityNames = new ArrayList<>(cityData.getUniversities().keySet());
-        universityRefs = new ArrayList<>(cityData.getUniversities().values());
-
-
+    public cityAdapter(ArrayList<city> citiesArrayList) {
+        this.citiesArrayList = citiesArrayList;
     }
 
     @Override
     public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.university_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_item, parent, false);
         viewHolder evh = new viewHolder(v, mListener);
         return evh;
     }
 
     @Override
     public void onBindViewHolder(viewHolder holder, int position) {
-        String currentItem = universityNames.get(position);
+        city currentItem = citiesArrayList.get(position);
 
-        holder.universityNameField.setText(currentItem);
+        holder.cityNameFiled.setText(currentItem.getCityName());
     }
 
     @Override
     public int getItemCount() {
-        return cityData.getUniversities().size();
+        return citiesArrayList.size();
     }
 }

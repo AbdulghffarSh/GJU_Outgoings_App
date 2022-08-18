@@ -50,8 +50,7 @@ public class navBarActivities extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(navBarActivities.this, MainActivity.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -107,5 +106,10 @@ public class navBarActivities extends AppCompatActivity {
 
     public ArrayList<city> getCitiesArrayList() {
         return citiesArrayList;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

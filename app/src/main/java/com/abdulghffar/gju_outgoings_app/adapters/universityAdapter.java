@@ -11,10 +11,12 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class citiesAdapter extends RecyclerView.Adapter<citiesAdapter.viewHolder> {
-    private final ArrayList<city> citiesArrayList;
+public class universityAdapter extends RecyclerView.Adapter<universityAdapter.viewHolder> {
     private OnItemClickListener mListener;
+    private final List<String> universityNames;
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -25,12 +27,12 @@ public class citiesAdapter extends RecyclerView.Adapter<citiesAdapter.viewHolder
     }
 
     public static class viewHolder extends RecyclerView.ViewHolder {
-        public TextView cityNameFiled;
+        public TextView universityNameField;
 
 
         public viewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
-            cityNameFiled = itemView.findViewById(R.id.cityName);
+            universityNameField = itemView.findViewById(R.id.universityName);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -49,26 +51,28 @@ public class citiesAdapter extends RecyclerView.Adapter<citiesAdapter.viewHolder
         }
     }
 
-    public citiesAdapter(ArrayList<city> citiesArrayList) {
-        this.citiesArrayList = citiesArrayList;
+    public universityAdapter(ArrayList<String> universityNames) {
+        this.universityNames = universityNames;
+
+
     }
 
     @Override
     public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.university_item, parent, false);
         viewHolder evh = new viewHolder(v, mListener);
         return evh;
     }
 
     @Override
     public void onBindViewHolder(viewHolder holder, int position) {
-        city currentItem = citiesArrayList.get(position);
+        String currentItem = universityNames.get(position);
 
-        holder.cityNameFiled.setText(currentItem.getCityName());
+        holder.universityNameField.setText(currentItem);
     }
 
     @Override
     public int getItemCount() {
-        return citiesArrayList.size();
+        return universityNames.size();
     }
 }

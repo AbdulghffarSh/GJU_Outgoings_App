@@ -1,22 +1,19 @@
 package com.abdulghffar.gju_outgoings_app.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
-import com.abdulghffar.gju_outgoings_app.adapters.citiesAdapter;
+import com.abdulghffar.gju_outgoings_app.adapters.cityAdapter;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.google.firebase.firestore.DocumentChange;
@@ -26,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -34,7 +30,7 @@ import javax.annotation.Nullable;
 public class fragmentRating extends Fragment {
 
     RecyclerView recyclerView;
-    citiesAdapter citiesAdapter;
+    cityAdapter citiesAdapter;
     ArrayList<city> citiesArrayList;
     FirebaseFirestore db;
 
@@ -52,10 +48,10 @@ public class fragmentRating extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         citiesArrayList = new ArrayList<city>();
-        citiesAdapter = new citiesAdapter(citiesArrayList);
+        citiesAdapter = new cityAdapter(citiesArrayList);
 
         recyclerView.setAdapter(citiesAdapter);
-        citiesAdapter.setOnItemClickListener(new citiesAdapter.OnItemClickListener() {
+        citiesAdapter.setOnItemClickListener(new cityAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 changeItem(position, "Clicked");
