@@ -105,7 +105,7 @@ public class fragmentRating extends Fragment {
 
         navBarActivities navBarActivities = (navBarActivities) getActivity();
         assert navBarActivities != null;
-        navBarActivities.setCitiesData(citiesArrayList);
+        navBarActivities.setCitiesArrayList(citiesArrayList);
         fragmentCity fragmentCity = new fragmentCity();
         Bundle bundle = new Bundle();
         bundle.putInt("cityPosition", position);
