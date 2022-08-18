@@ -3,6 +3,8 @@ package com.abdulghffar.gju_outgoings_app.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +13,13 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
-public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> {
+public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> implements Filterable {
     private final ArrayList<city> citiesArrayList;
+    ArrayList<city> citiesSearchArrayList;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -51,6 +57,7 @@ public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> {
 
     public cityAdapter(ArrayList<city> citiesArrayList) {
         this.citiesArrayList = citiesArrayList;
+        citiesSearchArrayList = new ArrayList<>(citiesArrayList);
     }
 
     @Override
@@ -71,4 +78,42 @@ public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> {
     public int getItemCount() {
         return citiesArrayList.size();
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return searchFilter;
+    }
+
+    private Filter searchFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<city> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(citiesSearchArrayList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (city item : citiesSearchArrayList) {
+                    if (item.getCityName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults filterResults) {
+            citiesArrayList.clear();
+            citiesArrayList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
 }

@@ -48,6 +48,8 @@
         <entry key="app/src/main/res/layout/tutorial1.xml" value="0.3050974527994792" />
         <entry key="app/src/main/res/layout/university_item.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.14010416666666667" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.29375" />
+        <entry key="app/src/main/res/menu/search_menu.xml" value="0.29375" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1695" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2085" />
       </map>

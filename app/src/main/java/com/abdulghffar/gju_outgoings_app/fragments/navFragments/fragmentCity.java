@@ -56,6 +56,8 @@ public class fragmentCity extends Fragment {
         recyclerView.setAdapter(universityAdapter);
 
 
+
+
         return view;
     }
 
