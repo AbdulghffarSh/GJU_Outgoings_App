@@ -40,6 +40,7 @@ public class fragmentAccount extends Fragment {
     TextView email;
     TextView major;
     TextView status;
+    TextView changeImage;
 
     View view;
 
@@ -57,6 +58,7 @@ public class fragmentAccount extends Fragment {
         email = (TextView) view.findViewById(R.id.uEmail);
         major = (TextView) view.findViewById(R.id.uMajor);
         status = (TextView) view.findViewById(R.id.uStatus);
+        changeImage = (TextView) view.findViewById(R.id.changeImage);
 
 
         setProfileImage();
