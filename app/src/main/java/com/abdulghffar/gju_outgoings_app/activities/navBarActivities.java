@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.fragmentRating;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.university;
@@ -107,6 +108,11 @@ public class navBarActivities extends AppCompatActivity {
                 label.setText("Cities and Universities");
                 fragmentCity fragmentCity = new fragmentCity();
                 replaceFragment(fragmentCity);
+                break;
+            case "accountSettings":
+                label.setText("Account Settings");
+                fragmentAccount fragmentAccount = new fragmentAccount();
+                replaceFragment(fragmentAccount);
                 break;
 
         }

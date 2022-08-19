@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        profileImage = (ImageView) findViewById(R.id.profile_image);
+        profileImage = (ImageView) findViewById(R.id.accountPic);
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         activityNameField = (TextView) findViewById(R.id.activityName);

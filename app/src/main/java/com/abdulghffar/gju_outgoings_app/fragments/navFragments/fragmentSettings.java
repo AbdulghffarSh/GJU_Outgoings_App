@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
+import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.annotation.Nullable;
@@ -19,6 +20,8 @@ public class fragmentSettings extends Fragment {
 
 
     RelativeLayout singOutLayout;
+    RelativeLayout profileSettingsLayout;
+
     View view;
 
     @Override
@@ -36,6 +39,16 @@ public class fragmentSettings extends Fragment {
             }
         });
 
+        profileSettingsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), navBarActivities.class);
+                String fragmentName = "accountSettings";
+                intent.putExtra("fragmentName", fragmentName);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -48,6 +61,8 @@ public class fragmentSettings extends Fragment {
 
     void setup() {
         singOutLayout = (RelativeLayout) view.findViewById(R.id.signOutLayout);
+        profileSettingsLayout = (RelativeLayout) view.findViewById(R.id.profileSettingsLayout);
+
 
     }
 }

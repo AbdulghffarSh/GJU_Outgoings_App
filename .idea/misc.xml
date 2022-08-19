@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/top_corners.xml" value="0.2085" />
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.2947916666666667" />
+        <entry key="app/src/main/res/layout/activity_fragment_account.xml" value="0.36634775797526037" />
         <entry key="app/src/main/res/layout/activity_fragment_add.xml" value="0.1390625" />
         <entry key="app/src/main/res/layout/activity_fragment_city.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/activity_fragment_features.xml" value="0.14010416666666667" />

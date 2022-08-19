@@ -7,36 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:777923854158:android:123a78bf6d1dcb0757281f",
-        "android_client_info": {
-          "package_name": "com.abdulghffar.gju_outgoings_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "777923854158-354nd7cvl9njho3obnic5p88cuh2rnvt.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDnXuwl3onEJ08WNZvhyBBwz9rVgAyyQN8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "777923854158-354nd7cvl9njho3obnic5p88cuh2rnvt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:777923854158:android:0f903d67dadda0ff57281f",
+        "mobilesdk_app_id": "1:777923854158:android:2aa6dab29ec6e99457281f",
         "android_client_info": {
           "package_name": "com.abdulghffar.gju_outgoings_app_mac"
         }
@@ -49,7 +20,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDnXuwl3onEJ08WNZvhyBBwz9rVgAyyQN8"
+          "current_key": "AIzaSyAXxfLksa0vUBJAHzPSpFZy4uO6QSRMaik"
         }
       ],
       "services": {
