@@ -3,7 +3,9 @@ package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +35,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.OnProgressListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -77,7 +78,8 @@ public class fragmentAccount extends Fragment {
             @Override
             public void onClick(View view) {
 
-
+                updateUserData("major", "Enter the new major");
+                getProfileData();
             }
         });
 
@@ -92,7 +94,7 @@ public class fragmentAccount extends Fragment {
         });
 
 
-        getProfileImage();
+        getProfileData();
 
         return view;
     }
@@ -104,7 +106,7 @@ public class fragmentAccount extends Fragment {
         // Setup any handles to view objects here
     }
 
-    void getProfileImage() {
+    public void getProfileData() {
 
 
         DocumentReference docRef = db.collection("Users").document(user.getUid());
@@ -207,15 +209,7 @@ public class fragmentAccount extends Fragment {
                                         public void onSuccess(Uri uri) {
                                             Uri downloadUrl = uri;
                                             //Set Image Link in user
-                                            DocumentReference docRef = db.collection("Users").document(user.getUid());
-                                            docRef.update("profilePic", downloadUrl).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    System.out.println("Updated");
-                                                }
-                                            });
-
-
+                                            changeData("profilePic", downloadUrl.toString());
                                         }
 
                                     });
@@ -241,6 +235,92 @@ public class fragmentAccount extends Fragment {
         }
 
     }
+
+
+    void changeData(String field, String newData) {
+        db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document(user.getUid());
+        docRef.update(field, newData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                System.out.println("Updated");
+                getProfileData();
+
+            }
+        });
+
+    }
+
+
+    public void updateUserData(String field, String message) {
+        ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
+                inflate(R.layout.update_data_dialog, null, false);
+        EditText newData = (EditText) subView.findViewById(R.id.editText);
+        TextView messageField = (TextView) subView.findViewById(R.id.text);
+
+        messageField.setText(message);
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(getActivity(), R.style.AlertDialogCustom);
+
+        builder.setView(subView);
+
+        // Set the message show for the Alert time
+
+        // Set Alert Title
+//        builder.setTitle("Update user " + field);
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder
+                .setPositiveButton(
+                        "Save",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                changeData(field, newData.getText().toString());
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder
+                .setNegativeButton(
+                        "Cancel",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+
+    }
+
 }
 
 

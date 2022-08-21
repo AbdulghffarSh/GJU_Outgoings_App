@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -87,15 +89,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.home:
                         fragmentHome fragmentHome = new fragmentHome();
-                        replaceFragment(fragmentHome,"Home");
+                        replaceFragment(fragmentHome, "Home");
                         break;
                     case R.id.search:
                         fragmentSearch fragmentSearch = new fragmentSearch();
-                        replaceFragment(fragmentSearch,"Search");
+                        replaceFragment(fragmentSearch, "Search");
                         break;
                     case R.id.add:
                         fragmentAdd fragmentAdd = new fragmentAdd();
-                        replaceFragment(fragmentAdd,"Add");
+                        replaceFragment(fragmentAdd, "Add");
                         break;
                     case R.id.features:
                         fragmentFeatures fragmentFeatures = new fragmentFeatures();
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.settings:
                         fragmentSettings fragmentSettings = new fragmentSettings();
-                        replaceFragment(fragmentSettings,"Settings");
+                        replaceFragment(fragmentSettings, "Settings");
                         break;
 
 
@@ -114,11 +116,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         fragmentHome fragmentHome = new fragmentHome();
-        replaceFragment(fragmentHome,"Home");
+        replaceFragment(fragmentHome, "Home");
+
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, navBarActivities.class);
+                String fragmentName = "accountSettings";
+                intent.putExtra("fragmentName", fragmentName);
+                startActivity(intent);
+            }
+        });
 
     }
 
-    public void replaceFragment(Fragment fragment,String activityName) {
+    public void replaceFragment(Fragment fragment, String activityName) {
         activityNameField.setText(activityName);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

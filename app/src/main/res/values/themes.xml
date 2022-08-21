@@ -16,6 +16,14 @@
     </style>
 
 
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/Primary_orange</item>
+        <item name="android:backgroundTint">@color/blue</item>
+        <item name="android:fontFamily">@font/ubuntu_bold</item>
 
+
+
+
+    </style>
 
 </resources>
