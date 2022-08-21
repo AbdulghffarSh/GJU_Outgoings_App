@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.abdulghffar.gju_outgoings_app.R;
@@ -43,6 +44,7 @@ public class fragmentMoreInfo extends Fragment {
     //Firebase
     FirebaseFirestore db;
 
+    ProgressBar progressBar;
     View view;
 
     @Override
@@ -54,6 +56,7 @@ public class fragmentMoreInfo extends Fragment {
         doneButton = (Button) view.findViewById(R.id.doneButton);
         studentIDField = (EditText) view.findViewById(R.id.studentID);
         majorField = (EditText) view.findViewById(R.id.major);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +86,7 @@ public class fragmentMoreInfo extends Fragment {
     }
 
     void checkData() {
-
+        progressBar.setVisibility(View.VISIBLE);
         String studentID = studentIDField.getText().toString();
         String major = majorField.getText().toString();
         if (studentID.matches("")) {
@@ -120,12 +123,15 @@ public class fragmentMoreInfo extends Fragment {
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                         checkUserApproval(FirebaseAuth.getInstance().getCurrentUser());
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error writing document", e);
+                        progressBar.setVisibility(View.INVISIBLE);
+
                     }
                 });
 
@@ -164,6 +170,7 @@ public class fragmentMoreInfo extends Fragment {
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 

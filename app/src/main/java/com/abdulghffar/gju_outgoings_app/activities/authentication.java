@@ -6,11 +6,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.widget.ProgressBar;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.fragmentSignIn;
 
 public class authentication extends AppCompatActivity {
+
+    ProgressBar progressBar;
 
 
     @Override
@@ -29,6 +32,7 @@ public class authentication extends AppCompatActivity {
         //FragmentChang
         fragmentSignIn fragmentSignIn = new fragmentSignIn();
         replaceFragment(fragmentSignIn);
+
 
     }
 

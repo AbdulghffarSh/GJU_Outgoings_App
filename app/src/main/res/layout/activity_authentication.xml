@@ -7,6 +7,7 @@
     android:background="#2197D8"
     tools:context=".activities.MainActivity">
 
+
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"

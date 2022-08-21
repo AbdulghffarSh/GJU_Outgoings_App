@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -66,7 +67,8 @@ public class fragmentSignUp extends Fragment {
     RadioButton maleRadioButton;
     RadioButton femaleRadioButton;
 
-
+    //others
+    ProgressBar progressBar;
     View view;
 
     @Override
@@ -125,6 +127,8 @@ public class fragmentSignUp extends Fragment {
         maleRadioButton = (RadioButton) view.findViewById(R.id.maleRadioButton);
         femaleRadioButton = (RadioButton) view.findViewById(R.id.femaleRadioButton);
 
+        //others
+        progressBar = view.findViewById(R.id.progressBar);
 
     }
 
@@ -190,6 +194,7 @@ public class fragmentSignUp extends Fragment {
 
 
     private void FirebaseRegistration(String email, String password) {
+        progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -210,6 +215,7 @@ public class fragmentSignUp extends Fragment {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             toast("Authentication failed" + task.getException());
                         }
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
 
 

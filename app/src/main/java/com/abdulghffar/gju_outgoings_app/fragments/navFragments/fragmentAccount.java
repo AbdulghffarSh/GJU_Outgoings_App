@@ -62,6 +62,8 @@ public class fragmentAccount extends Fragment {
     TextView status;
     TextView changeImage;
 
+    ProgressBar progressBar;
+
     View view;
 
     @Override
@@ -152,6 +154,7 @@ public class fragmentAccount extends Fragment {
         changeImage = (TextView) view.findViewById(R.id.changeImage);
         editMajor = view.findViewById(R.id.editMajor);
         editStatus = view.findViewById(R.id.editStatus);
+        progressBar = view.findViewById(R.id.progressBar);
     }
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(
@@ -170,6 +173,7 @@ public class fragmentAccount extends Fragment {
 
 
     private void uploadImage(Uri photo) {
+        progressBar.setVisibility(View.VISIBLE);
         storage = FirebaseStorage.getInstance();
         if (photo != null) {
 
@@ -200,7 +204,7 @@ public class fragmentAccount extends Fragment {
                                     ProgressBar.setVisibility(View.INVISIBLE);
                                     Toast
                                             .makeText(getActivity(),
-                                                    "Image Uploaded!!",
+                                                    "Done",
                                                     Toast.LENGTH_SHORT)
                                             .show();
 
@@ -238,12 +242,14 @@ public class fragmentAccount extends Fragment {
 
 
     void changeData(String field, String newData) {
+        progressBar.setVisibility(View.VISIBLE);
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.update(field, newData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 System.out.println("Updated");
+                progressBar.setVisibility(View.INVISIBLE);
                 getProfileData();
 
             }

@@ -85,7 +85,7 @@ public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> im
         return searchFilter;
     }
 
-    private Filter searchFilter = new Filter() {
+    private final Filter searchFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<city> filteredList = new ArrayList<>();
