@@ -56,7 +56,7 @@ public class fragmentAccount extends Fragment {
     ImageView editStatus;
 
     TextView fullName;
-    TextView uID;
+    TextView Uid;
     TextView email;
     TextView major;
     TextView status;
@@ -129,7 +129,7 @@ public class fragmentAccount extends Fragment {
 
                         }
                         fullName.setText(userData.get("name").toString());
-                        uID.setText(userData.get("studentID").toString());
+                        Uid.setText(userData.get("studentID").toString());
                         email.setText(userData.get("email").toString());
                         major.setText(userData.get("major").toString());
                         status.setText("None");
@@ -145,13 +145,13 @@ public class fragmentAccount extends Fragment {
     }
 
     void setup() {
-        profileImage = (ImageView) view.findViewById(R.id.uPic);
-        fullName = (TextView) view.findViewById(R.id.uFullName);
-        uID = (TextView) view.findViewById(R.id.uID);
-        email = (TextView) view.findViewById(R.id.uEmail);
-        major = (TextView) view.findViewById(R.id.uMajor);
-        status = (TextView) view.findViewById(R.id.uStatus);
-        changeImage = (TextView) view.findViewById(R.id.changeImage);
+        profileImage = view.findViewById(R.id.uPic);
+        fullName = view.findViewById(R.id.uFullName);
+        Uid = view.findViewById(R.id.Uid);
+        email = view.findViewById(R.id.uEmail);
+        major = view.findViewById(R.id.uMajor);
+        status = view.findViewById(R.id.uStatus);
+        changeImage = view.findViewById(R.id.changeImage);
         editMajor = view.findViewById(R.id.editMajor);
         editStatus = view.findViewById(R.id.editStatus);
         progressBar = view.findViewById(R.id.progressBar);
@@ -261,8 +261,8 @@ public class fragmentAccount extends Fragment {
     public void updateUserData(String field, String message) {
         ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
                 inflate(R.layout.update_data_dialog, null, false);
-        EditText newData = (EditText) subView.findViewById(R.id.editText);
-        TextView messageField = (TextView) subView.findViewById(R.id.text);
+        EditText newData = subView.findViewById(R.id.editText);
+        TextView messageField = subView.findViewById(R.id.text);
 
         messageField.setText(message);
         // Create the object of

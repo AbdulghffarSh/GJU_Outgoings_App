@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        profileImage = (ImageView) findViewById(R.id.accountPic);
+        profileImage = findViewById(R.id.accountPic);
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        activityNameField = (TextView) findViewById(R.id.activityName);
+        activityNameField = findViewById(R.id.activityName);
 
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

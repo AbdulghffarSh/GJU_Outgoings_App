@@ -126,7 +126,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/commentsRecyclerView"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
 
                     <ImageView
                         android:id="@+id/sendButton"
@@ -139,16 +140,20 @@
 
 
                     <EditText
+                        android:id="@+id/commentField"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/sendButton"
+                        android:layout_toStartOf="@+id/sendButton"
                         android:background="@drawable/borders"
                         android:backgroundTint="@color/white"
                         android:fontFamily="@font/ubuntu_regular"
                         android:gravity="center_vertical"
                         android:hint="Add a comment"
-                        android:paddingHorizontal="15dp" />
+                        android:paddingHorizontal="15dp"
+
+                        />
+
 
                 </RelativeLayout>
 

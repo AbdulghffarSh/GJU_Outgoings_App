@@ -63,8 +63,8 @@ public class fragmentSettings extends Fragment {
     }
 
     void setup() {
-        singOutLayout = (RelativeLayout) view.findViewById(R.id.signOutLayout);
-        profileSettingsLayout = (RelativeLayout) view.findViewById(R.id.profileSettingsLayout);
+        singOutLayout = view.findViewById(R.id.signOutLayout);
+        profileSettingsLayout = view.findViewById(R.id.profileSettingsLayout);
 
 
     }
@@ -73,9 +73,9 @@ public class fragmentSettings extends Fragment {
     public void signOutDialog() {
         ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
                 inflate(R.layout.update_data_dialog, null, false);
-        EditText newData = (EditText) subView.findViewById(R.id.editText);
+        EditText newData = subView.findViewById(R.id.editText);
         subView.removeView(newData);
-        TextView messageField = (TextView) subView.findViewById(R.id.text);
+        TextView messageField = subView.findViewById(R.id.text);
 
         messageField.setText("Are you sure you want to sign out?");
         // Create the object of

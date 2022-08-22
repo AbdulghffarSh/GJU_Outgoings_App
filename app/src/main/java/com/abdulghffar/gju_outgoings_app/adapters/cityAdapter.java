@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> implements Filterable {
+public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> {
     private final ArrayList<city> citiesArrayList;
     ArrayList<city> citiesSearchArrayList;
     private OnItemClickListener mListener;
@@ -79,41 +79,5 @@ public class cityAdapter extends RecyclerView.Adapter<cityAdapter.viewHolder> im
         return citiesArrayList.size();
     }
 
-
-    @Override
-    public Filter getFilter() {
-        return searchFilter;
-    }
-
-    private final Filter searchFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<city> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(citiesSearchArrayList);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (city item : citiesSearchArrayList) {
-                    if (item.getCityName().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults filterResults) {
-            citiesArrayList.clear();
-            citiesArrayList.addAll((List) filterResults.values);
-            notifyDataSetChanged();
-
-        }
-    };
 
 }

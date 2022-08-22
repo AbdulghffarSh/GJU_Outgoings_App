@@ -105,12 +105,12 @@ public class fragmentSignIn extends Fragment {
 
     void setup() {
         //Fields
-        signUpTextView = (TextView) view.findViewById(R.id.signUp);
-        emailField = (EditText) view.findViewById(R.id.emailField);
-        passwordField = (EditText) view.findViewById(R.id.passwordField);
+        signUpTextView = view.findViewById(R.id.signUp);
+        emailField = view.findViewById(R.id.emailField);
+        passwordField = view.findViewById(R.id.passwordField);
 
         //Buttons
-        signInButton = (Button) view.findViewById(R.id.signInButton);
+        signInButton = view.findViewById(R.id.signInButton);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();

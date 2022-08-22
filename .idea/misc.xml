@@ -26,7 +26,7 @@
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/activity_fragment_account.xml" value="0.3093638102213541" />
         <entry key="app/src/main/res/layout/activity_fragment_add.xml" value="0.1390625" />
-        <entry key="app/src/main/res/layout/activity_fragment_city.xml" value="0.3273069047396427" />
+        <entry key="app/src/main/res/layout/activity_fragment_city.xml" value="0.28611898016997167" />
         <entry key="app/src/main/res/layout/activity_fragment_features.xml" value="0.14010416666666667" />
         <entry key="app/src/main/res/layout/activity_fragment_home.xml" value="0.25145365397135416" />
         <entry key="app/src/main/res/layout/activity_fragment_more_info.xml" value="0.27853260869565216" />
@@ -36,6 +36,7 @@
         <entry key="app/src/main/res/layout/activity_fragment_sign_in.xml" value="0.3753245035807292" />
         <entry key="app/src/main/res/layout/activity_fragment_sign_up.xml" value="0.27853260869565216" />
         <entry key="app/src/main/res/layout/activity_fragment_uni.xml" value="0.2903670319181301" />
+        <entry key="app/src/main/res/layout/activity_fragment_university.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/activity_fragment_waiting.xml" value="0.27853260869565216" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.36064390493837284" />
         <entry key="app/src/main/res/layout/activity_nav_bar_activites.xml" value="0.3149090621474622" />

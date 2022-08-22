@@ -2,17 +2,19 @@ package com.abdulghffar.gju_outgoings_app.objects;
 
 public class comment {
     String commentText;
-    String UID;
+    String Uid;
     String timeStamp;
+    user user;
 
-    public comment(){}
+    public comment() {
+    }
 
     public void setCommentText(String commentText) {
         this.commentText = commentText;
     }
 
-    public void setUID(String UID) {
-        this.UID = UID;
+    public void setUid(String Uid) {
+        this.Uid = Uid;
     }
 
     public void setTimeStamp(String timeStamp) {
@@ -23,17 +25,26 @@ public class comment {
         return commentText;
     }
 
-    public String getUID() {
-        return UID;
+    public String getUid() {
+        return Uid;
     }
 
     public String getTimeStamp() {
         return timeStamp;
     }
 
-    public comment(String commentText, String UID, String timeStamp) {
+    public void setUser(user user) {
+        this.user = user;
+    }
+
+    public user getUser() {
+        return user;
+    }
+
+    public comment(String commentText, String Uid, String timeStamp, user user) {
         this.commentText = commentText;
-        this.UID = UID;
+        this.Uid = Uid;
         this.timeStamp = timeStamp;
+        this.user = user;
     }
 }

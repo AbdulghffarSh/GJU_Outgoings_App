@@ -58,8 +58,8 @@ public class navBarActivities extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_bar_activites);
 
-        backButton = (ImageView) findViewById(R.id.backButton);
-        label = (TextView) findViewById(R.id.activityLabel);
+        backButton = findViewById(R.id.backButton);
+        label = findViewById(R.id.activityLabel);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {

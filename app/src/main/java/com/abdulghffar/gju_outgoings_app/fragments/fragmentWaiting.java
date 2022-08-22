@@ -31,8 +31,8 @@ public class fragmentWaiting extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_waiting, parent, false);
-        logOutButton = (ImageView) view.findViewById(R.id.signOutButton);
-        userDisplayName = (TextView)view.findViewById(R.id.userDisplayName);
+        logOutButton = view.findViewById(R.id.signOutButton);
+        userDisplayName = view.findViewById(R.id.userDisplayName);
         userDisplayName.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override

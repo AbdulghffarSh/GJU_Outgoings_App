@@ -108,24 +108,24 @@ public class fragmentSignUp extends Fragment {
 
     void setup() {
         //Fields
-        emailField = (EditText) view.findViewById(R.id.email);
-        nameField = (EditText) view.findViewById(R.id.fullName);
-        passwordField = (EditText) view.findViewById(R.id.password);
-        confirmPasswordField = (EditText) view.findViewById(R.id.confirmPassword);
+        emailField = view.findViewById(R.id.email);
+        nameField = view.findViewById(R.id.fullName);
+        passwordField = view.findViewById(R.id.password);
+        confirmPasswordField = view.findViewById(R.id.confirmPassword);
 
-        signInTextView = (TextView) view.findViewById(R.id.signIn);
+        signInTextView = view.findViewById(R.id.signIn);
 
         //Buttons
-        signUpButton = (Button) view.findViewById(R.id.signUpButton);
-        facebookButton = (ImageButton) view.findViewById(R.id.facebookButton);
+        signUpButton = view.findViewById(R.id.signUpButton);
+        facebookButton = view.findViewById(R.id.facebookButton);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
 
         //RadioGroup
-        radioGroup = (RadioGroup) view.findViewById(R.id.genderRadioGroup);
-        maleRadioButton = (RadioButton) view.findViewById(R.id.maleRadioButton);
-        femaleRadioButton = (RadioButton) view.findViewById(R.id.femaleRadioButton);
+        radioGroup = view.findViewById(R.id.genderRadioGroup);
+        maleRadioButton = view.findViewById(R.id.maleRadioButton);
+        femaleRadioButton = view.findViewById(R.id.femaleRadioButton);
 
         //others
         progressBar = view.findViewById(R.id.progressBar);
@@ -184,7 +184,7 @@ public class fragmentSignUp extends Fragment {
             return;
         }
         int selectedId = radioGroup.getCheckedRadioButtonId();
-        RadioButton radioButton = (RadioButton) view.findViewById(selectedId);
+        RadioButton radioButton = view.findViewById(selectedId);
         gender = radioButton.getText().toString();
 
         FirebaseRegistration(email, password);

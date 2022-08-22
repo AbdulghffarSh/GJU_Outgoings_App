@@ -53,10 +53,10 @@ public class fragmentMoreInfo extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_more_info, parent, false);
 
         //Initialize
-        doneButton = (Button) view.findViewById(R.id.doneButton);
-        studentIDField = (EditText) view.findViewById(R.id.studentID);
-        majorField = (EditText) view.findViewById(R.id.major);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        doneButton = view.findViewById(R.id.doneButton);
+        studentIDField = view.findViewById(R.id.studentID);
+        majorField = view.findViewById(R.id.major);
+        progressBar = view.findViewById(R.id.progressBar);
 
 
         doneButton.setOnClickListener(new View.OnClickListener() {
