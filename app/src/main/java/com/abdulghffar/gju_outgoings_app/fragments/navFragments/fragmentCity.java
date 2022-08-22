@@ -1,7 +1,10 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,11 @@ import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.adapters.cityAdapter;
 import com.abdulghffar.gju_outgoings_app.adapters.universityAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.city;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -28,16 +36,21 @@ import javax.annotation.Nullable;
 
 public class fragmentCity extends Fragment {
 
-    ArrayList<city> citiesData;
     ArrayList<String> universityNames;
+
     TextView cityName;
     ImageView cityPic;
+    ImageView addComment;
+
+    FirebaseDatabase db;
+
     View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_city, parent, false);
+
         navBarActivities navBarActivities = (navBarActivities) getActivity();
         assert navBarActivities != null;
         city cityData = navBarActivities.getCityData();
@@ -59,6 +72,13 @@ public class fragmentCity extends Fragment {
             }
         });
 
+        addComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getComments();
+            }
+        });
+
 
         return view;
     }
@@ -66,6 +86,7 @@ public class fragmentCity extends Fragment {
     private void setData(city cityData) {
         cityName = view.findViewById(R.id.cityName);
         cityPic = view.findViewById(R.id.img);
+        addComment = view.findViewById(R.id.sendButton);
 
         cityName.setText(cityData.getCityName());
         if (cityData.getPics() != null) {
@@ -92,5 +113,30 @@ public class fragmentCity extends Fragment {
 
 
     }
+
+    void getComments(){
+        db = FirebaseDatabase.getInstance("https://gju-outgings-app-24c61-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference myRef = db.getReference("Cities/Aalen/Comments");
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Object value = dataSnapshot.getValue(Object.class);
+                Log.d(TAG, "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+
+
 
 }

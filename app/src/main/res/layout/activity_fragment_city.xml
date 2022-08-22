@@ -25,18 +25,18 @@
             android:textSize="30sp" />
 
 
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_below="@+id/cityName"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"
-            android:background="@color/blue"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_no_image" />
+                        <ImageView
+                            android:id="@+id/img"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:layout_below="@+id/cityName"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@color/blue"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_no_image" />
 
 
         <LinearLayout
@@ -110,11 +110,50 @@
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/commentsRecyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp" />
+                android:paddingHorizontal="5dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/commentsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="20dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/commentsRecyclerView"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/sendButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:paddingHorizontal="5dp"
+                        android:src="@drawable/ic_send_button" />
+
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/sendButton"
+                        android:background="@drawable/borders"
+                        android:backgroundTint="@color/white"
+                        android:fontFamily="@font/ubuntu_regular"
+                        android:gravity="center_vertical"
+                        android:hint="Add a comment"
+                        android:paddingHorizontal="15dp" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
 
         </LinearLayout>
 
