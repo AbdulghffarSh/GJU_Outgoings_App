@@ -40,7 +40,7 @@ public class fragmentCity extends Fragment {
     city cityData;
 
     RecyclerView commentsRecyclerView;
-    RecyclerView recyclerView;
+    RecyclerView universitiesRecyclerView;
 
     ArrayList<String> universityNames;
     ArrayList<comment> commentsArraylist;
@@ -190,11 +190,11 @@ public class fragmentCity extends Fragment {
         commentsArraylist = new ArrayList<>();
         commentsRecyclerView = view.findViewById(R.id.commentsRecyclerView);
 
-        recyclerView = view.findViewById(R.id.universitiesRecyclerView);
+        universitiesRecyclerView = view.findViewById(R.id.universitiesRecyclerView);
         universityAdapter = new universityAdapter(universityNames);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(universityAdapter);
+        universitiesRecyclerView.setHasFixedSize(true);
+        universitiesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        universitiesRecyclerView.setAdapter(universityAdapter);
 
         commentAdapter = new commentAdapter(commentsArraylist);
         commentsRecyclerView.setHasFixedSize(true);
