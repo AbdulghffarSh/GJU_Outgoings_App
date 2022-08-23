@@ -144,7 +144,7 @@ public class fragmentCity extends Fragment {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     user user = documentSnapshot.toObject(user.class);
-                                    comment commentObject = new comment(comment, Uid, timeStamp, user);
+                                    comment commentObject = new comment(comment, Uid, timeStamp, user, null);
                                     commentsArraylist.add(commentObject);
                                     commentAdapter.notifyDataSetChanged();
 
@@ -168,11 +168,12 @@ public class fragmentCity extends Fragment {
         String commentText = commentField.getText().toString();
         String Uid = FirebaseAuth.getInstance().getUid();
         String timeStamp = new java.util.Date().toString();
-
-        comment newComment = new comment(commentText, Uid, timeStamp, null);
+        comment newComment = new comment(commentText, Uid, timeStamp, null, null);
 
         DatabaseReference mDatabase = realTimeDB.getReference("/Cities/" + cityData.getCityName());
-        mDatabase.child("Comments").child(timeStamp).setValue(newComment);
+        String ref = "/Cities/" + cityData.getCityName() + "/Comments/" + timeStamp;
+        newComment.setReference(ref);
+        mDatabase.child("Comments").child(timeStamp).setValue(newComment).toString();
         toast("Comment added");
         commentField.setText("");
 

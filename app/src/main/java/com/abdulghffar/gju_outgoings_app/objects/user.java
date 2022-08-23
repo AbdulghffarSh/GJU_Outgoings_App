@@ -1,7 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
 public class user {
-    String Uid;
+    String uid;
     String approval;
     String email;
     String gender;
@@ -16,7 +16,7 @@ public class user {
     }
 
     public user(String Uid, String approval, String email, String gender, String major, String name, String profilePic, String registrationTimeStamp, String role, String studentID) {
-        this.Uid = Uid;
+        this.uid = Uid;
         this.approval = approval;
         this.email = email;
         this.gender = gender;
@@ -69,7 +69,7 @@ public class user {
     }
 
     public String getUid() {
-        return Uid;
+        return uid;
     }
 
     public String getApproval() {

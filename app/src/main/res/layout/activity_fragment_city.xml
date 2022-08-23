@@ -25,18 +25,18 @@
             android:textSize="30sp" />
 
 
-                        <ImageView
-                            android:id="@+id/img"
-                            android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:layout_below="@+id/cityName"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="30dp"
-                            android:background="@color/blue"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="10dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_no_image" />
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/cityName"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@color/blue"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_no_image" />
 
 
         <LinearLayout

@@ -5,6 +5,7 @@ public class comment {
     String Uid;
     String timeStamp;
     user user;
+    String reference;
 
     public comment() {
     }
@@ -41,10 +42,19 @@ public class comment {
         return user;
     }
 
-    public comment(String commentText, String Uid, String timeStamp, user user) {
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public comment(String commentText, String Uid, String timeStamp, user user, String reference) {
         this.commentText = commentText;
         this.Uid = Uid;
         this.timeStamp = timeStamp;
         this.user = user;
+        this.reference = reference;
     }
 }
