@@ -1,6 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.adapters;
 
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,17 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHolder> {
     private final ArrayList<comment> commentArrayList;
     private commentAdapter.OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void reportItemClick(int position);
     }
 
     public void setOnItemClickListener(commentAdapter.OnItemClickListener listener) {
@@ -33,6 +37,8 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
         public TextView userName;
         public TextView comment;
         public ImageView userPic;
+        public ImageView reportButton;
+        public TextView timeStamp;
 
 
         public viewHolder(View itemView, final commentAdapter.OnItemClickListener listener) {
@@ -40,16 +46,30 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
             userName = itemView.findViewById(R.id.userName);
             comment = itemView.findViewById(R.id.comment);
             userPic = itemView.findViewById(R.id.userPic);
+            reportButton = itemView.findViewById(R.id.reportButton);
+            timeStamp = itemView.findViewById(R.id.timeStamp);
 
 
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (listener != null) {
+//                        int position = getAdapterPosition();
+//                        if (position != RecyclerView.NO_POSITION) {
+//                            listener.reportItemClick(position);
+//                        }
+//                    }
+//                }
+//            });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+
+            reportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            listener.reportItemClick(position);
                         }
                     }
                 }
@@ -74,6 +94,18 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         comment currentItem = commentArrayList.get(position);
+        try {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
+            Date parsedDate = dateFormat.parse(currentItem.getTimeStamp());
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm   dd/MM/yyyy");
+            holder.timeStamp.setText(outputFormat.format(parsedDate).toString());
+
+        } catch (Exception e) { //this generic but you can control another types of exception
+            // look the origin of excption
+            System.out.println("this is the error " + e);
+        }
 
         holder.userName.setText(currentItem.getUser().getName());
         holder.comment.setText(currentItem.getCommentText());
