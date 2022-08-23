@@ -189,6 +189,9 @@ public class fragmentCity extends Fragment {
         String Uid = FirebaseAuth.getInstance().getUid();
         String timeStamp = new java.util.Date().toString();
         comment newComment = new comment(commentText, Uid, timeStamp, null, null);
+        String cityName = cityData.getCityName();
+
+        System.out.println("This is the city name " + cityName);
 
         DatabaseReference mDatabase = realTimeDB.getReference("/Cities/" + cityData.getCityName());
         String ref = "/Cities/" + cityData.getCityName() + "/Comments/" + timeStamp;
