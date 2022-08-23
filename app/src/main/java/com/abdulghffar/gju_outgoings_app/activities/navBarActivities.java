@@ -23,6 +23,7 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.fragmentRating;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.university;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -114,6 +115,14 @@ public class navBarActivities extends AppCompatActivity {
                 fragmentAccount fragmentAccount = new fragmentAccount();
                 replaceFragment(fragmentAccount);
                 break;
+            case "contactUs":
+                label.setText("Contact Us");
+                fragmentContactUs fragmentContactUs = new fragmentContactUs();
+                replaceFragment(fragmentContactUs);
+                break;
+
+
+
 
         }
 

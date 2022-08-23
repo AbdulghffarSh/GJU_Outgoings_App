@@ -25,6 +25,7 @@ public class fragmentSettings extends Fragment {
 
     RelativeLayout singOutLayout;
     RelativeLayout profileSettingsLayout;
+    RelativeLayout contactUsLayout;
 
     View view;
 
@@ -41,7 +42,15 @@ public class fragmentSettings extends Fragment {
 
             }
         });
-
+        contactUsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), navBarActivities.class);
+                String fragmentName = "contactUs";
+                intent.putExtra("fragmentName", fragmentName);
+                startActivity(intent);
+            }
+        });
         profileSettingsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +74,7 @@ public class fragmentSettings extends Fragment {
     void setup() {
         singOutLayout = view.findViewById(R.id.signOutLayout);
         profileSettingsLayout = view.findViewById(R.id.profileSettingsLayout);
-
+        contactUsLayout = view.findViewById(R.id.contactUsLayout);
 
     }
 

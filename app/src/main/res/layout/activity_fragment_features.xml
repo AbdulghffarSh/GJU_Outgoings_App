@@ -39,6 +39,36 @@
 
         </RelativeLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <RelativeLayout
+            android:id="@+id/eventsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CCE9FD"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/eventsIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_events"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/eventsIcon"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="10dp"
+                android:text="Events"
+                android:textColor="@color/Primary_orange"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
 
 
     </LinearLayout>
