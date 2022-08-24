@@ -50,19 +50,19 @@
             android:text="Full Name" />
 
         <TextView
-            android:id="@+id/Uid"
+            android:id="@+id/sId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/uFullName"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_bold"
-            android:text="Uid" />
+            android:text="Student ID" />
 
         <TextView
             android:id="@+id/uEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Uid"
+            android:layout_below="@+id/sId"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_bold"
             android:text="uEmail" />

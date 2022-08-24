@@ -11,11 +11,12 @@ public class user {
     String registrationTimeStamp;
     String role;
     String studentID;
+    String fcmToken;
 
     public user() {
     }
 
-    public user(String Uid, String approval, String email, String gender, String major, String name, String profilePic, String registrationTimeStamp, String role, String studentID) {
+    public user(String Uid, String approval, String email, String gender, String major, String name, String profilePic, String registrationTimeStamp, String role, String studentID, String fcmToken) {
         this.uid = Uid;
         this.approval = approval;
         this.email = email;
@@ -26,6 +27,7 @@ public class user {
         this.registrationTimeStamp = registrationTimeStamp;
         this.role = role;
         this.studentID = studentID;
+        this.fcmToken = fcmToken;
     }
 
     public void setUid(String Uid) {
@@ -106,5 +108,13 @@ public class user {
 
     public String getStudentID() {
         return studentID;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

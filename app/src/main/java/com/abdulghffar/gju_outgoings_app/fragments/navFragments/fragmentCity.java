@@ -270,7 +270,7 @@ public class fragmentCity extends Fragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d(TAG, "DocumentSnapshot successfully written!");
-
+                                            toast("Reported");
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -318,28 +318,14 @@ public class fragmentCity extends Fragment {
         TextView messageField = subView.findViewById(R.id.text);
 
         messageField.setText("Are you sure you want to report this comment?");
-        // Create the object of
-        // AlertDialog Builder class
+
         AlertDialog.Builder builder
                 = new AlertDialog
                 .Builder(getActivity(), R.style.AlertDialogCustom);
 
         builder.setView(subView);
 
-        // Set the message show for the Alert time
-
-        // Set Alert Title
-//        builder.setTitle("Update user " + field);
-
-        // Set Cancelable false
-        // for when the user clicks on the outside
-        // the Dialog Box then it will remain show
         builder.setCancelable(false);
-
-        // Set the positive button with yes name
-        // OnClickListener method is use of
-        // DialogInterface interface.
-
         builder
                 .setPositiveButton(
                         "Yes",
@@ -353,9 +339,6 @@ public class fragmentCity extends Fragment {
                             }
                         });
 
-        // Set the Negative button with No name
-        // OnClickListener method is use
-        // of DialogInterface interface.
         builder
                 .setNegativeButton(
                         "No",
@@ -365,17 +348,12 @@ public class fragmentCity extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
-
-                                // If user click no
-                                // then dialog box is canceled.
                                 dialog.cancel();
                             }
                         });
 
-        // Create the Alert dialog
         AlertDialog alertDialog = builder.create();
 
-        // Show the Alert Dialog box
         alertDialog.show();
     }
 

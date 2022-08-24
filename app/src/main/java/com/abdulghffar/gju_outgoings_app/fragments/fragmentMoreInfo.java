@@ -2,22 +2,31 @@ package com.abdulghffar.gju_outgoings_app.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,22 +36,31 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class fragmentMoreInfo extends Fragment {
-    //Buttons
+    //Fields
     Button doneButton;
+    ImageView profileImage;
+    TextView addImage;
 
     //EditTexts
     EditText studentIDField;
     EditText majorField;
 
     //Vars
-    HashMap<String, Object> userData;
+    user userData;
+    authentication authentication;
 
     //Firebase
     FirebaseFirestore db;
+    FirebaseStorage storage;
+
 
     ProgressBar progressBar;
     View view;
@@ -53,10 +71,14 @@ public class fragmentMoreInfo extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_more_info, parent, false);
 
         //Initialize
+        authentication = (authentication) getActivity();
         doneButton = view.findViewById(R.id.doneButton);
         studentIDField = view.findViewById(R.id.studentID);
         majorField = view.findViewById(R.id.major);
         progressBar = view.findViewById(R.id.progressBar);
+        userData = authentication.getUserData();
+        addImage = view.findViewById(R.id.addImage);
+        profileImage = view.findViewById(R.id.uPic);
 
 
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -66,13 +88,15 @@ public class fragmentMoreInfo extends Fragment {
             }
         });
 
-        Bundle bundle = this.getArguments();
-        assert bundle != null;
-        if (bundle.getSerializable("HashMap") != null) {
-            userData = (HashMap<String, Object>) bundle.getSerializable("HashMap");
 
-        }
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                launcher.launch(intent);
 
+            }
+        });
 
         return view;
     }
@@ -97,9 +121,8 @@ public class fragmentMoreInfo extends Fragment {
             toast("Major field is empty");
             return;
         }
-        userData.put("studentID", studentID);
-        userData.put("major", major);
-        userData.put("approval", "Not yet");
+        userData.setStudentID(studentID);
+        userData.setMajor(major);
 
         addToFireStore();
 
@@ -113,10 +136,8 @@ public class fragmentMoreInfo extends Fragment {
 
     void addToFireStore() {
         db = FirebaseFirestore.getInstance();
-        String Uid = (String) userData.get("Uid");
         // Add a new document with a generated ID
-        assert Uid != null;
-        db.collection("Users").document(Uid)
+        db.collection("Users").document(userData.getUid())
                 .set(userData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -176,4 +197,88 @@ public class fragmentMoreInfo extends Fragment {
 
 
     }
+
+    private void uploadImage(Uri photo) {
+        progressBar.setVisibility(View.VISIBLE);
+        storage = FirebaseStorage.getInstance();
+        if (photo != null) {
+
+            // Code for showing progressDialog while uploading
+            ProgressBar ProgressBar
+                    = new ProgressBar(getActivity());
+            ProgressBar.setVisibility(View.VISIBLE);
+
+            // Defining the child of storageReference
+            StorageReference ref
+                    = storage.getReference()
+                    .child(
+                            "Users/ProfilePics/"
+                                    + userData.getUid());
+
+            // adding listeners on upload
+            // or failure of image
+            ref.putFile(photo)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                @Override
+                                public void onSuccess(
+                                        UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    // Image uploaded successfully
+                                    // Dismiss dialog
+                                    ProgressBar.setVisibility(View.INVISIBLE);
+                                    Toast
+                                            .makeText(getActivity(),
+                                                    "Done",
+                                                    Toast.LENGTH_SHORT)
+                                            .show();
+
+                                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Uri downloadUrl = uri;
+                                            //Set Image Link in user
+                                            //changeData("profilePic", downloadUrl.toString());
+                                            userData.setProfilePic(downloadUrl.toString());
+                                        }
+
+                                    });
+
+
+                                }
+                            })
+
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            // Error, Image not uploaded
+                            ProgressBar.setVisibility(View.INVISIBLE);
+                            Toast
+                                    .makeText(getActivity(),
+                                            "Failed " + e.getMessage(),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+
+        }
+
+    }
+
+
+    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK
+                        && result.getData() != null) {
+                    Uri photoUri = result.getData().getData();
+                    //use photoUri here
+
+                    profileImage.setImageURI(photoUri);
+                    uploadImage(photoUri);
+                }
+            }
+    );
 }

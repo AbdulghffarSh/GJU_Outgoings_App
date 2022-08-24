@@ -6,15 +6,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.widget.ProgressBar;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.fragmentSignIn;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 
 public class authentication extends AppCompatActivity {
 
-    ProgressBar progressBar;
-
+    user userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +32,21 @@ public class authentication extends AppCompatActivity {
         fragmentSignIn fragmentSignIn = new fragmentSignIn();
         replaceFragment(fragmentSignIn);
 
-
     }
 
-
-    void reload() {
-
-    }
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
         fragmentTransaction.commit();
+    }
+
+    public user getUserData() {
+        return userData;
+    }
+
+    public void setUserData(user userData) {
+        this.userData = userData;
     }
 }

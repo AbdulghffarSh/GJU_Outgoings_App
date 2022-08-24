@@ -4,7 +4,6 @@ import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -26,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,15 +40,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.util.Map;
-
 import javax.annotation.Nullable;
 
 public class fragmentAccount extends Fragment {
 
     FirebaseUser user;
     FirebaseFirestore db;
-    Map<String, Object> userData;
+    user userData;
     FirebaseStorage storage;
 
     ImageView profileImage;
@@ -56,7 +54,7 @@ public class fragmentAccount extends Fragment {
     ImageView editStatus;
 
     TextView fullName;
-    TextView Uid;
+    TextView sID;
     TextView email;
     TextView major;
     TextView status;
@@ -119,19 +117,19 @@ public class fragmentAccount extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        userData = document.getData();
+                        userData = document.toObject(user.class);
                         assert userData != null;
                         //Using Picasso
-                        if (userData.get("profilePic") != null) {
+                        if (userData.getProfilePic() != null) {
 
-                            Picasso.get().load(userData.get("profilePic").toString()).into(profileImage);
+                            Picasso.get().load(userData.getProfilePic()).into(profileImage);
 
 
                         }
-                        fullName.setText(userData.get("name").toString());
-                        Uid.setText(userData.get("studentID").toString());
-                        email.setText(userData.get("email").toString());
-                        major.setText(userData.get("major").toString());
+                        fullName.setText(userData.getName().toString());
+                        sID.setText(userData.getStudentID().toString());
+                        email.setText(userData.getEmail().toString());
+                        major.setText(userData.getMajor().toString());
                         status.setText("None");
 
                     } else {
@@ -147,7 +145,7 @@ public class fragmentAccount extends Fragment {
     void setup() {
         profileImage = view.findViewById(R.id.uPic);
         fullName = view.findViewById(R.id.uFullName);
-        Uid = view.findViewById(R.id.Uid);
+        sID = view.findViewById(R.id.sId);
         email = view.findViewById(R.id.uEmail);
         major = view.findViewById(R.id.uMajor);
         status = view.findViewById(R.id.uStatus);

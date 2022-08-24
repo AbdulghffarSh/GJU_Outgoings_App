@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 
+import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -44,7 +46,6 @@ public class fragmentSignUp extends Fragment {
     String password;
     String confirmPassword;
     String gender;
-    Map<String, Object> userData;
 
     //Fields
     EditText emailField;
@@ -229,9 +230,6 @@ public class fragmentSignUp extends Fragment {
         authentication registration = (authentication) getActivity();
         fragmentMoreInfo fragmentMoreInfo = new fragmentMoreInfo();
         assert registration != null;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("HashMap", (Serializable) userData);
-        fragmentMoreInfo.setArguments(bundle);
         registration.replaceFragment(fragmentMoreInfo);
     }
 
@@ -240,18 +238,11 @@ public class fragmentSignUp extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         String timeStamp = new java.util.Date().toString();
-        userData = new HashMap<>();
-        // Create a new user with a first, middle, and last name
-        userData.put("Uid", user.getUid());
-        userData.put("name", name);
-        userData.put("major", null);
-        userData.put("profilePic", null);
-        userData.put("registrationTimeStamp", timeStamp);
-        userData.put("role", "Student");
-        userData.put("studentID", null);
-        userData.put("gender", gender);
-        userData.put("email", user.getEmail());
+        user userData = new user(user.getUid(), "Not yet", user.getEmail(), gender, null, name, null, timeStamp, "Student", null, null);
 
+        authentication authentication = (authentication) getActivity();
+        assert authentication != null;
+        authentication.setUserData(userData);
 
     }
 }
