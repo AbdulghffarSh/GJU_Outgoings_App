@@ -1,4 +1,4 @@
-package com.abdulghffar.gju_outgoings_app;
+package com.abdulghffar.gju_outgoings_app.utils;
 
 import androidx.annotation.NonNull;
 

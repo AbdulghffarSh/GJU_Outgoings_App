@@ -8,41 +8,31 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.fragments.fragmentRating;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentRating;
+import com.abdulghffar.gju_outgoings_app.fragments.Messeging.fragmentListUsers;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.university;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.annotation.Nullable;
 
 public class navBarActivities extends AppCompatActivity {
 
@@ -53,6 +43,7 @@ public class navBarActivities extends AppCompatActivity {
     HashMap<String, university> cityUniversities;
     FirebaseFirestore db;
     university universityData;
+    ArrayList<user> userArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +89,7 @@ public class navBarActivities extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    void pickFragment(String fragmentName) {
+    public void pickFragment(String fragmentName) {
         switch (fragmentName) {
             case "Rating":
                 label.setText("Cities and Universities");
@@ -119,6 +110,11 @@ public class navBarActivities extends AppCompatActivity {
                 label.setText("Contact Us");
                 fragmentContactUs fragmentContactUs = new fragmentContactUs();
                 replaceFragment(fragmentContactUs);
+                break;
+            case "fragmentListUsers":
+                label.setText("fragmentListUsers");
+                fragmentListUsers fragmentListUsers = new fragmentListUsers();
+                replaceFragment(fragmentListUsers);
                 break;
 
 
@@ -196,4 +192,10 @@ public class navBarActivities extends AppCompatActivity {
     }
 
 
+    public void setUserArrayList(ArrayList<user> userArrayList) {
+        this.userArrayList = userArrayList;
+    }
+    public ArrayList<user> getUserArrayList(){
+        return userArrayList;
+    }
 }

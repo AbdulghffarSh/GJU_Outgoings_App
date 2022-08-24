@@ -1,4 +1,4 @@
-package com.abdulghffar.gju_outgoings_app.fragments;
+package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

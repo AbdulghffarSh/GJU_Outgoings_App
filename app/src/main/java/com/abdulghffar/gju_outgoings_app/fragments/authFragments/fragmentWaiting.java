@@ -1,4 +1,4 @@
-package com.abdulghffar.gju_outgoings_app.fragments;
+package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import androidx.fragment.app.Fragment;
 

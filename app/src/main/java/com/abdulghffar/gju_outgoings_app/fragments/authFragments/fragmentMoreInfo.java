@@ -1,4 +1,4 @@
-package com.abdulghffar.gju_outgoings_app.fragments;
+package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
 
@@ -39,9 +39,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
 
 public class fragmentMoreInfo extends Fragment {
     //Fields

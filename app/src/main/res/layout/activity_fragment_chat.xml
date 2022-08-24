@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/Primary_blue"
+        android:layout_alignParentTop="true">
+            <TextView
+                android:id="@+id/receiverName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/ubuntu_bold"
+                android:textColor="@color/white"
+                android:textSize="25sp"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/sending"
+        android:padding="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:id="@+id/sending"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/Primary_blue"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp">
+        <EditText
+            android:id="@+id/messageField"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/ubuntu_regular"
+            android:textColor="@color/white"
+            android:background="@drawable/borders"
+            android:backgroundTint="@color/white"
+            android:hint="Message..."
+            android:layout_centerVertical="true"
+            android:paddingHorizontal="10dp"
+            android:layout_toStartOf="@+id/sendButton"
+            />
+        <ImageView
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send_button"
+            android:layout_alignParentEnd="true"
+            android:paddingHorizontal="5dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

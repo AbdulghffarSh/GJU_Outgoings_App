@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.fragments.fragmentSignIn;
+import com.abdulghffar.gju_outgoings_app.fragments.authFragments.fragmentSignIn;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 
 public class authentication extends AppCompatActivity {

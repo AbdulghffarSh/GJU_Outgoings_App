@@ -3,15 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <Button
-        android:id="@+id/button"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home"
-        android:fontFamily="@font/ubuntu_regular"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:textSize="100sp"/>
-
+        android:padding="20dp" />
 </RelativeLayout>

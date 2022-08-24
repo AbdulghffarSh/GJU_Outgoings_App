@@ -1,18 +1,20 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 
 import javax.annotation.Nullable;
 
 public class fragmentHome extends Fragment {
-
 
 
     View view;
@@ -22,6 +24,16 @@ public class fragmentHome extends Fragment {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_home, parent, false);
 
+        Button button = view.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), navBarActivities.class);
+                String fragmentName = "fragmentListUsers";
+                intent.putExtra("fragmentName", fragmentName);
+                startActivity(intent);
+            }
+        });
 
 
         return view;
