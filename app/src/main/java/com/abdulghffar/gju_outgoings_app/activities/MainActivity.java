@@ -23,6 +23,7 @@ import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentFeatures
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentHome;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentSearch;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentSettings;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView profileImage;
     FirebaseFirestore db;
     FirebaseUser user;
-    Map<String, Object> userData;
+    user userData;
     BottomNavigationView nav;
     TextView activityNameField;
 
@@ -57,26 +58,6 @@ public class MainActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         activityNameField = findViewById(R.id.activityName);
 
-
-        //FCM
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-
-                        // Get new FCM registration token
-                        String token = task.getResult();
-
-                        // Log and toast
-                        System.out.println(token);
-                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -85,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        userData = document.getData();
+                        userData = document.toObject(user.class);
                         assert userData != null;
                         //Using Picasso
-                        if (userData.get("profilePic") != null) {
-                            Picasso.get().load(userData.get("profilePic").toString()).into(profileImage);
+                        if (userData.getProfilePic() != null) {
+                            Picasso.get().load(userData.getProfilePic()).into(profileImage);
                         }
-
+                        getToken();
 
                     } else {
                         Log.d(TAG, "No such document");
@@ -101,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         nav = findViewById(R.id.botNavBar);
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -159,6 +139,23 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
+    }
+
+    private void updateToken(String token) {
+        DocumentReference documentReference = db.collection("Users").document(user.getUid());
+        documentReference.update("fcmToken", token)
+                .addOnSuccessListener(unused -> toast("Token updated successfully")).addOnFailureListener(e -> toast("Unable to update token"));
+
+
+    }
+
+    void toast(String message) {
+        Toast toast = Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 

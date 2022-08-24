@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -17,6 +18,8 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.annotation.Nullable;
 
@@ -87,28 +90,14 @@ public class fragmentSettings extends Fragment {
         TextView messageField = subView.findViewById(R.id.text);
 
         messageField.setText("Are you sure you want to sign out?");
-        // Create the object of
-        // AlertDialog Builder class
+
         AlertDialog.Builder builder
                 = new AlertDialog
                 .Builder(getActivity(), R.style.AlertDialogCustom);
 
         builder.setView(subView);
 
-        // Set the message show for the Alert time
-
-        // Set Alert Title
-//        builder.setTitle("Update user " + field);
-
-        // Set Cancelable false
-        // for when the user clicks on the outside
-        // the Dialog Box then it will remain show
         builder.setCancelable(false);
-
-        // Set the positive button with yes name
-        // OnClickListener method is use of
-        // DialogInterface interface.
-
         builder
                 .setPositiveButton(
                         "Yes",
@@ -118,9 +107,16 @@ public class fragmentSettings extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
-                                FirebaseAuth.getInstance().signOut();
-                                Intent intent = new Intent(getActivity(), authentication.class);
-                                startActivity(intent);
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                DocumentReference documentReference = db.collection("Users").document(FirebaseAuth.getInstance().getUid());
+                                documentReference.update("fcmToken", null)
+                                        .addOnSuccessListener(unused -> {
+                                            FirebaseAuth.getInstance().signOut();
+                                            Intent intent = new Intent(getActivity(), authentication.class);
+                                            startActivity(intent);
+                                        }).addOnFailureListener(e -> toast("Unable to update token"));
+
+
                             }
                         });
 
@@ -153,4 +149,8 @@ public class fragmentSettings extends Fragment {
     }
 
 
+    void toast(String message) {
+        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 }
