@@ -107,6 +107,7 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
             System.out.println("this is the error " + e);
         }
 
+        System.out.println("Test " + currentItem.getUser());
         holder.userName.setText(currentItem.getUser().getName());
         holder.comment.setText(currentItem.getCommentText());
         if (currentItem.getUser().getProfilePic() != null) {

@@ -20,7 +20,7 @@ public class userAdapter extends RecyclerView.Adapter<userAdapter.viewHolder> {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void emailOnClick(int position);
+        void sendMessage(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

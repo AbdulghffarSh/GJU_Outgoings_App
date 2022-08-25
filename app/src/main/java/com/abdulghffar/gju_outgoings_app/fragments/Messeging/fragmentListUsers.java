@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
+import com.abdulghffar.gju_outgoings_app.adapters.commentAdapter;
 import com.abdulghffar.gju_outgoings_app.adapters.userAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.firebase.firestore.DocumentChange;
@@ -52,9 +53,14 @@ public class fragmentListUsers extends Fragment {
 
         recyclerView.setAdapter(userAdapter);
 
-        
 
         EventChangeListener();
+//
+//        userAdapter.setOnItemClickListener(new userAdapter.OnItemClickListener() {
+//            @Override
+//            public void sendMessage(int position) {
+//            }
+//        });
 
         return view;
     }
