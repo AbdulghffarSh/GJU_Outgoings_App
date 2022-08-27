@@ -6,10 +6,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,10 +19,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +53,6 @@ public class fragmentMoreInfo extends Fragment {
 
     //EditTexts
     EditText studentIDField;
-    EditText majorField;
 
     //Vars
     user userData;
@@ -58,6 +62,8 @@ public class fragmentMoreInfo extends Fragment {
     FirebaseFirestore db;
     FirebaseStorage storage;
 
+    //Spinner
+    Spinner majorsSpinner;
 
     ProgressBar progressBar;
     View view;
@@ -71,11 +77,18 @@ public class fragmentMoreInfo extends Fragment {
         authentication = (authentication) getActivity();
         doneButton = view.findViewById(R.id.doneButton);
         studentIDField = view.findViewById(R.id.studentID);
-        majorField = view.findViewById(R.id.major);
+        majorsSpinner = view.findViewById(R.id.majorsSpinner);
         progressBar = view.findViewById(R.id.progressBar);
         userData = authentication.getUserData();
         addImage = view.findViewById(R.id.addImage);
         profileImage = view.findViewById(R.id.uPic);
+
+        // Creating an Array Adapter to populate the spinner with the data in the string resources
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),R.array.Majors,android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        majorsSpinner.setAdapter(spinnerAdapter);
 
 
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +108,7 @@ public class fragmentMoreInfo extends Fragment {
             }
         });
 
+
         return view;
     }
 
@@ -107,15 +121,14 @@ public class fragmentMoreInfo extends Fragment {
     }
 
     void checkData() {
-        progressBar.setVisibility(View.VISIBLE);
         String studentID = studentIDField.getText().toString();
-        String major = majorField.getText().toString();
+        String major = majorsSpinner.getSelectedItem().toString();
         if (studentID.matches("")) {
             toast("Student ID field is empty");
             return;
         }
-        if (major.matches("")) {
-            toast("Major field is empty");
+        if (majorsSpinner.getSelectedItemPosition() == 0) {
+            toast("Select your major");
             return;
         }
         userData.setStudentID(studentID);
@@ -132,6 +145,7 @@ public class fragmentMoreInfo extends Fragment {
     }
 
     void addToFireStore() {
+        progressBar.setVisibility(View.VISIBLE);
         db = FirebaseFirestore.getInstance();
         // Add a new document with a generated ID
         db.collection("Users").document(userData.getUid())
@@ -141,6 +155,7 @@ public class fragmentMoreInfo extends Fragment {
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                         checkUserApproval(FirebaseAuth.getInstance().getCurrentUser());
+                        progressBar.setVisibility(View.INVISIBLE);
 
                     }
                 })

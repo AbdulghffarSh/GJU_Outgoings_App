@@ -114,20 +114,21 @@
             android:id="@+id/genderRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal"
-
+            android:gravity="center"
             >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
-                android:paddingHorizontal="10dp"
                 android:text="@string/gender"
                 android:textColor="#F2A832"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:paddingHorizontal="5dp"
+
+                />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/maleRadioButton"
@@ -135,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="#2197D8"
                 android:fontFamily="@font/ubuntu_regular"
-                android:paddingHorizontal="20dp"
+                android:paddingHorizontal="10dp"
                 android:text="@string/male" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -144,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="#2197D8"
                 android:fontFamily="@font/ubuntu_regular"
-                android:paddingHorizontal="20dp"
+                android:paddingHorizontal="10dp"
                 android:text="@string/female" />
 
 

@@ -34,6 +34,7 @@
     </string-array>
 
     <string-array name="Majors">
+        <item>--Select your Major--</item>
         <item>Business and Communication</item>
         <item>Translation</item>
         <item>Science in Energy Engineering</item>

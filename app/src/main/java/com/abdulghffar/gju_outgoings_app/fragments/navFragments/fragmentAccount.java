@@ -13,9 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +79,7 @@ public class fragmentAccount extends Fragment {
             @Override
             public void onClick(View view) {
 
-                updateUserData("major", "Enter the new major");
+                updateUserMajor();
                 getProfileData();
             }
         });
@@ -256,13 +257,84 @@ public class fragmentAccount extends Fragment {
     }
 
 
-    public void updateUserData(String field, String message) {
+//    public void updateUserData(String field, String message) {
+//        ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
+//                inflate(R.layout.update_data_dialog, null, false);
+//        EditText newData = subView.findViewById(R.id.editText);
+//        TextView messageField = subView.findViewById(R.id.text);
+//
+//        messageField.setText(message);
+//        // Create the object of
+//        // AlertDialog Builder class
+//        AlertDialog.Builder builder
+//                = new AlertDialog
+//                .Builder(getActivity(), R.style.AlertDialogCustom);
+//
+//        builder.setView(subView);
+//
+//        // Set the message show for the Alert time
+//
+//        // Set Alert Title
+////        builder.setTitle("Update user " + field);
+//
+//        // Set Cancelable false
+//        // for when the user clicks on the outside
+//        // the Dialog Box then it will remain show
+//        builder.setCancelable(false);
+//
+//        // Set the positive button with yes name
+//        // OnClickListener method is use of
+//        // DialogInterface interface.
+//
+//        builder
+//                .setPositiveButton(
+//                        "Save",
+//                        new DialogInterface
+//                                .OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(DialogInterface dialog,
+//                                                int which) {
+//                                changeData(field, newData.getText().toString());
+//                            }
+//                        });
+//
+//        // Set the Negative button with No name
+//        // OnClickListener method is use
+//        // of DialogInterface interface.
+//        builder
+//                .setNegativeButton(
+//                        "Cancel",
+//                        new DialogInterface
+//                                .OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(DialogInterface dialog,
+//                                                int which) {
+//
+//                                // If user click no
+//                                // then dialog box is canceled.
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        // Create the Alert dialog
+//        AlertDialog alertDialog = builder.create();
+//
+//        // Show the Alert Dialog box
+//        alertDialog.show();
+//
+//    }
+
+    public void updateUserMajor() {
         ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
-                inflate(R.layout.update_data_dialog, null, false);
-        EditText newData = subView.findViewById(R.id.editText);
+                inflate(R.layout.update_major_dialog, null, false);
+        Spinner majorsSpinner = subView.findViewById(R.id.majorsSpinner);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.Majors, android.R.layout.simple_spinner_item);
+        majorsSpinner.setAdapter(spinnerAdapter);
         TextView messageField = subView.findViewById(R.id.text);
 
-        messageField.setText(message);
+        messageField.setText("Enter the new major");
         // Create the object of
         // AlertDialog Builder class
         AlertDialog.Builder builder
@@ -294,7 +366,11 @@ public class fragmentAccount extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
-                                changeData(field, newData.getText().toString());
+                                if (majorsSpinner.getSelectedItemPosition() == 0) {
+                                    toast("Choose a major");
+                                } else {
+                                    changeData("major", majorsSpinner.getSelectedItem().toString());
+                                }
                             }
                         });
 
@@ -324,6 +400,12 @@ public class fragmentAccount extends Fragment {
         alertDialog.show();
 
     }
+
+    void toast(String message) {
+        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
 
 }
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="16dp"
+android:backgroundTint="@color/blue"
+android:background="@color/blue"
+    >
+
+
+<TextView
+    android:id="@+id/text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Message"
+    android:fontFamily="@font/ubuntu_bold"
+    android:gravity="center"
+    android:textColor="@color/Primary_blue"
+    />
+
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_below="@+id/text"
+    android:background="@drawable/borders"
+    >
+<Spinner
+    android:id="@+id/majorsSpinner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/ubuntu_bold"
+    android:textColor="@color/grey"
+    android:layout_centerInParent="true"
+/>
+</RelativeLayout>
+
+</RelativeLayout>
