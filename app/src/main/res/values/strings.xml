@@ -23,4 +23,39 @@
     <string name="password">Password</string>
 
 
+    <string-array name="Schools">
+        <item>School of Applied Humanities and Languages (SAHL)</item>
+        <item>School of Natural Resources Engineering and Management (SNREM)</item>
+        <item>School of Architecture and Built Environment (SABE)</item>
+        <item>School of Electrical Engineering and Information Technology (SEEIT)</item>
+        <item>School of Applied Technical Sciences (SATS)</item>
+        <item>School of Applied Medical Sciences (SAMS)</item>
+        <item>School of Management and Logistic Sciences (SMLS)</item>
+    </string-array>
+
+    <string-array name="Majors">
+        <item>Business and Communication</item>
+        <item>Translation</item>
+        <item>Science in Energy Engineering</item>
+        <item>Civil and Environmental Engineering</item>
+        <item>Architecture</item>
+        <item>Design and Visual Communication</item>
+        <item>Computer Engineering</item>
+        <item>Computer Science</item>
+        <item>Electrical Engineering</item>
+        <item>Design and Media Informatics</item>
+        <item>Science in Industrial Engineering</item>
+        <item>Science in Mechanical and Maintenance Engineering</item>
+        <item>Mechatronics and Artificial Intelligence Engineering</item>
+        <item>Mechatronics Engineering</item>
+        <item>Pharmaceutical and Chemical Engineering</item>
+        <item>Biomedical Engineering</item>
+        <item>International Accounting</item>
+        <item>Logistic Sciences</item>
+        <item>Management Science</item>
+        <item>Business Intelligence and Data analytics</item>
+        <item>International Accounting</item>
+
+    </string-array>
+
 </resources>
