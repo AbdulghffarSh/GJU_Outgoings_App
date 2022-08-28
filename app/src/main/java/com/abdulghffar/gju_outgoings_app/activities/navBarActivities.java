@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentRating;
-import com.abdulghffar.gju_outgoings_app.fragments.Messeging.fragmentListUsers;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;
@@ -111,11 +110,7 @@ public class navBarActivities extends AppCompatActivity {
                 fragmentContactUs fragmentContactUs = new fragmentContactUs();
                 replaceFragment(fragmentContactUs);
                 break;
-            case "fragmentListUsers":
-                label.setText("fragmentListUsers");
-                fragmentListUsers fragmentListUsers = new fragmentListUsers();
-                replaceFragment(fragmentListUsers);
-                break;
+
 
 
 

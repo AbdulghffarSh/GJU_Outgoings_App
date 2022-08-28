@@ -91,11 +91,11 @@
             >
 
             <Spinner
-                android:layout_toEndOf="@+id/icon"
                 android:id="@+id/majorsSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
+                android:layout_toEndOf="@+id/icon"
                 android:drawablePadding="15dp"
                 android:fontFamily="@font/ubuntu_regular"
                 android:importantForAutofill="no"

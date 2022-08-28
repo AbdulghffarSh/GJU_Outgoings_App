@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.add:
                         fragmentAdd fragmentAdd = new fragmentAdd();
-                        replaceFragment(fragmentAdd, "Add");
+                        replaceFragment(fragmentAdd, "Post");
                         break;
                     case R.id.features:
                         fragmentFeatures fragmentFeatures = new fragmentFeatures();
@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT);
         toast.show();
     }
+
 
 
 }

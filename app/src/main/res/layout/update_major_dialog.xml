@@ -26,14 +26,15 @@ android:background="@color/blue"
     android:layout_below="@+id/text"
     android:background="@drawable/borders"
     >
-<Spinner
-    android:id="@+id/majorsSpinner"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fontFamily="@font/ubuntu_bold"
-    android:textColor="@color/grey"
-    android:layout_centerInParent="true"
-/>
+
+    <Spinner
+        android:id="@+id/majorsSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/ubuntu_bold"
+        android:textColor="@color/grey" />
 </RelativeLayout>
 
 </RelativeLayout>

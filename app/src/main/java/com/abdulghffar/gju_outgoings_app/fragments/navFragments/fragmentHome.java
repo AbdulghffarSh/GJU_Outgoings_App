@@ -28,10 +28,7 @@ public class fragmentHome extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), navBarActivities.class);
-                String fragmentName = "fragmentListUsers";
-                intent.putExtra("fragmentName", fragmentName);
-                startActivity(intent);
+
             }
         });
 
