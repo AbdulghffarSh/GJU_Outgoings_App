@@ -95,24 +95,22 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         comment currentItem = commentArrayList.get(position);
         try {
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
             Date parsedDate = dateFormat.parse(currentItem.getTimeStamp());
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
             SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm   dd/MM/yyyy");
             holder.timeStamp.setText(outputFormat.format(parsedDate).toString());
-
         } catch (Exception e) { //this generic but you can control another types of exception
-            // look the origin of excption
+            // look the origin of exception
             System.out.println("this is the error " + e);
         }
 
-        System.out.println("Test " + currentItem.getUser());
         holder.userName.setText(currentItem.getUser().getName());
         holder.comment.setText(currentItem.getCommentText());
         if (currentItem.getUser().getProfilePic() != null) {
             Picasso.get().load(currentItem.getUser().getProfilePic()).into(holder.userPic);
         }
+
     }
 
 

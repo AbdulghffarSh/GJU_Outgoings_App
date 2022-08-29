@@ -2,7 +2,7 @@ package com.abdulghffar.gju_outgoings_app.objects;
 
 public class post {
     String postID;
-    String userID;
+    user user;
     String image;
     String tag;
     String title;
@@ -12,9 +12,9 @@ public class post {
     public post() {
     }
 
-    public post(String postID, String userID, String image, String tag, String title, String body, String timeStamp) {
+    public post(String postID, user user, String image, String tag, String title, String body, String timeStamp) {
         this.postID = postID;
-        this.userID = userID;
+        this.user = user;
         this.image = image;
         this.tag = tag;
         this.title = title;
@@ -26,8 +26,8 @@ public class post {
         this.postID = postID;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUser(user user) {
+        this.user = user;
     }
 
     public void setImage(String image) {
@@ -54,8 +54,8 @@ public class post {
         return postID;
     }
 
-    public String getUserID() {
-        return userID;
+    public user getUser() {
+        return user;
     }
 
     public String getImage() {

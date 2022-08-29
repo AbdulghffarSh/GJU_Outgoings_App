@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.objects.post;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,8 @@ import javax.annotation.Nullable;
 
 public class fragmentAdd extends Fragment {
 
+    user userData;
+    MainActivity MainActivity;
     //Buttons
     //Tags
     Button accommodationsTag;
@@ -163,6 +166,10 @@ public class fragmentAdd extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        MainActivity = (MainActivity) getActivity();
+        assert MainActivity != null;
+        userData = MainActivity.getUser();
+
 
         titleField = view.findViewById(R.id.postTitle);
         bodyField = view.findViewById(R.id.postBody);
@@ -199,6 +206,12 @@ public class fragmentAdd extends Fragment {
 
 
     private void publishPost() {
+        String collection;
+        if (userData.getRole().equals("Student")) {
+            collection = "Posts";
+        } else {
+            collection = "PinnedPosts";
+        }
         String timeStamp = new java.util.Date().toString();
         String tag = getSelectedTag();
         if (tag == null) {
@@ -226,7 +239,7 @@ public class fragmentAdd extends Fragment {
             StorageReference ref
                     = storage.getReference()
                     .child(
-                            "Users/Posts/"
+                            "Users/" + collection + "/"
                                     + user.getUid() + timeStamp);
 
             // adding listeners on upload
@@ -252,7 +265,7 @@ public class fragmentAdd extends Fragment {
                                         public void onSuccess(Uri uri) {
                                             Uri downloadUrl = uri;
                                             //Set Image Link in user
-                                            post post = new post(null, user.getUid(), downloadUrl.toString(), tag, titleField.getText().toString(), bodyField.getText().toString(), timeStamp);
+                                            post post = new post(null, userData, downloadUrl.toString(), tag, titleField.getText().toString(), bodyField.getText().toString(), timeStamp);
                                             addToFirebase(post);
 
                                         }
@@ -279,7 +292,7 @@ public class fragmentAdd extends Fragment {
 
 
         } else {
-            post post = new post(null, user.getUid(), null, tag, titleField.getText().toString(), bodyField.getText().toString(), timeStamp);
+            post post = new post(null, userData, null, tag, titleField.getText().toString(), bodyField.getText().toString(), timeStamp);
             addToFirebase(post);
         }
 
@@ -299,8 +312,14 @@ public class fragmentAdd extends Fragment {
 
     void addToFirebase(post post) {
         db = FirebaseFirestore.getInstance();
-DocumentReference ref =db.collection("Posts").document();
-post.setPostID(ref.getId());
+        String collection;
+        if (userData.getRole().equals("Student")) {
+            collection = "Posts";
+        } else {
+            collection = "PinnedPosts";
+        }
+        DocumentReference ref = db.collection(collection).document();
+        post.setPostID(ref.getId());
         ref.set(post)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -308,10 +327,6 @@ post.setPostID(ref.getId());
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                         progressBar.setVisibility(View.INVISIBLE);
                         toast("Post added");
-                        MainActivity MainActivity = (MainActivity) getActivity();
-                        assert MainActivity != null;
-
-
                         fragmentHome fragmentHome = new fragmentHome();
                         MainActivity.replaceFragment(fragmentHome, "Home");
                     }

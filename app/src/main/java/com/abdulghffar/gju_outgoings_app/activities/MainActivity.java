@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView nav;
     TextView activityNameField;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         userData = document.toObject(user.class);
                         assert userData != null;
+                        setUser(userData);
+
                         //Using Picasso
                         if (userData.getProfilePic() != null) {
                             Picasso.get().load(userData.getProfilePic()).into(profileImage);
@@ -158,6 +161,13 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
+    void setUser(user userData) {
+        this.userData = userData;
+    }
+
+    public user getUser() {
+        return userData;
+    }
 
 
 }
