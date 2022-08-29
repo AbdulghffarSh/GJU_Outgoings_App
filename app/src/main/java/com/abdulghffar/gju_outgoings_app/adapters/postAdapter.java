@@ -18,9 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class pinnedPostAdapter extends RecyclerView.Adapter<pinnedPostAdapter.viewHolder> {
-    private final ArrayList<post> pinnedPostArrayList;
+public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
+    private final ArrayList<post> postsArrayList;
     private OnItemClickListener mListener;
+    int layoutItem;
+
 
     public interface OnItemClickListener {
         void emailOnClick(int position);
@@ -61,21 +63,21 @@ public class pinnedPostAdapter extends RecyclerView.Adapter<pinnedPostAdapter.vi
         }
     }
 
-    public pinnedPostAdapter(ArrayList<post> pinnedPostArrayList) {
-        this.pinnedPostArrayList = pinnedPostArrayList;
-
+    public postAdapter(ArrayList<post> postsArrayList, int layoutItem) {
+        this.postsArrayList = postsArrayList;
+        this.layoutItem = layoutItem;
     }
 
     @Override
     public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.pinned_post_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(layoutItem, parent, false);
         viewHolder evh = new viewHolder(v, mListener);
         return evh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        post currentItem = pinnedPostArrayList.get(position);
+        post currentItem = postsArrayList.get(position);
         try {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
@@ -103,7 +105,7 @@ public class pinnedPostAdapter extends RecyclerView.Adapter<pinnedPostAdapter.vi
 
     @Override
     public int getItemCount() {
-        return pinnedPostArrayList.size();
+        return postsArrayList.size();
     }
 
 

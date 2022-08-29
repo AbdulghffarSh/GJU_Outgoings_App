@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.adapters.pinnedPostAdapter;
+import com.abdulghffar.gju_outgoings_app.adapters.postAdapter;
 
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.google.firebase.firestore.DocumentChange;
@@ -30,7 +30,11 @@ import javax.annotation.Nullable;
 public class fragmentHome extends Fragment {
     ArrayList<post> pinnedPostsArraylist;
     RecyclerView pinnedPostsRecyclerView;
-    pinnedPostAdapter pinnedPostAdapter;
+    com.abdulghffar.gju_outgoings_app.adapters.postAdapter pinnedPostAdapter;
+
+    ArrayList<post> postsArraylist;
+    RecyclerView postsRecyclerView;
+    com.abdulghffar.gju_outgoings_app.adapters.postAdapter postAdapter;
 
     FirebaseFirestore db;
 
@@ -41,12 +45,22 @@ public class fragmentHome extends Fragment {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_home, parent, false);
         pinnedPostsArraylist = new ArrayList<>();
+        postsArraylist = new ArrayList<>();
 
         pinnedPostsRecyclerView = view.findViewById(R.id.pinnedPostsRecyclerView);
-        pinnedPostAdapter = new pinnedPostAdapter(pinnedPostsArraylist);
+        pinnedPostAdapter = new postAdapter(pinnedPostsArraylist, R.layout.pinned_post_item);
         pinnedPostsRecyclerView.setHasFixedSize(true);
         pinnedPostsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         pinnedPostsRecyclerView.setAdapter(pinnedPostAdapter);
+
+
+        postsRecyclerView = view.findViewById(R.id.postsRecyclerView);
+        postAdapter = new postAdapter(postsArraylist, R.layout.post_item);
+        postsRecyclerView.setHasFixedSize(true);
+        postsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        postsRecyclerView.setAdapter(postAdapter);
+
+
         getData();
 
 
@@ -83,6 +97,27 @@ public class fragmentHome extends Fragment {
 
                         }
                         pinnedPostAdapter.notifyDataSetChanged();
+                    }
+                });
+        db.collection("Posts").orderBy("timeStamp", Query.Direction.ASCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("Firestore error", error.getMessage());
+                            return;
+                        }
+
+                        assert value != null;
+                        for (DocumentChange dc : value.getDocumentChanges()) {
+                            if (dc.getType() == DocumentChange.Type.ADDED) {
+                                postsArraylist.add(dc.getDocument().toObject(post.class));
+                            }
+
+
+                        }
+                        postAdapter.notifyDataSetChanged();
                     }
                 });
 
