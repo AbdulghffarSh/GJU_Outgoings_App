@@ -62,7 +62,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/botNavBar"
         android:layout_below="@+id/activityName"
-        android:paddingVertical="40dp">
+        android:paddingVertical="10dp">
 
 
         <ScrollView

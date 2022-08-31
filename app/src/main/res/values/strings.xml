@@ -59,4 +59,107 @@
 
     </string-array>
 
+    <string-array name="cities">
+        <item>--Choose a city--</item>
+        <item>Albstadt</item>
+        <item>Aalen</item>
+        <item>Amberg</item>
+        <item>Aschaffenburg</item>
+        <item>Augsburg</item>
+        <item>Bad Mergentheim</item>
+        <item>Bayreuth</item>
+        <item>Berlin</item>
+        <item>Biberach</item>
+        <item>Bielefeld</item>
+        <item>Bingen</item>
+        <item>Bochum</item>
+        <item>Brandenburg</item>
+        <item>Bremen</item>
+        <item>Bremerhaven</item>
+        <item>Coburg</item>
+        <item>Cottbus</item>
+        <item>Darmstadt</item>
+        <item>Deggendorf</item>
+        <item>Dessau</item>
+        <item>Detmold</item>
+        <item>Dieburg</item>
+        <item>Dortmund</item>
+        <item>Dresden</item>
+        <item>Düsseldorf</item>
+        <item>Emden</item>
+        <item>Erfurt</item>
+        <item>Erlangen</item>
+        <item>Frankfurt</item>
+        <item>Freiberg</item>
+        <item>Fulda</item>
+        <item>Gelsenkirchen</item>
+        <item>Germersheim</item>
+        <item>Giessen</item>
+        <item>Göttingen</item>
+        <item>Gummersbach</item>
+        <item>Hamburg</item>
+        <item>Hamm</item>
+        <item>Heidenheim</item>
+        <item>Heilbronn</item>
+        <item>Hof</item>
+        <item>Höxter</item>
+        <item>Ingolstadt</item>
+        <item>Jena</item>
+        <item>Kaiserslautern</item>
+        <item>Karlsruhe</item>
+        <item>Kassel</item>
+        <item>Kempten</item>
+        <item>Koblenz</item>
+        <item>Köln</item>
+        <item>Köthen</item>
+        <item>Krefeld</item>
+        <item>Landshut</item>
+        <item>Leipzig</item>
+        <item>Lemgo</item>
+        <item>Lippstadt</item>
+        <item>Lörrach</item>
+        <item>Lübeck</item>
+        <item>Ludwigshafen am Rhein</item>
+        <item>Magdeburg</item>
+        <item>Mainz</item>
+        <item>Mannheim</item>
+        <item>Marburg</item>
+        <item>Merseburg</item>
+        <item>Mittweida</item>
+        <item>München</item>
+        <item>Münster</item>
+        <item>Neu-Ulm</item>
+        <item>Neubrandenburg</item>
+        <item>Nürnberg</item>
+        <item>Nürtingen</item>
+        <item>Offenburg</item>
+        <item>Oldenburg</item>
+        <item>Osnabrück</item>
+        <item>Regensburg</item>
+        <item>Remagen</item>
+        <item>Reutlingen</item>
+        <item>Rosenheim</item>
+        <item>Rüsselsheim</item>
+        <item>Saar</item>
+        <item>Saarbrücken</item>
+        <item>Sankt Augustin</item>
+        <item>Schmalkalden</item>
+        <item>Schweinfurt</item>
+        <item>Siegen</item>
+        <item>Sigmaringen</item>
+        <item>Stendal</item>
+        <item>Stuttgart</item>
+        <item>Trier</item>
+        <item>Ulm</item>
+        <item>Villingen-Schwenningen</item>
+        <item>Weiden</item>
+        <item>Weimar</item>
+        <item>Wiesbaden</item>
+        <item>Wildau</item>
+        <item>Wilhelmshaven</item>
+        <item>Worms</item>
+        <item>Würzburg</item>
+        <item>Zwickau</item>
+    </string-array>
+
 </resources>

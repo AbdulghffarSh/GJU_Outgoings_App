@@ -35,6 +35,7 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
     public static class viewHolder extends RecyclerView.ViewHolder {
         public TextView postTitle;
         public TextView postBody;
+        public TextView userName;
         public TextView postTimeStamp;
         public ImageView accountPic;
         public ImageView postImage;
@@ -47,6 +48,7 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
             postTimeStamp = itemView.findViewById(R.id.postTimeStamp);
             accountPic = itemView.findViewById(R.id.accountPic);
             postImage = itemView.findViewById(R.id.postImage);
+            userName = itemView.findViewById(R.id.userName);
 //            emailButton.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -98,7 +100,10 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
             Picasso.get().load(currentItem.getImage()).into(holder.postImage);
         }
         if (currentItem.getUser() != null) {
+            System.out.println(currentItem.getUser().getName());
             Picasso.get().load(currentItem.getUser().getProfilePic()).into(holder.accountPic);
+            holder.userName.setText(currentItem.getUser().getName());
+
         }
 
     }
