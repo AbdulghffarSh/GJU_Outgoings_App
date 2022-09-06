@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -35,6 +36,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.annotation.Nullable;
 
@@ -136,6 +140,7 @@ public class fragmentAdd extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 launcher.launch(intent);
+
             }
         });
 
@@ -198,6 +203,19 @@ public class fragmentAdd extends Fragment {
                     Uri photoUri = result.getData().getData();
                     //use photoUri here
 
+
+                    AssetFileDescriptor fileDescriptor = null;
+                    try {
+                        fileDescriptor = getActivity().getContentResolver().openAssetFileDescriptor(photoUri , "r");
+                        long fileSize = fileDescriptor.getLength();
+                        if (fileSize>=10000000){
+                            toast("Image exceeds the maximum size 10MB");
+                            return;
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        return;
+                    }
                     attachImage.setImageURI(photoUri);
                     currentImage = photoUri;
                 }

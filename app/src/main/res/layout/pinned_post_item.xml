@@ -5,12 +5,14 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20dp"
     app:cardCornerRadius="20dp"
-    app:contentPadding="10dp">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingVertical="10dp"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,12 +45,15 @@
             android:id="@+id/postImage"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:scaleType="centerCrop"
             android:layout_marginTop="10dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/accountPic"
@@ -75,7 +80,6 @@
                 android:layout_below="@+id/userName"
                 android:fontFamily="@font/ubuntu_regular"
                 android:gravity="end"
-                android:padding="5dp"
                 android:text="timeStamp" />
         </RelativeLayout>
 

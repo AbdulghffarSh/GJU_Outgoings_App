@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="#E6FFFFFF"
         android:orientation="vertical"
-        android:padding="10dp">
+        >
 
         <TextView
             android:id="@+id/postTitle"
@@ -22,7 +22,8 @@
             android:layout_marginStart="10dp"
             android:fontFamily="@font/ubuntu_bold"
             android:text="Title"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:padding="10dp"/>
 
         <TextView
             android:id="@+id/postBody"
@@ -32,14 +33,14 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_regular"
             android:text="Post text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:padding="10dp"/>
 
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_margin="30dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             />
 
         <RelativeLayout
@@ -65,6 +66,7 @@
                 android:text="userName" />
 
             <TextView
+
                 android:id="@+id/postTimeStamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
