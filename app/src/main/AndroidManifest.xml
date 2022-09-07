@@ -21,6 +21,10 @@
         <activity
             android:name=".activities.authentication"
             android:exported="false" />
+        <activity
+            android:name=".activities.currentPost"
+            android:exported="false" />
+
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"

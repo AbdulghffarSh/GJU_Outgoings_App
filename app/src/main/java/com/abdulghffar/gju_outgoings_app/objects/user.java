@@ -1,6 +1,8 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
-public class user {
+import java.io.Serializable;
+
+public class user implements Serializable {
     String uid;
     String approval;
     String email;

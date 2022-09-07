@@ -1,6 +1,8 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
-public class post {
+import java.io.Serializable;
+
+public class post implements Serializable {
     String postID;
     user user;
     String image;

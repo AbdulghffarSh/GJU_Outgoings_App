@@ -1,6 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
+import com.abdulghffar.gju_outgoings_app.activities.currentPost;
 import com.abdulghffar.gju_outgoings_app.adapters.postAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.google.firebase.firestore.DocumentChange;
@@ -132,11 +133,11 @@ public class fragmentHome extends Fragment {
     }
     public void changeItem(int position, String text) {
 
-        MainActivity MainActivity = (MainActivity) getActivity();
-        assert MainActivity != null;
-        MainActivity.setCurrentPost(postsArraylist.get(position));
-        fragmentCurrentPost fragmentCurrentPost = new fragmentCurrentPost();
-        MainActivity.replaceFragment(fragmentCurrentPost,"");
+
+
+        Intent intent = new Intent(getActivity(), currentPost.class);
+        intent.putExtra("currentPost", postsArraylist.get(position));
+        startActivity(intent);
 
 
     }

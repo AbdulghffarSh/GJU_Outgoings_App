@@ -2,24 +2,23 @@ package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.util.Log;
-
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.abdulghffar.gju_outgoings_app.R;
-import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentRating;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentRating;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.university;
 import com.abdulghffar.gju_outgoings_app.objects.user;
@@ -29,7 +28,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -112,9 +110,6 @@ public class navBarActivities extends AppCompatActivity {
                 break;
 
 
-
-
-
         }
 
 
@@ -190,7 +185,8 @@ public class navBarActivities extends AppCompatActivity {
     public void setUserArrayList(ArrayList<user> userArrayList) {
         this.userArrayList = userArrayList;
     }
-    public ArrayList<user> getUserArrayList(){
+
+    public ArrayList<user> getUserArrayList() {
         return userArrayList;
     }
 }
