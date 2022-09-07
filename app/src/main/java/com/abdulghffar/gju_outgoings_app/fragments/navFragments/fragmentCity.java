@@ -3,13 +3,14 @@ package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 import static android.content.ContentValues.TAG;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,8 +45,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -114,7 +113,7 @@ public class fragmentCity extends Fragment {
     private void setData(city cityData) {
         cityName = view.findViewById(R.id.cityName);
         cityPic = view.findViewById(R.id.img);
-        addCommentButton = view.findViewById(R.id.sendButton);
+        addCommentButton = view.findViewById(R.id.addCommentButton);
 
         cityName.setText(cityData.getCityName());
         if (cityData.getPics() != null) {
@@ -198,7 +197,7 @@ public class fragmentCity extends Fragment {
         mDatabase.child("Comments").child(timeStamp).setValue(newComment).toString();
         toast("Comment added");
         commentField.setText("");
-
+        closeKeyboard();
         getComments();
 
     }
@@ -354,6 +353,13 @@ public class fragmentCity extends Fragment {
         AlertDialog alertDialog = builder.create();
 
         alertDialog.show();
+    }
+
+    void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (null != getActivity().getCurrentFocus())
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus()
+                    .getApplicationWindowToken(), 0);
     }
 
 }

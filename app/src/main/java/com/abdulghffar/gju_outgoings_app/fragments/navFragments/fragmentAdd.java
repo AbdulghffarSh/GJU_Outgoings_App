@@ -31,6 +31,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -65,6 +67,8 @@ public class fragmentAdd extends Fragment {
     FirebaseStorage storage;
     FirebaseUser user;
     FirebaseFirestore db;
+    FirebaseDatabase realTimeDB;
+
 
     Uri currentImage;
 
@@ -341,6 +345,14 @@ public class fragmentAdd extends Fragment {
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                         progressBar.setVisibility(View.INVISIBLE);
+
+                        //add to RealTimeDB for comments
+                        realTimeDB = FirebaseDatabase.getInstance();
+
+                        String ref = "/Posts/" + "/Users/" + user.getUid() + "/UserPosts/" + post.getPostID();
+                        DatabaseReference mDatabase = realTimeDB.getReference(ref);
+                        mDatabase.child("Comments").setValue("");
+
                         toast("Post added");
                         fragmentHome fragmentHome = new fragmentHome();
                         MainActivity.replaceFragment(fragmentHome, "Home");
@@ -354,6 +366,8 @@ public class fragmentAdd extends Fragment {
 
                     }
                 });
+
+
     }
 
     void toast(String message) {

@@ -1,12 +1,16 @@
 package com.abdulghffar.gju_outgoings_app.activities;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.ViewManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,27 +19,35 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.adapters.commentAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.abdulghffar.gju_outgoings_app.objects.post;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
+import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class currentPost extends AppCompatActivity {
-    MainActivity MainActivity;
     post currentPost;
     ArrayList<comment> postCommentsArrayList;
     RecyclerView postCommentsRecyclerView;
     commentAdapter postCommentsAdapter;
 
-    RecyclerView postsRecyclerView;
     com.abdulghffar.gju_outgoings_app.adapters.postAdapter postAdapter;
 
     FirebaseFirestore db;
+    FirebaseDatabase realTimeDB;
+
 
     //UI
     TextView postTitle;
@@ -44,6 +56,9 @@ public class currentPost extends AppCompatActivity {
     TextView timeStamp;
     ImageView accountPic;
     ImageView postImage;
+    ImageView addCommentButton;
+
+    EditText commentField;
 
 
     @Override
@@ -60,12 +75,25 @@ public class currentPost extends AppCompatActivity {
         postCommentsRecyclerView = findViewById(R.id.postCommentsRecyclerView);
         postCommentsAdapter = new commentAdapter(postCommentsArrayList);
         postCommentsRecyclerView.setHasFixedSize(true);
-        postCommentsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        postCommentsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         postCommentsRecyclerView.setAdapter(postCommentsAdapter);
+
+
+        System.out.println("Post details: " + currentPost.getUser().getName());
+        System.out.println("Post details: " + currentPost.getUser().getUid());
+        System.out.println("Post details: " + currentPost.getUser().getEmail());
 
 
 //        getData();
         setup();
+
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addComment();
+            }
+        });
+
 
     }
 
@@ -79,12 +107,31 @@ public class currentPost extends AppCompatActivity {
         postBody = findViewById(R.id.postBody);
         postImage = findViewById(R.id.postImage);
         timeStamp = findViewById(R.id.postTimeStamp);
+        commentField = findViewById(R.id.commentField);
+        addCommentButton = findViewById(R.id.addCommentButton);
 
 
         postTitle.setText(currentPost.getTitle());
         userName.setText(currentPost.getUser().getName());
         postBody.setText(currentPost.getBody());
         timeStamp.setText(currentPost.getTimeStamp());
+
+
+        try {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
+            Date parsedDate = dateFormat.parse(currentPost.getTimeStamp());
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm   dd/MM/yyyy");
+            timeStamp.setText(outputFormat.format(parsedDate));
+
+
+        } catch (Exception e) { //this generic but you can control another types of exception
+            // look the origin of exception
+            System.out.println("this is the error " + e);
+        }
+
+
         if (currentPost.getUser().getProfilePic() != null) {
             Picasso.get().load(currentPost.getUser().getProfilePic()).into(accountPic);
         }
@@ -94,57 +141,132 @@ public class currentPost extends AppCompatActivity {
             ((ViewManager) postImage.getParent()).removeView(postImage);
         }
 
-
-    }
-
-    void getData() {
-
         db = FirebaseFirestore.getInstance();
+        getComments();
+    }
 
-        db.collection("PinnedPosts").orderBy("timeStamp", Query.Direction.ASCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @SuppressLint("NotifyDataSetChanged")
+//    void getData() {
+//
+//        db = FirebaseFirestore.getInstance();
+//
+//        db.collection("PinnedPosts").orderBy("timeStamp", Query.Direction.ASCENDING)
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @SuppressLint("NotifyDataSetChanged")
+//                    @Override
+//                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
+//                        if (error != null) {
+//                            Log.e("Firestore error", error.getMessage());
+//                            return;
+//                        }
+//
+//                        assert value != null;
+//                        for (DocumentChange dc : value.getDocumentChanges()) {
+//                            if (dc.getType() == DocumentChange.Type.ADDED) {
+//                                postCommentsArrayList.add(dc.getDocument().toObject(comment.class));
+//                            }
+//
+//
+//                        }
+//                        postCommentsAdapter.notifyDataSetChanged();
+//                    }
+//                });
+//        db.collection("Posts").orderBy("timeStamp", Query.Direction.ASCENDING)
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @SuppressLint("NotifyDataSetChanged")
+//                    @Override
+//                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
+//                        if (error != null) {
+//                            Log.e("Firestore error", error.getMessage());
+//                            return;
+//                        }
+//
+//                        assert value != null;
+//                        for (DocumentChange dc : value.getDocumentChanges()) {
+//                            if (dc.getType() == DocumentChange.Type.ADDED) {
+//                                postCommentsArrayList.add(dc.getDocument().toObject(comment.class));
+//                            }
+//
+//
+//                        }
+//                        postAdapter.notifyDataSetChanged();
+//                    }
+//                });
+//
+//
+//    }
+
+    void getComments() {
+        realTimeDB = FirebaseDatabase.getInstance();
+        String ref = "/Posts/" + "/Users/" + currentPost.getUser().getUid() + "/UserPosts/" + currentPost.getPostID() + "/Comments";
+
+        DatabaseReference myRef = realTimeDB.getReference(ref);
+        postCommentsArrayList.clear();
+        myRef
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Log.e("Firestore error", error.getMessage());
-                            return;
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                            String Uid = snapshot.child("uid").getValue(String.class);
+                            String timeStamp = snapshot.child("timeStamp").getValue(String.class);
+                            String comment = snapshot.child("commentText").getValue(String.class);
+                            String ref = snapshot.child("reference").getValue(String.class);
+                            System.out.println(comment);
+
+                            DocumentReference docRef = db.collection("Users").document(Uid);
+                            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    user user = documentSnapshot.toObject(user.class);
+                                    comment commentObject = new comment(comment, Uid, timeStamp, user, ref);
+                                    postCommentsArrayList.add(commentObject);
+                                    postCommentsAdapter.notifyDataSetChanged();
+
+                                }
+                            });
+
+
                         }
-
-                        assert value != null;
-                        for (DocumentChange dc : value.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                postCommentsArrayList.add(dc.getDocument().toObject(comment.class));
-                            }
-
-
-                        }
-                        postCommentsAdapter.notifyDataSetChanged();
                     }
-                });
-        db.collection("Posts").orderBy("timeStamp", Query.Direction.ASCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @SuppressLint("NotifyDataSetChanged")
+
                     @Override
-                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Log.e("Firestore error", error.getMessage());
-                            return;
-                        }
-
-                        assert value != null;
-                        for (DocumentChange dc : value.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                postCommentsArrayList.add(dc.getDocument().toObject(comment.class));
-                            }
-
-
-                        }
-                        postAdapter.notifyDataSetChanged();
+                    public void onCancelled(DatabaseError databaseError) {
                     }
                 });
 
 
     }
+
+    void addComment() {
+        realTimeDB = FirebaseDatabase.getInstance();
+        String commentText = commentField.getText().toString();
+        String Uid = FirebaseAuth.getInstance().getUid();
+        String timeStamp = new java.util.Date().toString();
+        comment newComment = new comment(commentText, Uid, timeStamp, null, null);
+
+
+        String ref = "/Posts/" + "/Users/" + currentPost.getUser().getUid() + "/UserPosts/" + currentPost.getPostID();
+        DatabaseReference mDatabase = realTimeDB.getReference(ref);
+        newComment.setReference(ref);
+        mDatabase.child("Comments").child(timeStamp).setValue(newComment).toString();
+        toast("Comment added");
+        commentField.setText("");
+        closeKeyboard();
+        getComments();
+
+    }
+
+    void toast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager) com.abdulghffar.gju_outgoings_app.activities.currentPost.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (null != com.abdulghffar.gju_outgoings_app.activities.currentPost.this.getCurrentFocus())
+            imm.hideSoftInputFromWindow(currentPost.this.getCurrentFocus()
+                    .getApplicationWindowToken(), 0);
+    }
+
 
 }

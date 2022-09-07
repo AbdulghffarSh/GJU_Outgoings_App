@@ -95,9 +95,20 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
             // look the origin of exception
             System.out.println("this is the error " + e);
         }
+        String textBody, textTitle;
 
-        holder.postTitle.setText(currentItem.getTitle());
-        holder.postBody.setText(currentItem.getBody());
+        if (currentItem.getTitle().length() > 30) {
+            textTitle = currentItem.getTitle().substring(0, 30) + "...";
+        } else {
+            textTitle = currentItem.getTitle();
+        }
+        holder.postTitle.setText(textTitle);
+        if (currentItem.getBody().length() > 50) {
+            textBody = currentItem.getBody().substring(0, 50) + "...";
+        } else {
+            textBody = currentItem.getBody();
+        }
+        holder.postBody.setText(textBody);
         if (currentItem.getImage() != null) {
             Picasso.get().load(currentItem.getImage()).into(holder.postImage);
         } else {

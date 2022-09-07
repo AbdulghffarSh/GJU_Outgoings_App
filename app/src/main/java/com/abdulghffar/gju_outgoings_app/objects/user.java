@@ -18,8 +18,8 @@ public class user implements Serializable {
     public user() {
     }
 
-    public user(String Uid, String approval, String email, String gender, String major, String name, String profilePic, String registrationTimeStamp, String role, String studentID, String fcmToken) {
-        this.uid = Uid;
+    public user(String uid, String approval, String email, String gender, String major, String name, String profilePic, String registrationTimeStamp, String role, String studentID, String fcmToken) {
+        this.uid = uid;
         this.approval = approval;
         this.email = email;
         this.gender = gender;
@@ -32,8 +32,8 @@ public class user implements Serializable {
         this.fcmToken = fcmToken;
     }
 
-    public void setUid(String Uid) {
-        Uid = Uid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setApproval(String approval) {

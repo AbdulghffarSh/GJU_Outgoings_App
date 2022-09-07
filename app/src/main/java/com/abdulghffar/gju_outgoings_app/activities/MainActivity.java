@@ -71,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         userData = document.toObject(user.class);
                         assert userData != null;
+                        if (userData.getUid() == null) {
+                            userData.setUid(user.getUid());
+                        }
+                        System.out.println(user.getUid());
+                        System.out.println(userData.getUid());
+                        assert userData != null;
                         setUser(userData);
 
                         //Using Picasso

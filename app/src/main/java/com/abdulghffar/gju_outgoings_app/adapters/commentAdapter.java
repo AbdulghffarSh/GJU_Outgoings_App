@@ -1,7 +1,5 @@
 package com.abdulghffar.gju_outgoings_app.adapters;
 
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +79,6 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
 
     public commentAdapter(ArrayList<comment> commentArrayList) {
         this.commentArrayList = commentArrayList;
-        System.out.println(commentArrayList.size());
     }
 
     @Override

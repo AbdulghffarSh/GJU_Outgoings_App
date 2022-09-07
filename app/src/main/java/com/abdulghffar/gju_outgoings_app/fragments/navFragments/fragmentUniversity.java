@@ -3,13 +3,14 @@ package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 import static android.content.ContentValues.TAG;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,8 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.adapters.commentAdapter;
-import com.abdulghffar.gju_outgoings_app.adapters.universityAdapter;
-import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.abdulghffar.gju_outgoings_app.objects.report;
 import com.abdulghffar.gju_outgoings_app.objects.university;
@@ -42,9 +41,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -183,7 +179,7 @@ public class fragmentUniversity extends Fragment {
         mDatabase.child("Comments").child(timeStamp).setValue(newComment);
         toast("Comment added");
         commentField.setText("");
-
+        closeKeyboard();
         getComments();
 
     }
@@ -335,5 +331,11 @@ public class fragmentUniversity extends Fragment {
 
         // Show the Alert Dialog box
         alertDialog.show();
+    }
+    void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (null != getActivity().getCurrentFocus())
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus()
+                    .getApplicationWindowToken(), 0);
     }
 }

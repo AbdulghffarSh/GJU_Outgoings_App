@@ -63,7 +63,14 @@ public class fragmentHome extends Fragment {
         postAdapter.setOnItemClickListener(new postAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                changeItem(position, "Clicked");
+                changeItemPost(position, "Clicked");
+
+            }
+        });
+        pinnedPostAdapter.setOnItemClickListener(new postAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                changeItemPinnedPost(position, "Clicked");
 
             }
         });
@@ -131,12 +138,20 @@ public class fragmentHome extends Fragment {
 
 
     }
-    public void changeItem(int position, String text) {
 
-
+    public void changeItemPost(int position, String text) {
 
         Intent intent = new Intent(getActivity(), currentPost.class);
         intent.putExtra("currentPost", postsArraylist.get(position));
+        startActivity(intent);
+
+
+    }
+
+    public void changeItemPinnedPost(int position, String text) {
+
+        Intent intent = new Intent(getActivity(), currentPost.class);
+        intent.putExtra("currentPost", pinnedPostsArraylist.get(position));
         startActivity(intent);
 
 
