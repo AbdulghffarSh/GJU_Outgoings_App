@@ -2,12 +2,6 @@ package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +11,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAdd;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentFeatures;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentHome;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentSearch;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentSettings;
+import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     user userData;
     BottomNavigationView nav;
     TextView activityNameField;
+
+    post currentPost;
 
 
     @Override
@@ -166,6 +169,14 @@ public class MainActivity extends AppCompatActivity {
 
     public user getUser() {
         return userData;
+    }
+
+    public void setCurrentPost(post currentPost) {
+        this.currentPost = currentPost;
+    }
+
+    public post getCurrentPost() {
+        return currentPost;
     }
 
 

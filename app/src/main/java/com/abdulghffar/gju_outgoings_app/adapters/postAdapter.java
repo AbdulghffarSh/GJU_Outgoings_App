@@ -26,7 +26,7 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
 
 
     public interface OnItemClickListener {
-        void emailOnClick(int position);
+        void onItemClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -50,17 +50,18 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
             accountPic = itemView.findViewById(R.id.accountPic);
             postImage = itemView.findViewById(R.id.postImage);
             userName = itemView.findViewById(R.id.userName);
-//            emailButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (listener != null) {
-//                        int position = getAdapterPosition();
-//                        if (position != RecyclerView.NO_POSITION) {
-//                            listener.emailOnClick(position);
-//                        }
-//                    }
-//                }
-//            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
 
         }
@@ -99,9 +100,8 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
         holder.postBody.setText(currentItem.getBody());
         if (currentItem.getImage() != null) {
             Picasso.get().load(currentItem.getImage()).into(holder.postImage);
-        }
-        else{
-            ((ViewManager)holder.postImage.getParent()).removeView(holder.postImage);
+        } else {
+            ((ViewManager) holder.postImage.getParent()).removeView(holder.postImage);
 
         }
 
