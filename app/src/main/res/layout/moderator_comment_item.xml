@@ -44,11 +44,11 @@
             android:text="Comment" />
 
         <ImageView
-            android:id="@+id/reportButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/deleteButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_report" />
+            android:src="@drawable/ic_delete" />
 
 
 

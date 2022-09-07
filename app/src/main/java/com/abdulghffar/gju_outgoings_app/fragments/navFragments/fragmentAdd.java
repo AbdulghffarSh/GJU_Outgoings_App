@@ -37,7 +37,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.annotation.Nullable;
@@ -190,8 +189,6 @@ public class fragmentAdd extends Fragment {
         otherTag.setSelected(false);
 
         button.setSelected(true);
-
-
     }
 
 
@@ -206,9 +203,9 @@ public class fragmentAdd extends Fragment {
 
                     AssetFileDescriptor fileDescriptor = null;
                     try {
-                        fileDescriptor = getActivity().getContentResolver().openAssetFileDescriptor(photoUri , "r");
+                        fileDescriptor = getActivity().getContentResolver().openAssetFileDescriptor(photoUri, "r");
                         long fileSize = fileDescriptor.getLength();
-                        if (fileSize>=10000000){
+                        if (fileSize >= 10000000) {
                             toast("Image exceeds the maximum size 10MB");
                             return;
                         }
