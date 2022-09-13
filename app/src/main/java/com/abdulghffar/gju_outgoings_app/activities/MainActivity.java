@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     post currentPost;
+    FragmentManager fragmentManager;
 
 
     @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         activityNameField = findViewById(R.id.activityName);
         progressBar = findViewById(R.id.progressBar);
+        fragmentManager = getSupportFragmentManager();
 
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -149,9 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void replaceFragment(Fragment fragment, String activityName) {
         activityNameField.setText(activityName);
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -195,5 +197,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
 
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            Log.i("MainActivity", "popping backstack");
+            fragmentManager.popBackStack();
+        } else {
+            Log.i("MainActivity", "nothing on backstack, calling super");
+            super.onBackPressed();
+
+        }
+    }
 }

@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
+import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -174,9 +175,16 @@ public class fragmentAdd extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        MainActivity = (MainActivity) getActivity();
-        assert MainActivity != null;
-        userData = MainActivity.getUser();
+        try {
+            MainActivity = (MainActivity) getActivity();
+            assert MainActivity != null;
+            userData = MainActivity.getUser();
+        }catch (Exception e){
+            Admin Admin = (Admin) getActivity();
+            assert Admin != null;
+            userData = Admin.getUser();
+        }
+
 
 
         titleField = view.findViewById(R.id.postTitle);
@@ -374,4 +382,5 @@ public class fragmentAdd extends Fragment {
         Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG);
         toast.show();
     }
+
 }

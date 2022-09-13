@@ -2,9 +2,6 @@ package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
+import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -155,17 +156,30 @@ public class fragmentSignIn extends Fragment {
     }
 
     void updateUI(int x) {
-        if (x == 0) {
-            Intent i = new Intent(getActivity(), MainActivity.class);
-            startActivity(i);
-        } else {
-            authentication authentication = (authentication) getActivity();
-            fragmentWaiting fragmentWaiting = new fragmentWaiting();
-            assert authentication != null;
-            authentication.replaceFragment(fragmentWaiting);
+        Intent i;
+        switch (x) {
+            case 1:
+                i = new Intent(getActivity(), Admin.class);
+                startActivity(i);
+                break;
+            case 2:
+                i = new Intent(getActivity(), MainActivity.class);
+                startActivity(i);
+                break;
+            case 3:
+                authentication authentication = (authentication) getActivity();
+                fragmentWaiting fragmentWaiting = new fragmentWaiting();
+                assert authentication != null;
+                authentication.replaceFragment(fragmentWaiting);
+                break;
+            case 4:
+                toast("Your registration request was rejected, please contact the moderator");
+                break;
+            case 5:
+                toast("You have been blocked, please contact the moderator");
+                break;
         }
     }
-
 
     void toast(String message) {
         Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG);
@@ -180,12 +194,23 @@ public class fragmentSignIn extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        if (document.get("approval").toString().matches("Not yet")) {
+                        if (document.get("role").toString().matches("Moderator")) {
                             updateUI(1);
-                        } else {
-                            updateUI(0);
+                        } else if (document.get("role").toString().matches("Student")) {
+
+                            if (document.get("approval").toString().matches("Approved")) {
+                                updateUI(2);
+                            } else if (document.get("approval").toString().matches("Not yet")) {
+                                updateUI(3);
+                            } else if (document.get("approval").toString().matches("Denied")) {
+                                updateUI(4);
+                            } else if (document.get("approval").toString().matches("Blocked")) {
+                                updateUI(5);
+                            }
+
                         }
 
                     } else {

@@ -44,6 +44,9 @@ public class navBarActivities extends AppCompatActivity {
     ArrayList<user> userArrayList;
     ProgressBar progressBar;
 
+    FragmentManager fragmentManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,7 @@ public class navBarActivities extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         label = findViewById(R.id.activityLabel);
         progressBar = findViewById(R.id.progressBar);
+        fragmentManager = getSupportFragmentManager();
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +87,9 @@ public class navBarActivities extends AppCompatActivity {
 
     public void replaceFragment(Fragment fragment) {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -126,10 +130,6 @@ public class navBarActivities extends AppCompatActivity {
         return citiesArrayList;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 
     public void setCityData(city cityData) {
         this.cityData = cityData;
@@ -199,4 +199,17 @@ public class navBarActivities extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            Log.i("MainActivity", "popping backstack");
+            fragmentManager.popBackStack();
+        } else {
+            Log.i("MainActivity", "nothing on backstack, calling super");
+            super.onBackPressed();
+        }
+    }
+
 }

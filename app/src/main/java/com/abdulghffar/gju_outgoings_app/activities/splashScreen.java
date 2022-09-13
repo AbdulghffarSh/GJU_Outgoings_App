@@ -2,9 +2,6 @@ package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -12,8 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,12 +88,25 @@ public class splashScreen extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            if (document.get("approval").toString().matches("Not yet")) {
-                                Intent intent = new Intent(splashScreen.this, authentication.class);
+
+                            if (document.get("role").toString().matches("Moderator")) {
+                                Intent intent = new Intent(splashScreen.this, Admin.class);
                                 startActivity(intent);
                             } else {
-                                Intent intent = new Intent(splashScreen.this, MainActivity.class);
-                                startActivity(intent);
+
+                                if (document.get("approval").toString().matches("Not yet")) {
+                                    Intent intent = new Intent(splashScreen.this, authentication.class);
+                                    startActivity(intent);
+                                } else if (document.get("approval").toString().matches("Approved")) {
+                                    Intent intent = new Intent(splashScreen.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else if (document.get("approval").toString().matches("Blocked")) {
+                                    FirebaseAuth.getInstance().signOut();
+                                    toast("You have been blocked, please contact the moderator");
+                                } else if (document.get("approval").toString().matches("Denied")) {
+                                    FirebaseAuth.getInstance().signOut();
+                                    toast("Your registration request was rejected, please contact the moderator");
+                                }
                             }
 
                         } else {
@@ -110,5 +125,10 @@ public class splashScreen extends AppCompatActivity {
             startActivity(intent);
         }
 
+    }
+
+    void toast(String message) {
+        Toast toast = Toast.makeText(splashScreen.this, message, Toast.LENGTH_LONG);
+        toast.show();
     }
 }
