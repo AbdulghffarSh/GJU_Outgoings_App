@@ -132,8 +132,6 @@ public class fragmentCity extends Fragment {
 
     public void changeItem(int position, String text) {
 
-        navBarActivities navBarActivities = (navBarActivities) getActivity();
-        assert navBarActivities != null;
         navBarActivities.setUniversity(position);
         fragmentUniversity fragmentUniversity = new fragmentUniversity();
         navBarActivities.replaceFragment(fragmentUniversity);
@@ -142,6 +140,7 @@ public class fragmentCity extends Fragment {
     }
 
     void getComments() {
+        navBarActivities.progressBarStatus(true);
         realTimeDB = FirebaseDatabase.getInstance("https://gju-outgings-app-24c61-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference myRef = realTimeDB.getReference("/Cities/" + cityData.getCityName() + "/Comments/");
         commentsArraylist.clear();
@@ -178,6 +177,7 @@ public class fragmentCity extends Fragment {
                     }
                 });
 
+        navBarActivities.progressBarStatus(false);
 
     }
 
@@ -234,6 +234,7 @@ public class fragmentCity extends Fragment {
     }
 
     void reportComment(int position) {
+        navBarActivities.progressBarStatus(true);
 
         comment selectedComment = commentsArraylist.get(position);
         ArrayList<String> reportedBy = new ArrayList<>();
@@ -305,6 +306,7 @@ public class fragmentCity extends Fragment {
             }
         });
 
+        navBarActivities.progressBarStatus(false);
 
     }
 

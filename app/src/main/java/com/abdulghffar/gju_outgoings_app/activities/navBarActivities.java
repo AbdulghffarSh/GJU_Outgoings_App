@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class navBarActivities extends AppCompatActivity {
     FirebaseFirestore db;
     university universityData;
     ArrayList<user> userArrayList;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class navBarActivities extends AppCompatActivity {
 
         backButton = findViewById(R.id.backButton);
         label = findViewById(R.id.activityLabel);
+        progressBar = findViewById(R.id.progressBar);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -188,5 +191,12 @@ public class navBarActivities extends AppCompatActivity {
 
     public ArrayList<user> getUserArrayList() {
         return userArrayList;
+    }
+
+    public void progressBarStatus(boolean status) {
+        if (status) progressBar.setVisibility(View.VISIBLE);
+        else {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.activities.currentPost;
 import com.abdulghffar.gju_outgoings_app.adapters.postAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.post;
@@ -31,6 +32,7 @@ public class fragmentHome extends Fragment {
     ArrayList<post> pinnedPostsArraylist;
     RecyclerView pinnedPostsRecyclerView;
     com.abdulghffar.gju_outgoings_app.adapters.postAdapter pinnedPostAdapter;
+    MainActivity MainActivity;
 
     ArrayList<post> postsArraylist;
     RecyclerView postsRecyclerView;
@@ -46,6 +48,8 @@ public class fragmentHome extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_home, parent, false);
         pinnedPostsArraylist = new ArrayList<>();
         postsArraylist = new ArrayList<>();
+        MainActivity = (MainActivity) getActivity();
+        assert MainActivity != null;
 
         pinnedPostsRecyclerView = view.findViewById(R.id.pinnedPostsRecyclerView);
         pinnedPostAdapter = new postAdapter(pinnedPostsArraylist, R.layout.pinned_post_item);
@@ -90,7 +94,7 @@ public class fragmentHome extends Fragment {
     }
 
     void getData() {
-
+        MainActivity.progressBarStatus(true);
         db = FirebaseFirestore.getInstance();
 
         db.collection("PinnedPosts").orderBy("timeStamp", Query.Direction.ASCENDING)
@@ -133,6 +137,7 @@ public class fragmentHome extends Fragment {
 
                         }
                         postAdapter.notifyDataSetChanged();
+                        MainActivity.progressBarStatus(false);
                     }
                 });
 

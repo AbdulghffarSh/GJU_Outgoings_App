@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,10 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.adapters.cityAdapter;
-import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -37,6 +33,7 @@ public class fragmentRating extends Fragment {
     cityAdapter citiesAdapter;
     ArrayList<city> citiesArrayList;
     FirebaseFirestore db;
+    navBarActivities navBarActivities;
 
     View view;
 
@@ -52,6 +49,8 @@ public class fragmentRating extends Fragment {
         db = FirebaseFirestore.getInstance();
         citiesArrayList = new ArrayList<city>();
         citiesAdapter = new cityAdapter(citiesArrayList);
+        navBarActivities = (navBarActivities) getActivity();
+        assert navBarActivities != null;
 
         recyclerView.setAdapter(citiesAdapter);
         citiesAdapter.setOnItemClickListener(new cityAdapter.OnItemClickListener() {
@@ -69,7 +68,7 @@ public class fragmentRating extends Fragment {
     }
 
     private void EventChangeListener() {
-
+        navBarActivities.progressBarStatus(true);
         db.collection("Cities").orderBy("cityName", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -85,11 +84,10 @@ public class fragmentRating extends Fragment {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
                                 citiesArrayList.add(dc.getDocument().toObject(city.class));
                             }
-                            navBarActivities navBarActivities = (navBarActivities) getActivity();
-                            assert navBarActivities != null;
+
                             navBarActivities.setCitiesArrayList(citiesArrayList);
                             citiesAdapter.notifyDataSetChanged();
-
+                            navBarActivities.progressBarStatus(false);
                         }
 
                     }

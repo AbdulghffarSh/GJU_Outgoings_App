@@ -15,10 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
-import com.abdulghffar.gju_outgoings_app.adapters.cityAdapter;
-import com.abdulghffar.gju_outgoings_app.adapters.commentAdapter;
 import com.abdulghffar.gju_outgoings_app.adapters.staffAdapter;
-import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.staff;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -37,6 +34,8 @@ public class fragmentContactUs extends Fragment {
     staffAdapter staffAdapter;
     ArrayList<staff> staffArrayList;
     FirebaseFirestore db;
+    navBarActivities navBarActivities;
+
 
     View view;
 
@@ -54,6 +53,8 @@ public class fragmentContactUs extends Fragment {
         staffAdapter = new staffAdapter(staffArrayList);
 
         recyclerView.setAdapter(staffAdapter);
+        navBarActivities = (navBarActivities) getActivity();
+        assert navBarActivities != null;
 
 
         staffAdapter.setOnItemClickListener(new staffAdapter.OnItemClickListener() {
@@ -81,7 +82,7 @@ public class fragmentContactUs extends Fragment {
 
 
     private void EventChangeListener() {
-
+        navBarActivities.progressBarStatus(true);
         db.collection("Staff").orderBy("name", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -97,14 +98,16 @@ public class fragmentContactUs extends Fragment {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
                                 staffArrayList.add(dc.getDocument().toObject(staff.class));
                             }
-                            navBarActivities navBarActivities = (navBarActivities) getActivity();
-                            assert navBarActivities != null;
+
                             staffAdapter.notifyDataSetChanged();
+                            navBarActivities.progressBarStatus(false);
+
 
                         }
 
                     }
                 });
+
     }
 
 

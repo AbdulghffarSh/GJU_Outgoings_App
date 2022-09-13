@@ -59,6 +59,7 @@ public class fragmentUniversity extends Fragment {
     commentAdapter commentAdapter;
 
     university universityData;
+    navBarActivities navBarActivities;
 
     FirebaseDatabase realTimeDB;
     FirebaseFirestore db;
@@ -72,7 +73,7 @@ public class fragmentUniversity extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_university, parent, false);
-        navBarActivities navBarActivities = (navBarActivities) getActivity();
+        navBarActivities = (navBarActivities) getActivity();
         assert navBarActivities != null;
         universityData = navBarActivities.getUniversity();
         setUpUI();
@@ -127,6 +128,7 @@ public class fragmentUniversity extends Fragment {
     }
 
     void getComments() {
+        navBarActivities.progressBarStatus(true);
         realTimeDB = FirebaseDatabase.getInstance("https://gju-outgings-app-24c61-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference myRef = realTimeDB.getReference("/Cities/" + universityData.getCityName() + "/" + universityData.getUniversityName() + "/Comments/");
         commentsArraylist.clear();
@@ -163,6 +165,7 @@ public class fragmentUniversity extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+        navBarActivities.progressBarStatus(false);
 
 
     }
@@ -190,6 +193,7 @@ public class fragmentUniversity extends Fragment {
     }
 
     void reportComment(int position) {
+        navBarActivities.progressBarStatus(true);
 
         comment selectedComment = commentsArraylist.get(position);
         ArrayList<String> reportedBy = new ArrayList<>();
@@ -234,6 +238,8 @@ public class fragmentUniversity extends Fragment {
 
                                         }
                                     });
+                            navBarActivities.progressBarStatus(false);
+
                         }
 
                     } else {
@@ -254,9 +260,14 @@ public class fragmentUniversity extends Fragment {
 
                                     }
                                 });
+                        navBarActivities.progressBarStatus(false);
+
                     }
+                    navBarActivities.progressBarStatus(false);
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
+                    navBarActivities.progressBarStatus(false);
+
                 }
             }
         });
@@ -332,6 +343,7 @@ public class fragmentUniversity extends Fragment {
         // Show the Alert Dialog box
         alertDialog.show();
     }
+
     void closeKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (null != getActivity().getCurrentFocus())

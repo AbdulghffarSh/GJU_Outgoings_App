@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     user userData;
     BottomNavigationView nav;
     TextView activityNameField;
+    ProgressBar progressBar;
 
     post currentPost;
 
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         activityNameField = findViewById(R.id.activityName);
+        progressBar = findViewById(R.id.progressBar);
 
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -183,6 +186,13 @@ public class MainActivity extends AppCompatActivity {
 
     public post getCurrentPost() {
         return currentPost;
+    }
+
+    public void progressBarStatus(boolean status) {
+        if (status) progressBar.setVisibility(View.VISIBLE);
+        else {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
 

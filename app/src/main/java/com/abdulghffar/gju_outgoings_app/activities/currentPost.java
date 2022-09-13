@@ -7,6 +7,7 @@ import android.view.ViewManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,7 @@ public class currentPost extends AppCompatActivity {
     ImageView accountPic;
     ImageView postImage;
     ImageView addCommentButton;
+    ProgressBar progressBar;
 
     EditText commentField;
 
@@ -77,11 +79,6 @@ public class currentPost extends AppCompatActivity {
         postCommentsRecyclerView.setHasFixedSize(true);
         postCommentsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         postCommentsRecyclerView.setAdapter(postCommentsAdapter);
-
-
-        System.out.println("Post details: " + currentPost.getUser().getName());
-        System.out.println("Post details: " + currentPost.getUser().getUid());
-        System.out.println("Post details: " + currentPost.getUser().getEmail());
 
 
 //        getData();
@@ -115,6 +112,8 @@ public class currentPost extends AppCompatActivity {
         userName.setText(currentPost.getUser().getName());
         postBody.setText(currentPost.getBody());
         timeStamp.setText(currentPost.getTimeStamp());
+
+        progressBar = findViewById(R.id.progressBar);
 
 
         try {
@@ -196,6 +195,7 @@ public class currentPost extends AppCompatActivity {
 //    }
 
     void getComments() {
+        progressBar.setVisibility(View.VISIBLE);
         realTimeDB = FirebaseDatabase.getInstance();
         String ref = "/Posts/" + "/Users/" + currentPost.getUser().getUid() + "/UserPosts/" + currentPost.getPostID() + "/Comments";
 
@@ -221,6 +221,8 @@ public class currentPost extends AppCompatActivity {
                                     comment commentObject = new comment(comment, Uid, timeStamp, user, ref);
                                     postCommentsArrayList.add(commentObject);
                                     postCommentsAdapter.notifyDataSetChanged();
+                                    progressBar.setVisibility(View.INVISIBLE);
+
 
                                 }
                             });
