@@ -1,7 +1,6 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class report {
     String commentText;
@@ -57,7 +56,7 @@ public class report {
         return uid;
     }
 
-    public ArrayList<String> getReportedBy() {
+    public ArrayList<String> getUsers() {
         return users;
     }
 }

@@ -253,7 +253,7 @@ public class fragmentCity extends Fragment {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         report existReport = document.toObject(report.class);
                         assert existReport != null;
-                        ArrayList<String> reportedBy = existReport.getReportedBy();
+                        ArrayList<String> reportedBy = existReport.getUsers();
                         for (String uid : reportedBy) {
                             assert myUid != null;
                             if (uid.contains(myUid)) {

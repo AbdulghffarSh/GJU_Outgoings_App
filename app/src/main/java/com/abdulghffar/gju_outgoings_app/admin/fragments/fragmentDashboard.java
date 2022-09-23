@@ -29,6 +29,8 @@ public class fragmentDashboard extends Fragment {
     ImageView signOutButton;
     Button changeLayout;
     Button addPost;
+    Button getReports;
+
 
     //Others
     View view;
@@ -62,6 +64,14 @@ public class fragmentDashboard extends Fragment {
                 Admin.replaceFragment(new fragmentAdd());
             }
         });
+        getReports.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Admin = (Admin) getActivity();
+                assert Admin != null;
+                Admin.replaceFragment(new fragmentReports());
+            }
+        });
 
         return view;
     }
@@ -78,6 +88,9 @@ public class fragmentDashboard extends Fragment {
         signOutButton = (ImageView) view.findViewById(R.id.signOutButton);
         changeLayout = (Button) view.findViewById(R.id.changeViewButton);
         addPost = (Button) view.findViewById(R.id.addPostButton);
+        getReports = (Button) view.findViewById(R.id.reportsButton);
+
+
     }
 
     public void signOutDialog() {
