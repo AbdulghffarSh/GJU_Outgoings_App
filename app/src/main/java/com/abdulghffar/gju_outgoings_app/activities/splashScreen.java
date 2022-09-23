@@ -2,12 +2,9 @@ package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,10 +21,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Timer;
-
 public class splashScreen extends AppCompatActivity {
-    Timer timer = new Timer();
+
     ProgressBar progressBar;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -41,41 +36,11 @@ public class splashScreen extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
-        timer();
+        checkUser();
 
 
     }
 
-    void timer() {
-
-        ObjectAnimator animation2 = ObjectAnimator.ofInt(null, "progress", 0, 100);
-        animation2.setDuration(3000);
-        animation2.setInterpolator(new DecelerateInterpolator());
-        animation2.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-                user = mAuth.getCurrentUser();
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                //do something when the countdown is complete
-                checkUser();
-
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        });
-        animation2.start();
-
-    }
 
     private void checkUser() {
         db = FirebaseFirestore.getInstance();
