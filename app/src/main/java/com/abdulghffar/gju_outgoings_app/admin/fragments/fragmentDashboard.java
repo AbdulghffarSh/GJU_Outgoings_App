@@ -29,6 +29,7 @@ public class fragmentDashboard extends Fragment {
     ImageView signOutButton;
     Button changeLayout;
     Button addPost;
+    Button addEvent;
     Button getReports;
 
 
@@ -73,6 +74,15 @@ public class fragmentDashboard extends Fragment {
             }
         });
 
+        addEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Admin = (Admin) getActivity();
+                assert Admin != null;
+                Admin.replaceFragment(new fragmentAddEvent());
+            }
+        });
+
         return view;
     }
 
@@ -89,7 +99,7 @@ public class fragmentDashboard extends Fragment {
         changeLayout = (Button) view.findViewById(R.id.changeViewButton);
         addPost = (Button) view.findViewById(R.id.addPostButton);
         getReports = (Button) view.findViewById(R.id.reportsButton);
-
+        addEvent = (Button) view.findViewById(R.id.addEventButton);
 
     }
 

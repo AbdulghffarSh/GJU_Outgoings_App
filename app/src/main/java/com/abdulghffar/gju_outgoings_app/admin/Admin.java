@@ -5,6 +5,8 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,7 @@ public class Admin extends AppCompatActivity {
     FirebaseUser user;
     FirebaseFirestore db;
     FragmentManager fragmentManager;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class Admin extends AppCompatActivity {
     void setup() {
         fragmentManager = getSupportFragmentManager();
         replaceFragment(new fragmentDashboard());
+        progressBar = findViewById(R.id.progressBar);
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -107,6 +111,16 @@ public class Admin extends AppCompatActivity {
             startActivity(i);
 
         }
+    }
+
+    public void setProgressBar(boolean i) {
+        if (i) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        if (!i) {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+
     }
 
 }

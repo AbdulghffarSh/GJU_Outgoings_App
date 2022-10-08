@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 public class fragmentFeatures extends Fragment {
 
     RelativeLayout citiesAndUniversitiesLayout;
+    RelativeLayout eventsLayoutLayout;
 
 
     View view;
@@ -26,12 +27,26 @@ public class fragmentFeatures extends Fragment {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_features, parent, false);
         citiesAndUniversitiesLayout = view.findViewById(R.id.citiesAndUniversitiesLayout);
+        eventsLayoutLayout = view.findViewById(R.id.eventsLayout);
+
         citiesAndUniversitiesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(getActivity(), navBarActivities.class);
                 String fragmentName = "Rating";
+                intent.putExtra("fragmentName", fragmentName);
+                startActivity(intent);
+
+            }
+        });
+
+        eventsLayoutLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), navBarActivities.class);
+                String fragmentName = "Events";
                 intent.putExtra("fragmentName", fragmentName);
                 startActivity(intent);
 

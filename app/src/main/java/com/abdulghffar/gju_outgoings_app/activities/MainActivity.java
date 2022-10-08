@@ -4,6 +4,8 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     post currentPost;
     FragmentManager fragmentManager;
+    boolean doubleBackClick = false;
 
 
     @Override
@@ -199,14 +202,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-        if (fragmentManager.getBackStackEntryCount() > 0) {
+        if (doubleBackClick) {
+            Log.i("MainActivity", "Double back click");
+            this.finishAffinity();
+            return;
+        } else if (fragmentManager.getBackStackEntryCount() > 1)  {
             Log.i("MainActivity", "popping backstack");
             fragmentManager.popBackStack();
-        } else {
-            Log.i("MainActivity", "nothing on backstack, calling super");
-            super.onBackPressed();
-
+        } else if (fragmentManager.getBackStackEntryCount() == 1) {
+            fragmentHome fragmentHome = new fragmentHome();
+            replaceFragment(fragmentHome, "Home");
         }
+
+        this.doubleBackClick = true;
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackClick = false;
+            }
+        }, 500);
+
     }
+
 }

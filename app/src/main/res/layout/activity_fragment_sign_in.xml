@@ -55,7 +55,8 @@
             android:hint="@string/e_mail"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="@color/black"/>
 
         <Space
             android:layout_width="match_parent"
@@ -73,7 +74,8 @@
             android:fontFamily="@font/ubuntu_regular"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="@color/black"/>
 
         <Space
             android:layout_width="match_parent"

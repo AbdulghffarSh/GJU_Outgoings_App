@@ -22,7 +22,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class splashScreen extends AppCompatActivity {
-
     ProgressBar progressBar;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -36,8 +35,8 @@ public class splashScreen extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         checkUser();
-
 
     }
 
@@ -71,6 +70,10 @@ public class splashScreen extends AppCompatActivity {
                                 } else if (document.get("approval").toString().matches("Denied")) {
                                     FirebaseAuth.getInstance().signOut();
                                     toast("Your registration request was rejected, please contact the moderator");
+                                } else {
+                                    toast("You have a problem with your account, please contact the moderator");
+                                    Intent intent = new Intent(splashScreen.this, authentication.class);
+                                    startActivity(intent);
                                 }
                             }
 

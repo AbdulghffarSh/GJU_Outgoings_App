@@ -19,6 +19,7 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentEvents;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentRating;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.university;
@@ -115,6 +116,11 @@ public class navBarActivities extends AppCompatActivity {
                 fragmentContactUs fragmentContactUs = new fragmentContactUs();
                 replaceFragment(fragmentContactUs);
                 break;
+            case "Events":
+                label.setText("Events");
+                fragmentEvents fragmentEvents = new fragmentEvents();
+                replaceFragment(fragmentEvents);
+                break;
 
 
         }
@@ -172,6 +178,10 @@ public class navBarActivities extends AppCompatActivity {
     public void setCityUniversities(HashMap<String, university> cityUniversities) {
         this.cityUniversities = cityUniversities;
     }
+//   cityUniversities public void seteventsArrayList(HashMap<event> events) {
+//        this.events = events;
+//    }
+//
 
     public void setUniversity(int position) {
         ArrayList<university> universities = new ArrayList<>(cityUniversities.values());
@@ -203,13 +213,16 @@ public class navBarActivities extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (fragmentManager.getBackStackEntryCount() > 0) {
+        if (fragmentManager.getBackStackEntryCount() > 1) {
             Log.i("MainActivity", "popping backstack");
             fragmentManager.popBackStack();
-        } else {
-            Log.i("MainActivity", "nothing on backstack, calling super");
+        } else if (fragmentManager.getBackStackEntryCount() == 1) {
             super.onBackPressed();
+            super.onBackPressed();
+
         }
+
+
     }
 
 }

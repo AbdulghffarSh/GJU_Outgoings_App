@@ -46,13 +46,6 @@
             app:civ_border_color="@color/Primary_orange"
             app:civ_border_width="3dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="15dp"
-            android:layout_toStartOf="@+id/notifications"
-            android:src="@drawable/ic_chat" />
     </RelativeLayout>
 
     <TextView
@@ -65,27 +58,21 @@
         android:text="Activity"
         android:textSize="30sp" />
 
-    <FrameLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/botNavBar"
         android:layout_below="@+id/activityName"
-        android:paddingVertical="10dp">
+        android:orientation="vertical"
+        android:paddingTop="20dp">
 
-
-        <ScrollView
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:layout_height="wrap_content" />
 
-            <FrameLayout
-                android:id="@+id/fragmentContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </ScrollView>
-    </FrameLayout>
+    </ScrollView>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
