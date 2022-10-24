@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/blue"
+    android:backgroundTint="@color/blue"
+    app:contentPadding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center"
+            android:text="Event Title"
+            android:textColor="@color/Primary_orange" />
+
+        <TextView
+            android:id="@+id/startTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:drawableStart="@drawable/ic_clock"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center_vertical"
+            android:hint="Start Date"
+            android:paddingHorizontal="15dp"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/endTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginBottom="20dp"
+            android:drawableStart="@drawable/ic_clock"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/Primary_orange"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center_vertical"
+            android:hint="End Date"
+            android:paddingHorizontal="15dp"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/eventDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginBottom="20dp"
+            android:drawableStart="@drawable/ic_note"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/ubuntu_regular"
+            android:gravity="center_vertical"
+            android:hint="Description"
+            android:paddingHorizontal="15dp"
+            android:textColor="@color/grey"
+            android:autoLink="web"/>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

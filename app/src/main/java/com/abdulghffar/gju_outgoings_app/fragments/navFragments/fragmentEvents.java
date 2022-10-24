@@ -1,11 +1,17 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -53,23 +59,22 @@ public class fragmentEvents extends Fragment {
         assert navBarActivities != null;
 
         recyclerView.setAdapter(eventAdapter);
-//        eventAdapter.setOnItemClickListener(new cityAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                changeItem(position, "Clicked");
-//
-//            }
-//        });
+
+        eventAdapter.setOnItemClickListener(new eventAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                openDialog(position);
+            }
+        });
 
         EventChangeListener();
-
 
         return view;
     }
 
     private void EventChangeListener() {
         navBarActivities.progressBarStatus(true);
-        db.collection("Events").orderBy("startDate", Query.Direction.ASCENDING)
+        db.collection("Events").orderBy("startDate", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
@@ -103,17 +108,81 @@ public class fragmentEvents extends Fragment {
         // Setup any handles to view objects here
     }
 
-//    public void changeItem(int position, String text) {
-//
-//        navBarActivities navBarActivities = (navBarActivities) getActivity();
-//        assert navBarActivities != null;
-//        navBarActivities.seteventsArrayList(eventsArrayList);
-//        fragmentCity fragmentCity = new fragmentCity();
-//        navBarActivities.setCityData(eventsArrayList.get(position));
-//        navBarActivities.replaceFragment(fragmentCity);
-//
-//
-//    }
 
+    void openDialog(int position) {
+        ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
+                inflate(R.layout.event_dialog, null, false);
+        TextView eventTitle = subView.findViewById(R.id.eventTitle);
+        TextView startTime = subView.findViewById(R.id.startTime);
+        TextView endTime = subView.findViewById(R.id.endTime);
+        TextView description = subView.findViewById(R.id.eventDescription);
+
+
+        eventTitle.setText(eventsArrayList.get(position).getTitle());
+        startTime.setText(eventsArrayList.get(position).getStartDate().toString());
+        endTime.setText(eventsArrayList.get(position).getEndDate().toString());
+        description.setText(eventsArrayList.get(position).getDescription());
+
+
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(getActivity(), R.style.AlertDialogCustom);
+
+        builder.setView(subView);
+
+        builder.setCancelable(false);
+        builder
+                .setPositiveButton(
+                        "Add",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                addEvent(eventsArrayList.get(position));
+
+                            }
+                        });
+
+        builder
+                .setNegativeButton(
+                        "Dismiss",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+    }
+
+    void addEvent(event currentEvent) {
+
+        Intent calendarIntentVar = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, currentEvent.getStartDate())
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, currentEvent.getEndDate())
+                .putExtra(CalendarContract.Events.TITLE, currentEvent.getTitle())
+                .putExtra(CalendarContract.Events.DESCRIPTION, currentEvent.getDescription());
+
+        try {
+            startActivity(calendarIntentVar);
+        } catch (Exception ErrVar) {
+            toast("Install Calender App");
+        }
+
+    }
+
+    void toast(String message) {
+        Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+        toast.show();
+    }
 
 }

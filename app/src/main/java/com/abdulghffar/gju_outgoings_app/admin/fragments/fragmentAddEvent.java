@@ -40,7 +40,7 @@ import javax.annotation.Nullable;
 public class fragmentAddEvent extends Fragment {
 
     TextView fromDateField, toDateField, fromTimeField, toTimeField;
-    EditText eventTitle;
+    EditText eventTitle, eventNotes;
     private SimpleDateFormat dateFormatter, timeFormatter;
     Button SendButton;
     String FilterToDate, FilterFromDate;
@@ -111,6 +111,7 @@ public class fragmentAddEvent extends Fragment {
         fromTimeField = (TextView) view.findViewById(R.id.fromTime);
         toTimeField = (TextView) view.findViewById(R.id.toTime);
         eventTitle = (EditText) view.findViewById(R.id.eventTitle);
+        eventNotes = (EditText) view.findViewById(R.id.eventNotes);
 
         SendButton = (Button) view.findViewById(R.id.SendDateBtn);
         toTimeStamp = Calendar.getInstance(Locale.getDefault());
@@ -132,9 +133,9 @@ public class fragmentAddEvent extends Fragment {
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, fromTimeStamp.getTimeInMillis())
                 .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, toTimeStamp.getTimeInMillis())
                 .putExtra(CalendarContract.Events.TITLE, eventTitle.getText().toString())
-                .putExtra(CalendarContract.Events.DESCRIPTION, "Hav ful fun");
+                .putExtra(CalendarContract.Events.DESCRIPTION, eventNotes.getText().toString());
 
-        event event = new event(fromTimeStamp.getTime(), toTimeStamp.getTime(), eventTitle.getText().toString(), "Desctiption");
+        event event = new event(fromTimeStamp.getTime(), toTimeStamp.getTime(), eventTitle.getText().toString(), eventNotes.getText().toString());
         addToFirebase(event);
         try {
             startActivity(calendarIntentVar);

@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:padding="16dp"
-android:backgroundTint="@color/blue"
-android:background="@color/blue"
-    >
-
-
-<TextView
-    android:id="@+id/text"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Message"
-    android:fontFamily="@font/ubuntu_bold"
-    android:gravity="center"
-    android:textColor="@color/Primary_blue"
-    />
-
-
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:layout_below="@+id/text"
-    android:background="@drawable/borders"
+    android:background="@color/blue"
+    android:backgroundTint="@color/blue"
+    app:contentPadding="10dp"
     >
 
-    <Spinner
-        android:id="@+id/majorsSpinner"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:fontFamily="@font/ubuntu_bold"
-        android:textColor="@color/grey" />
-</RelativeLayout>
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center"
+            android:text="Message"
+            android:textColor="@color/Primary_blue" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/text"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/borders">
+
+            <Spinner
+                android:id="@+id/majorsSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:textColor="@color/grey" />
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

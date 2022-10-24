@@ -125,6 +125,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
+            android:autoLink="web"
             android:background="@drawable/borders"
             android:backgroundTint="@color/white"
             android:drawableStart="@drawable/ic_clock"
@@ -135,6 +136,23 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black" />
     </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/eventNotes"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="40dp"
+        android:background="@drawable/borders"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/ubuntu_regular"
+        android:gravity="top"
+        android:hint="Notes..."
+        android:padding="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="13sp" />
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/SendDateBtn"
@@ -148,5 +166,6 @@
         android:textAllCaps="false"
         android:textColor="@color/Primary_orange"
         android:textSize="20sp" />
+
 
 </LinearLayout>
