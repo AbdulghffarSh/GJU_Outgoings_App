@@ -19,7 +19,9 @@
         android:theme="@style/Theme.GJU_Outgoings_App">
         <activity
             android:name=".admin.Admin"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="false"
+            />
         <activity
             android:name=".activities.navBarActivities"
             android:exported="false" />

@@ -54,14 +54,36 @@ public class fragmentReports extends Fragment {
             @Override
             public void onItemClick(int position) {
                 report selectedItem = reportArrayList.get(position);
-                realTimeDb.getReference(selectedItem.getReference()).removeValue();
-                toast("Deleted");
-                getReports();
+                try {
+                    realTimeDb.getReference(selectedItem.getReference()).removeValue();
+                    db.collection("Reports").document(selectedItem.getTimeStamp()).delete();
+                    reportArrayList.clear();
+                    getReports();
+                    toast("Deleted");
+
+
+                } catch (Exception e) {
+                    toast("Error: " + e);
+                }
+
+            }
+
+            @Override
+            public void discardClick(int position) {
+                report selectedItem = reportArrayList.get(position);
+                try {
+                    db.collection("Reports").document(selectedItem.getTimeStamp()).delete();
+                    reportArrayList.clear();
+                    getReports();
+                    toast("Discarded");
+
+                } catch (Exception e) {
+                    toast("Error: " + e);
+                }
 
             }
 
         });
-
 
 
         return view;
@@ -92,7 +114,7 @@ public class fragmentReports extends Fragment {
 
 
     void toast(String message) {
-        Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
         toast.show();
     }
 

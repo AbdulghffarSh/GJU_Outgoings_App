@@ -25,6 +25,7 @@ public class reportsAdapter extends RecyclerView.Adapter<reportsAdapter.viewHold
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+        void discardClick(int position);
     }
 
     public void OnItemClickListener(reportsAdapter.OnItemClickListener listener) {
@@ -56,7 +57,7 @@ public class reportsAdapter extends RecyclerView.Adapter<reportsAdapter.viewHold
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            listener.discardClick(position);
                         }
                     }
                 }

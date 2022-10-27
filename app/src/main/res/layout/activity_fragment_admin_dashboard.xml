@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F4F4"
     android:orientation="vertical"
     tools:context=".admin.Admin">
 
@@ -22,7 +23,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/white"
+            android:background="#F0F4F4"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_signout"
             android:translationZ="1dp"
@@ -31,11 +32,15 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
             android:background="@color/white"
-            android:paddingHorizontal="120dp"
-            android:src="@mipmap/gju_logo" />
+            android:backgroundTint="#F0F4F4"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_logo"
+            android:layout_centerHorizontal="true"/>
+
 
 
         <GridLayout

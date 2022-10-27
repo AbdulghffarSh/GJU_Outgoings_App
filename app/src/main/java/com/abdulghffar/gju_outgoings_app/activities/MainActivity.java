@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAdd;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentFeatures;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentHome;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     post currentPost;
     FragmentManager fragmentManager;
     boolean doubleBackClick = false;
+    ImageView adminPanelButton;
 
 
     @Override
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         activityNameField = findViewById(R.id.activityName);
         progressBar = findViewById(R.id.progressBar);
         fragmentManager = getSupportFragmentManager();
+        adminPanelButton = findViewById(R.id.adminPanelButton);
+
 
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -91,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
                         if (userData.getProfilePic() != null) {
                             Picasso.get().load(userData.getProfilePic()).into(profileImage);
                         }
+                        if (userData.getRole().equals("Moderator")) {
+                            adminPanelButton.setVisibility(View.VISIBLE);
+                        }
                         getToken();
 
                     } else {
@@ -102,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        adminPanelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Admin.class);
+                startActivity(intent);
+            }
+        });
         nav = findViewById(R.id.botNavBar);
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -206,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("MainActivity", "Double back click");
             this.finishAffinity();
             return;
-        } else if (fragmentManager.getBackStackEntryCount() > 1)  {
+        } else if (fragmentManager.getBackStackEntryCount() > 1) {
             Log.i("MainActivity", "popping backstack");
             fragmentManager.popBackStack();
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
