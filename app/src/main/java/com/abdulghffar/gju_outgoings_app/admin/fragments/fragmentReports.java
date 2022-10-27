@@ -17,6 +17,7 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.admin.adapters.reportsAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.report;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,6 +36,7 @@ public class fragmentReports extends Fragment {
     TextView empty;
 
     FirebaseFirestore db;
+    FirebaseDatabase realTimeDb;
 
     //Others
     View view;
@@ -47,6 +49,20 @@ public class fragmentReports extends Fragment {
 
         setup();
         getReports();
+
+        reportsAdapter.OnItemClickListener(new reportsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                report selectedItem = reportArrayList.get(position);
+                realTimeDb.getReference(selectedItem.getReference()).removeValue();
+                toast("Deleted");
+                getReports();
+
+            }
+
+        });
+
+
 
         return view;
     }
@@ -70,6 +86,7 @@ public class fragmentReports extends Fragment {
         empty = (TextView) view.findViewById(R.id.empty);
 
         db = FirebaseFirestore.getInstance();
+        realTimeDb = FirebaseDatabase.getInstance();
 
     }
 

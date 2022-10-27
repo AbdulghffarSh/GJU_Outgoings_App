@@ -179,12 +179,11 @@ public class fragmentAdd extends Fragment {
             MainActivity = (MainActivity) getActivity();
             assert MainActivity != null;
             userData = MainActivity.getUser();
-        }catch (Exception e){
+        } catch (Exception e) {
             Admin Admin = (Admin) getActivity();
             assert Admin != null;
             userData = Admin.getUser();
         }
-
 
 
         titleField = view.findViewById(R.id.postTitle);

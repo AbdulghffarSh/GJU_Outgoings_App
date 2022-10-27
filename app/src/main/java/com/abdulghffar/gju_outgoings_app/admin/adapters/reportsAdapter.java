@@ -27,15 +27,18 @@ public class reportsAdapter extends RecyclerView.Adapter<reportsAdapter.viewHold
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void OnItemClickListener(reportsAdapter.OnItemClickListener listener) {
         mListener = listener;
     }
+
 
     public static class viewHolder extends RecyclerView.ViewHolder {
         public TextView reportTitle;
         public TextView userName;
         public TextView postTimeStamp;
         public ImageView accountPic;
+        public ImageView deleteCommentButton;
+        public ImageView discardButton;
 
 
         public viewHolder(View itemView, final OnItemClickListener listener) {
@@ -44,8 +47,22 @@ public class reportsAdapter extends RecyclerView.Adapter<reportsAdapter.viewHold
             postTimeStamp = itemView.findViewById(R.id.postTimeStamp);
             accountPic = itemView.findViewById(R.id.accountPic);
             userName = itemView.findViewById(R.id.userName);
+            deleteCommentButton = itemView.findViewById(R.id.deleteButton);
+            discardButton = itemView.findViewById(R.id.discard);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            discardButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            deleteCommentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
@@ -76,8 +93,8 @@ public class reportsAdapter extends RecyclerView.Adapter<reportsAdapter.viewHold
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         report currentItem = reportsArrayList.get(position);
-//        holder.userName.setText();
-        System.out.println(currentItem.getUsers());
+        holder.userName.setText(currentItem.getUsers().size() + "...");
+
         try {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
