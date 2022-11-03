@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.adapters.userAdapter;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
-import com.abdulghffar.gju_outgoings_app.admin.adapters.reportsAdapter;
-import com.abdulghffar.gju_outgoings_app.objects.report;
+import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,9 +30,10 @@ import javax.annotation.Nullable;
 public class fragmentManageUsers extends Fragment {
 
     RecyclerView reportsRecyclerView;
-    ArrayList<report> reportArrayList;
-    reportsAdapter reportsAdapter;
-    TextView empty;
+    ArrayList<user> usersArrayList;
+    ArrayList<user> newUsersArrayList;
+    userAdapter userAdapter;
+    TextView empty, newUsersCount;
 
     FirebaseFirestore db;
 
@@ -46,7 +47,7 @@ public class fragmentManageUsers extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_manage_users, parent, false);
 
         setup();
-        getReports();
+        getUsers();
 
         return view;
     }
@@ -61,13 +62,14 @@ public class fragmentManageUsers extends Fragment {
 
     void setup() {
         Admin = (Admin) getActivity();
-        reportArrayList = new ArrayList<>();
+        newUsersArrayList = new ArrayList<>();
         reportsRecyclerView = view.findViewById(R.id.recyclerView);
-        reportsAdapter = new reportsAdapter(reportArrayList);
+        userAdapter = new userAdapter(newUsersArrayList);
         reportsRecyclerView.setHasFixedSize(true);
         reportsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        reportsRecyclerView.setAdapter(reportsAdapter);
+        reportsRecyclerView.setAdapter(userAdapter);
         empty = (TextView) view.findViewById(R.id.empty);
+        newUsersCount = view.findViewById(R.id.newUsersCount);
 
         db = FirebaseFirestore.getInstance();
 
@@ -79,10 +81,10 @@ public class fragmentManageUsers extends Fragment {
         toast.show();
     }
 
-    void getReports() {
-        db.collection("Reports")
+    void getUsers() {
+        db.collection("Users")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @SuppressLint("NotifyDataSetChanged")
+                    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
                         if (error != null) {
@@ -92,18 +94,15 @@ public class fragmentManageUsers extends Fragment {
 
                         assert value != null;
                         for (DocumentChange dc : value.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                reportArrayList.add(dc.getDocument().toObject(report.class));
+                            if (dc.getType() == DocumentChange.Type.ADDED && dc.getDocument().toObject(user.class).getApproval().equals("Not yet")) {
+                                newUsersArrayList.add(dc.getDocument().toObject(user.class));
+
                             }
 
-                            reportsAdapter.notifyDataSetChanged();
+                            userAdapter.notifyDataSetChanged();
 
                         }
-                        if (reportArrayList.size() < 1) {
-                            empty.setVisibility(View.VISIBLE);
-                        } else {
-                            empty.setVisibility(View.INVISIBLE);
-                        }
+                        newUsersCount.setText(newUsersArrayList.size() + "");
                     }
                 });
 

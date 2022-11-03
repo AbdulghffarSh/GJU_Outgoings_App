@@ -16,6 +16,8 @@
         <entry key="app/src/main/res/drawable/d.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/focus.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable/ic_add_event.xml" value="0.2165" />
+        <entry key="app/src/main/res/drawable/ic_admin.xml" value="0.2165" />
+        <entry key="app/src/main/res/drawable/ic_chat.xml" value="0.2165" />
         <entry key="app/src/main/res/drawable/ic_city.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_clock.xml" value="0.212" />
         <entry key="app/src/main/res/drawable/ic_compass_svgrepo_com.xml" value="0.1735" />
@@ -27,6 +29,7 @@
         <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.2165" />
         <entry key="app/src/main/res/drawable/ic_more.xml" value="0.2145" />
         <entry key="app/src/main/res/drawable/ic_no_image.xml" value="0.1695" />
+        <entry key="app/src/main/res/drawable/ic_note.xml" value="0.2165" />
         <entry key="app/src/main/res/drawable/ic_notifications.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_or_sign_in_with.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_pin.xml" value="0.1735" />
@@ -51,7 +54,7 @@
         <entry key="app/src/main/res/layout/activity_fragment_account.xml" value="0.3093638102213541" />
         <entry key="app/src/main/res/layout/activity_fragment_add.xml" value="0.2346650623139881" />
         <entry key="app/src/main/res/layout/activity_fragment_add_events.xml" value="0.36555891238670696" />
-        <entry key="app/src/main/res/layout/activity_fragment_admin_dashboard.xml" value="0.48054758707682294" />
+        <entry key="app/src/main/res/layout/activity_fragment_admin_dashboard.xml" value="0.21966526285807292" />
         <entry key="app/src/main/res/layout/activity_fragment_admin_reports.xml" value="0.30885416666666665" />
         <entry key="app/src/main/res/layout/activity_fragment_chat.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/activity_fragment_city.xml" value="0.26954193115234376" />
@@ -88,6 +91,7 @@
         <entry key="app/src/main/res/layout/manage_user_item.xml" value="0.3880208333333333" />
         <entry key="app/src/main/res/layout/message_item.xml" value="0.27334115164620537" />
         <entry key="app/src/main/res/layout/moderator_comment_item.xml" value="0.4178400675455729" />
+        <entry key="app/src/main/res/layout/moderator_post_item.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/opened_post_item.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/pinned_post_item.xml" value="0.32792207792207795" />

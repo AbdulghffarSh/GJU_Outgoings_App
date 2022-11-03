@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 public class fragmentDashboard extends Fragment {
 
     ImageView signOutButton;
-    Button changeLayout;
+    Button changeLayout, manageUsers;
     Button addPost;
     Button addEvent;
     Button getReports;
@@ -83,6 +83,14 @@ public class fragmentDashboard extends Fragment {
             }
         });
 
+        manageUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Admin = (Admin) getActivity();
+                assert Admin != null;
+                Admin.replaceFragment(new fragmentManageUsers());
+            }
+        });
         return view;
     }
 
@@ -100,7 +108,7 @@ public class fragmentDashboard extends Fragment {
         addPost = (Button) view.findViewById(R.id.addPostButton);
         getReports = (Button) view.findViewById(R.id.reportsButton);
         addEvent = (Button) view.findViewById(R.id.addEventButton);
-
+        manageUsers = (Button) view.findViewById(R.id.manageUsers);
     }
 
     public void signOutDialog() {
