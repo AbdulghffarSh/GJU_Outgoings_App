@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
-import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAdd;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAddPost;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentFeatures;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentHome;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentSearch;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(fragmentSearch, "Search");
                         break;
                     case R.id.add:
-                        fragmentAdd fragmentAdd = new fragmentAdd();
+                        fragmentAddPost fragmentAdd = new fragmentAddPost();
                         replaceFragment(fragmentAdd, "Post");
                         break;
                     case R.id.features:
@@ -184,6 +184,18 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(unused -> toast("Token updated successfully")).addOnFailureListener(e -> toast("Unable to update token"));
 
 
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscribe failed";
+                        }
+                        Log.d(TAG, msg);
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     void toast(String message) {

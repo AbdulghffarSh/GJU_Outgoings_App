@@ -3,7 +3,6 @@ package com.abdulghffar.gju_outgoings_app.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -110,10 +109,8 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
         }
         holder.postBody.setText(textBody);
         if (currentItem.getImage() != null) {
+            holder.postImage.setVisibility(View.VISIBLE);
             Picasso.get().load(currentItem.getImage()).into(holder.postImage);
-        } else {
-            ((ViewManager) holder.postImage.getParent()).removeView(holder.postImage);
-
         }
 
         if (currentItem.getUser() != null) {

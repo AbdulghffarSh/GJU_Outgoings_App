@@ -19,7 +19,7 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
-import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAdd;
+import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAddPost;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.annotation.Nullable;
@@ -62,7 +62,7 @@ public class fragmentDashboard extends Fragment {
             public void onClick(View view) {
                 Admin = (Admin) getActivity();
                 assert Admin != null;
-                Admin.replaceFragment(new fragmentAdd());
+                Admin.replaceFragment(new fragmentAddPost());
             }
         });
         getReports.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +89,7 @@ public class fragmentDashboard extends Fragment {
                 Admin = (Admin) getActivity();
                 assert Admin != null;
                 Admin.replaceFragment(new fragmentManageUsers());
+
             }
         });
         return view;
