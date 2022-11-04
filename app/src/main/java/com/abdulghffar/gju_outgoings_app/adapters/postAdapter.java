@@ -21,7 +21,6 @@ import java.util.Date;
 public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
     private final ArrayList<post> postsArrayList;
     private OnItemClickListener mListener;
-    int layoutItem;
 
 
     public interface OnItemClickListener {
@@ -66,14 +65,13 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
         }
     }
 
-    public postAdapter(ArrayList<post> postsArrayList, int layoutItem) {
+    public postAdapter(ArrayList<post> postsArrayList) {
         this.postsArrayList = postsArrayList;
-        this.layoutItem = layoutItem;
     }
 
     @Override
     public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(layoutItem, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
         viewHolder evh = new viewHolder(v, mListener);
         return evh;
     }

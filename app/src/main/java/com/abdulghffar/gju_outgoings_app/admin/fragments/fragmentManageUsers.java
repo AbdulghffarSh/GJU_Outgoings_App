@@ -17,6 +17,7 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.adapters.userAdapter;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.abdulghffar.gju_outgoings_app.utils.FcmNotificationsSender;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,6 +49,48 @@ public class fragmentManageUsers extends Fragment {
 
         setup();
         getUsers();
+
+        userAdapter.setOnItemClickListener(new userAdapter.OnItemClickListener() {
+            @Override
+            public void setAsModeratorButton(int position) {
+                user currentItem = newUsersArrayList.get(position);
+                db.collection("Users")
+                        .document(currentItem.getUid())
+                        .update("role", "Moderator");
+
+                if (currentItem.getFcmToken() != null) {
+                    sendNotification("Account", "You have been promoted to moderator", currentItem.getFcmToken());
+                }
+
+            }
+
+            @Override
+            public void acceptButton(int position) {
+                user currentItem = newUsersArrayList.get(position);
+                db.collection("Users")
+                        .document(currentItem.getUid())
+                        .update("role", "Approved");
+
+                if (currentItem.getFcmToken() != null) {
+                    sendNotification("Account", "You have been accepted as a user", currentItem.getFcmToken());
+                }
+
+            }
+
+            @Override
+            public void rejectButton(int position) {
+                user currentItem = newUsersArrayList.get(position);
+                db.collection("Users")
+                        .document(currentItem.getUid())
+                        .update("role", "Denied");
+
+                if (currentItem.getFcmToken() != null) {
+                    sendNotification("Account", "You have been rejected as a user", currentItem.getFcmToken());
+                }
+            }
+
+
+        });
 
         return view;
     }
@@ -106,6 +149,11 @@ public class fragmentManageUsers extends Fragment {
                     }
                 });
 
+    }
+
+    void sendNotification(String title, String body, String fcmToken) {
+        FcmNotificationsSender fcmNotificationsSender = new FcmNotificationsSender(fcmToken, title, body, getContext(), getActivity());
+        fcmNotificationsSender.SendNotifications();
     }
 
 

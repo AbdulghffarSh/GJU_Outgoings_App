@@ -52,14 +52,14 @@ public class fragmentHome extends Fragment {
         assert MainActivity != null;
 
         pinnedPostsRecyclerView = view.findViewById(R.id.pinnedPostsRecyclerView);
-        pinnedPostAdapter = new postAdapter(pinnedPostsArraylist, R.layout.pinned_post_item);
+        pinnedPostAdapter = new postAdapter(pinnedPostsArraylist);
         pinnedPostsRecyclerView.setHasFixedSize(true);
         pinnedPostsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         pinnedPostsRecyclerView.setAdapter(pinnedPostAdapter);
 
 
         postsRecyclerView = view.findViewById(R.id.postsRecyclerView);
-        postAdapter = new postAdapter(postsArraylist, R.layout.post_item);
+        postAdapter = new postAdapter(postsArraylist);
         postsRecyclerView.setHasFixedSize(true);
         postsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         postsRecyclerView.setAdapter(postAdapter);

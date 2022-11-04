@@ -18,7 +18,12 @@ public class userAdapter extends RecyclerView.Adapter<userAdapter.viewHolder> {
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void setAsModeratorButton(int position);
+
+        void acceptButton(int position);
+
+        void rejectButton(int position);
+
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -27,7 +32,7 @@ public class userAdapter extends RecyclerView.Adapter<userAdapter.viewHolder> {
 
     public static class viewHolder extends RecyclerView.ViewHolder {
         public TextView userName, userEmail, userMajor;
-        public ImageView userGender;
+        public ImageView userGender, acceptButton, rejectButton, setAsModeratorButton;
 
 
         public viewHolder(View itemView, final OnItemClickListener listener) {
@@ -36,15 +41,42 @@ public class userAdapter extends RecyclerView.Adapter<userAdapter.viewHolder> {
             userEmail = itemView.findViewById(R.id.userEmail);
             userMajor = itemView.findViewById(R.id.userMajor);
             userGender = itemView.findViewById(R.id.userGender);
+            acceptButton = itemView.findViewById(R.id.acceptButton);
+            rejectButton = itemView.findViewById(R.id.rejectButton);
+            setAsModeratorButton = itemView.findViewById(R.id.setAsModerator);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            setAsModeratorButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            listener.setAsModeratorButton(position);
+                        }
+                    }
+                }
+            });
+
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.acceptButton(position);
+                        }
+                    }
+                }
+            });
+
+            rejectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.rejectButton(position);
                         }
                     }
                 }
