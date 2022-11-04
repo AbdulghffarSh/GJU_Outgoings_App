@@ -19,6 +19,9 @@ import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
@@ -34,6 +37,10 @@ public class fragmentWaiting extends Fragment {
     TextView userDisplayName;
 
     View view;
+    FirebaseFirestore db;
+    authentication authentication;
+
+    FirebaseUser user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
@@ -42,6 +49,10 @@ public class fragmentWaiting extends Fragment {
         logOutButton = view.findViewById(R.id.signOutButton);
         userDisplayName = view.findViewById(R.id.userDisplayName);
         userDisplayName.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+        db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        getToken();
+
 
         //subscribe to waiting topic
         FirebaseMessaging.getInstance().subscribeToTopic("waiting")
@@ -79,5 +90,20 @@ public class fragmentWaiting extends Fragment {
         // Setup any handles to view objects here
     }
 
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
+    }
+
+    private void updateToken(String token) {
+        DocumentReference documentReference = db.collection("Users").document(user.getUid());
+        documentReference.update("fcmToken", token)
+                .addOnSuccessListener(unused -> toast("Token updated successfully")).addOnFailureListener(e -> toast("Unable to update token"));
+
+    }
+
+    void toast(String message) {
+        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
 }
