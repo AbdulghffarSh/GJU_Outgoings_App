@@ -6,22 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.adapters.postAdapter;
 
 import javax.annotation.Nullable;
 
 public class fragmentSearch extends Fragment {
 
-
-
+RecyclerView recyclerView;
+postAdapter adapter;
     View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_search, parent, false);
-
+        recyclerView = view.findViewById(R.id.recyclerView);
 
 
         return view;
