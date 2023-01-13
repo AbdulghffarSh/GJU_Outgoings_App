@@ -90,10 +90,11 @@ public class fragmentEvents extends Fragment {
                                 eventsArrayList.add(dc.getDocument().toObject(event.class));
                             }
 
-//                            navBarActivities.seteventsArrayList(eventsArrayList);
-                            eventAdapter.notifyDataSetChanged();
-                            navBarActivities.progressBarStatus(false);
+
                         }
+                        eventsArrayList = event.filterEvents(eventsArrayList);
+                        eventAdapter.notifyDataSetChanged();
+                        navBarActivities.progressBarStatus(false);
 
                     }
                 });

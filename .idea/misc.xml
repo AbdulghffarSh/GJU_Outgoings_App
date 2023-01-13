@@ -42,6 +42,7 @@
         <entry key="app/src/main/res/drawable/ic_upload_image.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable/ic_users.xml" value="0.2435" />
         <entry key="app/src/main/res/drawable/ic_x.xml" value="0.2165" />
+        <entry key="app/src/main/res/drawable/internships_icon.xml" value="0.2165" />
         <entry key="app/src/main/res/drawable/oval.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/recived_message_container.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.2085" />
@@ -62,7 +63,7 @@
         <entry key="app/src/main/res/layout/activity_fragment_contact_us.xml" value="0.14336372847011145" />
         <entry key="app/src/main/res/layout/activity_fragment_current_post.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/activity_fragment_events.xml" value="0.370191731399799" />
-        <entry key="app/src/main/res/layout/activity_fragment_features.xml" value="0.47839297141638226" />
+        <entry key="app/src/main/res/layout/activity_fragment_features.xml" value="0.32832125510778853" />
         <entry key="app/src/main/res/layout/activity_fragment_home.xml" value="0.24396135265700483" />
         <entry key="app/src/main/res/layout/activity_fragment_list_users.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/activity_fragment_manage_users.xml" value="0.3880208333333333" />

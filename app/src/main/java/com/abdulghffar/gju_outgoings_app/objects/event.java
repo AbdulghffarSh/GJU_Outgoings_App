@@ -1,6 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class event {
@@ -52,5 +53,12 @@ public class event {
         return description;
     }
 
+    public static ArrayList<event> filterEvents(ArrayList<event> events){
+        Date todayDate = new Date();
+        events.removeIf(event -> event.getEndDate().before(todayDate));
+        System.out.println("changed");
+
+        return events;
+    }
 
 }

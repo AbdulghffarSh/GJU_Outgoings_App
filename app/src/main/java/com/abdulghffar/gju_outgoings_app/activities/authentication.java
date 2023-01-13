@@ -1,11 +1,11 @@
 package com.abdulghffar.gju_outgoings_app.activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.fragments.authFragments.fragmentSignIn;
@@ -13,7 +13,7 @@ import com.abdulghffar.gju_outgoings_app.objects.user;
 
 public class authentication extends AppCompatActivity {
 
-    user userData;
+    static user userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

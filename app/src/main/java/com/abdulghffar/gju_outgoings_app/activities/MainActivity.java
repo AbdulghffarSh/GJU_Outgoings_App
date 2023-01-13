@@ -45,9 +45,9 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity {
 
     ImageView profileImage;
-    FirebaseFirestore db;
-    FirebaseUser user;
-    user userData;
+    static FirebaseFirestore db;
+    static FirebaseUser user;
+    static user userData;
     BottomNavigationView nav;
     TextView activityNameField;
     ProgressBar progressBar;

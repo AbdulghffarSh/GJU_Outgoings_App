@@ -48,7 +48,7 @@
         </FrameLayout>
 
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -61,7 +61,7 @@
             android:textColor="@color/black"
             android:textSize="25sp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -80,7 +80,7 @@
             android:inputType="number"
             android:padding="10dp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -112,7 +112,7 @@
                 android:padding="10dp"
                 android:src="@drawable/ic_study_field" />
         </RelativeLayout>
-                <Space
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="40dp" />
 

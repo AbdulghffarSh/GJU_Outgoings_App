@@ -39,7 +39,36 @@
 
         </RelativeLayout>
 
-        <Space
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <RelativeLayout
+            android:id="@+id/internshipsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CCE9FD"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/internshipsIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/internships_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/internshipsIcon"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="10dp"
+                android:text="Internships"
+                android:textColor="@color/Primary_orange"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
         <RelativeLayout
@@ -68,7 +97,6 @@
                 android:textSize="18sp" />
 
         </RelativeLayout>
-
 
 
     </LinearLayout>

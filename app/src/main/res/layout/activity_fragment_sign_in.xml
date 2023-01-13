@@ -22,7 +22,7 @@
         android:orientation="vertical"
         android:paddingHorizontal="35dp">
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -35,11 +35,11 @@
             android:textColor="@color/black"
             android:textSize="25sp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -58,7 +58,7 @@
             android:padding="10dp"
             android:textColor="@color/black"/>
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -77,11 +77,11 @@
             android:padding="10dp"
             android:textColor="@color/black"/>
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="50dp" />
 
