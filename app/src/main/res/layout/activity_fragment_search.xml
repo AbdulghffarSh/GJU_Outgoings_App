@@ -5,11 +5,11 @@
 
 
     <TextView
+        android:id="@+id/textViewSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search"
-        android:textSize="100sp"
         android:layout_centerInParent="true"
         android:gravity="center"
-        />
+        android:text="Search"
+        android:textSize="100sp" />
 </RelativeLayout>

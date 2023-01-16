@@ -18,7 +18,6 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.adapters.userAdapter;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.objects.user;
-import com.abdulghffar.gju_outgoings_app.utils.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentChange;
@@ -74,9 +73,7 @@ public class fragmentManageUsers extends Fragment {
                             }
                         });
 
-                if (currentItem.getFcmToken() != null) {
-                    sendNotification("Account", "You have been promoted to moderator", currentItem.getFcmToken());
-                }
+
 
                 newUsersArrayList.remove(position);
                 userAdapter.notifyDataSetChanged();
@@ -104,9 +101,7 @@ public class fragmentManageUsers extends Fragment {
                             }
                         });
 
-                if (currentItem.getFcmToken() != null) {
-                    sendNotification("Account", "You have been accepted as a user", currentItem.getFcmToken());
-                }
+
                 newUsersArrayList.remove(position);
                 userAdapter.notifyDataSetChanged();
             }
@@ -132,9 +127,7 @@ public class fragmentManageUsers extends Fragment {
                             }
                         });
 
-                if (currentItem.getFcmToken() != null) {
-                    sendNotification("Account", "You have been rejected as a user", currentItem.getFcmToken());
-                }
+
                 newUsersArrayList.remove(position);
                 userAdapter.notifyDataSetChanged();
             }
@@ -201,10 +194,6 @@ public class fragmentManageUsers extends Fragment {
 
     }
 
-    void sendNotification(String title, String body, String fcmToken) {
-        FcmNotificationsSender fcmNotificationsSender = new FcmNotificationsSender(fcmToken, title, body, getContext(), getActivity());
-        fcmNotificationsSender.SendNotifications();
-    }
 
 
 }

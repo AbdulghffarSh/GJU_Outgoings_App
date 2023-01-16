@@ -26,7 +26,6 @@ import androidx.fragment.app.Fragment;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.objects.event;
-import com.abdulghffar.gju_outgoings_app.utils.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -235,7 +234,6 @@ public class fragmentAddEvent extends Fragment {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                         //add to RealTimeDB for comments
                         toast("Event added");
-                        sendNotification("New event by moderator", "The moderator shared an event","all");
 
                         Admin.setProgressBar(false);
 
@@ -254,9 +252,5 @@ public class fragmentAddEvent extends Fragment {
 
     }
 
-    void sendNotification(String title, String body, String topic) {
-        FcmNotificationsSender fcmNotificationsSender = new FcmNotificationsSender("/topics/"+topic, title, body, getContext(), getActivity());
-        fcmNotificationsSender.SendNotifications();
-    }
 
 }

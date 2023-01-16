@@ -28,7 +28,6 @@ import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
-import com.abdulghffar.gju_outgoings_app.utils.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -365,9 +364,6 @@ public class fragmentAddPost extends Fragment {
                         fragmentHome fragmentHome = new fragmentHome();
                         MainActivity.replaceFragment(fragmentHome, "Home");
 
-                        if (userData.getRole().equals("Moderator")) {
-                            sendNotification("New post by moderator", "The moderator shared a post", "all");
-                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -387,8 +383,5 @@ public class fragmentAddPost extends Fragment {
         toast.show();
     }
 
-    void sendNotification(String title, String body, String topic) {
-        FcmNotificationsSender fcmNotificationsSender = new FcmNotificationsSender("/topics/" + topic, title, body, getContext(), getActivity());
-        fcmNotificationsSender.SendNotifications();
-    }
+
 }
