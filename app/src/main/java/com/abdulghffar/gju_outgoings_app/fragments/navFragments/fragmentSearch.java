@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.adapters.postAdapter;
-import com.abdulghffar.gju_outgoings_app.utils.FcmNotificationsSender;
+import com.abdulghffar.gju_outgoings_app.utils.notificationsSender;
 
 import javax.annotation.Nullable;
 
@@ -32,8 +32,8 @@ postAdapter adapter;
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FcmNotificationsSender notificationsSender = new FcmNotificationsSender();
-                notificationsSender.sendNotification();
+                notificationsSender notificationsSender = new notificationsSender();
+                notificationsSender.sendNotificationToAllUsers("Hello there");
             }
         });
         return view;

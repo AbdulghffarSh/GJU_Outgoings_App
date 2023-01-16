@@ -28,6 +28,7 @@ import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.abdulghffar.gju_outgoings_app.utils.notificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -364,6 +365,9 @@ public class fragmentAddPost extends Fragment {
                         fragmentHome fragmentHome = new fragmentHome();
                         MainActivity.replaceFragment(fragmentHome, "Home");
 
+                        if (userData.getRole().equals("Moderator")) {
+                            sendNotification("The moderator shared a post");
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -383,5 +387,7 @@ public class fragmentAddPost extends Fragment {
         toast.show();
     }
 
-
+    void sendNotification(String body) {
+        notificationsSender.sendNotificationToAllUsers(body);
+    }
 }
