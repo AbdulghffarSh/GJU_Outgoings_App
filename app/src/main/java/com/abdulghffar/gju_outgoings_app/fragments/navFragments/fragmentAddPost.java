@@ -1,6 +1,9 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,17 +29,15 @@ import androidx.fragment.app.Fragment;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
+import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.abdulghffar.gju_outgoings_app.utils.notificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -67,9 +68,9 @@ public class fragmentAddPost extends Fragment {
     ImageView attachImage;
     ProgressBar progressBar;
     FirebaseStorage storage;
-    FirebaseUser user;
-    FirebaseFirestore db;
-    FirebaseDatabase realTimeDB;
+
+    FirebaseDatabase realTimeDB = firebaseDb.realDb;
+
 
 
     Uri currentImage;
@@ -174,7 +175,7 @@ public class fragmentAddPost extends Fragment {
 
         attachImage = view.findViewById(R.id.attachImage);
         progressBar = view.findViewById(R.id.progressBar);
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        user = mAuth.getCurrentUser();
 
         try {
             MainActivity = (MainActivity) getActivity();
@@ -338,7 +339,6 @@ public class fragmentAddPost extends Fragment {
     }
 
     void addToFirebase(post post) {
-        db = FirebaseFirestore.getInstance();
         String collection;
         if (userData.getRole().equals("Student")) {
             collection = "Posts";
@@ -355,7 +355,6 @@ public class fragmentAddPost extends Fragment {
                         progressBar.setVisibility(View.INVISIBLE);
 
                         //add to RealTimeDB for comments
-                        realTimeDB = FirebaseDatabase.getInstance();
 
                         String ref = "/Posts/" + "/Users/" + user.getUid() + "/UserPosts/" + post.getPostID();
                         DatabaseReference mDatabase = realTimeDB.getReference(ref);

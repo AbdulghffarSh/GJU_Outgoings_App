@@ -48,18 +48,6 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
             timeStamp = itemView.findViewById(R.id.timeStamp);
 
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (listener != null) {
-//                        int position = getAdapterPosition();
-//                        if (position != RecyclerView.NO_POSITION) {
-//                            listener.reportItemClick(position);
-//                        }
-//                    }
-//                }
-//            });
-
 
             reportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,11 +90,17 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
             System.out.println("this is the error " + e);
         }
 
-        holder.userName.setText(currentItem.getUser().getName());
-        holder.comment.setText(currentItem.getCommentText());
-        if (currentItem.getUser().getProfilePic() != null) {
-            Picasso.get().load(currentItem.getUser().getProfilePic()).into(holder.userPic);
+        try {
+            holder.userName.setText(currentItem.getUser().getName());
+            if (currentItem.getUser().getProfilePic() != null) {
+                Picasso.get().load(currentItem.getUser().getProfilePic()).into(holder.userPic);
+            }
+
+        }catch (Exception e){
+            holder.userName.setText("[deleted]");
         }
+        holder.comment.setText(currentItem.getCommentText());
+
 
     }
 

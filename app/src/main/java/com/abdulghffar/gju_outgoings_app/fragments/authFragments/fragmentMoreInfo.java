@@ -1,12 +1,8 @@
 package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +22,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.objects.user;
@@ -33,11 +35,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -56,7 +56,7 @@ public class fragmentMoreInfo extends Fragment {
     authentication authentication;
 
     //Firebase
-    FirebaseFirestore db;
+
     FirebaseStorage storage;
 
     //Spinner
@@ -143,7 +143,6 @@ public class fragmentMoreInfo extends Fragment {
 
     void addToFireStore() {
         progressBar.setVisibility(View.VISIBLE);
-        db = FirebaseFirestore.getInstance();
         // Add a new document with a generated ID
         db.collection("Users").document(userData.getUid())
                 .set(userData)
@@ -151,7 +150,7 @@ public class fragmentMoreInfo extends Fragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        checkUserApproval(FirebaseAuth.getInstance().getCurrentUser());
+                        checkUserApproval(mAuth.getCurrentUser());
                         progressBar.setVisibility(View.INVISIBLE);
 
                     }

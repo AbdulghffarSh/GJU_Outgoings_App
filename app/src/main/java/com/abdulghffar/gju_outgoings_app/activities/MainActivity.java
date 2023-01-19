@@ -1,6 +1,8 @@
 package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,19 +35,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends AppCompatActivity {
 
     ImageView profileImage;
-    static FirebaseFirestore db;
-    static FirebaseUser user;
+
     static user userData;
     BottomNavigationView nav;
     TextView activityNameField;
@@ -65,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         profileImage = findViewById(R.id.accountPic);
-        db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
         activityNameField = findViewById(R.id.activityName);
         progressBar = findViewById(R.id.progressBar);
         fragmentManager = getSupportFragmentManager();

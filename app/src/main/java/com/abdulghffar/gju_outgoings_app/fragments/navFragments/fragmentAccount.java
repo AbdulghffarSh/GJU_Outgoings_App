@@ -1,6 +1,9 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,11 +34,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,8 +45,6 @@ import javax.annotation.Nullable;
 
 public class fragmentAccount extends Fragment {
 
-    FirebaseUser user;
-    FirebaseFirestore db;
     user userData;
     FirebaseStorage storage;
 
@@ -69,8 +67,7 @@ public class fragmentAccount extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         view = inflater.inflate(R.layout.activity_fragment_account, parent, false);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
+        user = mAuth.getCurrentUser();
 
 
         setup();
@@ -242,7 +239,6 @@ public class fragmentAccount extends Fragment {
 
     void changeData(String field, String newData) {
         progressBar.setVisibility(View.VISIBLE);
-        db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.update(field, newData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

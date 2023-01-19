@@ -1,6 +1,8 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.adapters.commentAdapter;
+import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.abdulghffar.gju_outgoings_app.objects.report;
 import com.abdulghffar.gju_outgoings_app.objects.university;
@@ -32,7 +35,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +42,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -61,8 +62,8 @@ public class fragmentUniversity extends Fragment {
     university universityData;
     navBarActivities navBarActivities;
 
-    FirebaseDatabase realTimeDB;
-    FirebaseFirestore db;
+    FirebaseDatabase realTimeDB = firebaseDb.realDb;
+
 
     RecyclerView commentsRecyclerView;
 
@@ -142,9 +143,6 @@ public class fragmentUniversity extends Fragment {
                             String timeStamp = snapshot.child("timeStamp").getValue(String.class);
                             String comment = snapshot.child("commentText").getValue(String.class);
 
-                            //Get user Data
-                            db = FirebaseFirestore.getInstance();
-
                             DocumentReference docRef = db.collection("Users").document(Uid);
                             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
@@ -173,7 +171,7 @@ public class fragmentUniversity extends Fragment {
     void addComment() {
 
         String commentText = commentField.getText().toString();
-        String Uid = FirebaseAuth.getInstance().getUid();
+        String Uid = mAuth.getUid();
         String timeStamp = new java.util.Date().toString();
         String ref = "/Cities/" + universityData.getCityName() + "/" + universityData.getUniversityName() + "/Comments/" + timeStamp;
         comment newComment = new comment(commentText, Uid, timeStamp, null, null);
@@ -197,9 +195,9 @@ public class fragmentUniversity extends Fragment {
 
         comment selectedComment = commentsArraylist.get(position);
         ArrayList<String> reportedBy = new ArrayList<>();
-        reportedBy.add(FirebaseAuth.getInstance().getUid());
+        reportedBy.add(mAuth.getUid());
         report report = new report(selectedComment.getCommentText(), selectedComment.getReference(), selectedComment.getTimeStamp(), selectedComment.getUid(), reportedBy);
-        String myUid = FirebaseAuth.getInstance().getUid();
+        String myUid = mAuth.getUid();
 
         DocumentReference docRef = db.collection("Reports").document(selectedComment.getTimeStamp());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

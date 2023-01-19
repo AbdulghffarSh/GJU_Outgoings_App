@@ -1,5 +1,8 @@
 package com.abdulghffar.gju_outgoings_app.activities;
 
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.adapters.commentAdapter;
+import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.sql.Timestamp;
@@ -46,8 +48,9 @@ public class currentPost extends AppCompatActivity {
 
     com.abdulghffar.gju_outgoings_app.adapters.postAdapter postAdapter;
 
-    FirebaseFirestore db;
-    FirebaseDatabase realTimeDB;
+
+    FirebaseDatabase realTimeDB = firebaseDb.realDb;
+
 
 
     //UI
@@ -140,7 +143,6 @@ public class currentPost extends AppCompatActivity {
             ((ViewManager) postImage.getParent()).removeView(postImage);
         }
 
-        db = FirebaseFirestore.getInstance();
         getComments();
     }
 
@@ -196,7 +198,6 @@ public class currentPost extends AppCompatActivity {
 
     void getComments() {
         progressBar.setVisibility(View.VISIBLE);
-        realTimeDB = FirebaseDatabase.getInstance();
         String ref = "/Posts/" + "/Users/" + currentPost.getUser().getUid() + "/UserPosts/" + currentPost.getPostID() + "/Comments";
 
         DatabaseReference myRef = realTimeDB.getReference(ref);
@@ -240,9 +241,8 @@ public class currentPost extends AppCompatActivity {
     }
 
     void addComment() {
-        realTimeDB = FirebaseDatabase.getInstance();
         String commentText = commentField.getText().toString();
-        String Uid = FirebaseAuth.getInstance().getUid();
+        String Uid = mAuth.getUid();
         String timeStamp = new java.util.Date().toString();
         comment newComment = new comment(commentText, Uid, timeStamp, null, null);
 

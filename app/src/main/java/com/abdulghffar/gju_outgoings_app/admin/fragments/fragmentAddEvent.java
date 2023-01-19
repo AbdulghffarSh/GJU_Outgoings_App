@@ -1,6 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.admin.fragments;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -30,7 +31,6 @@ import com.abdulghffar.gju_outgoings_app.utils.notificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,7 +51,7 @@ public class fragmentAddEvent extends Fragment {
     //Others
     View view;
     Admin Admin;
-    FirebaseFirestore db;
+
 
 
     @Override
@@ -117,7 +117,6 @@ public class fragmentAddEvent extends Fragment {
         SendButton = (Button) view.findViewById(R.id.SendDateBtn);
         toTimeStamp = Calendar.getInstance(Locale.getDefault());
         fromTimeStamp = Calendar.getInstance(Locale.getDefault());
-        db = FirebaseFirestore.getInstance();
 
     }
 
@@ -226,7 +225,6 @@ public class fragmentAddEvent extends Fragment {
     void addToFirebase(event event) {
 
         Admin.setProgressBar(true);
-        db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("Events").document();
         ref.set(event)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

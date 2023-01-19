@@ -1,5 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +21,6 @@ import com.abdulghffar.gju_outgoings_app.adapters.postAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,7 +39,7 @@ public class fragmentHome extends Fragment {
     RecyclerView postsRecyclerView;
     com.abdulghffar.gju_outgoings_app.adapters.postAdapter postAdapter;
 
-    FirebaseFirestore db;
+
 
     View view;
 
@@ -95,7 +96,6 @@ public class fragmentHome extends Fragment {
 
     void getData() {
         MainActivity.progressBarStatus(true);
-        db = FirebaseFirestore.getInstance();
 
         db.collection("PinnedPosts").orderBy("timeStamp", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {

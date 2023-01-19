@@ -1,5 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,7 +21,6 @@ import com.abdulghffar.gju_outgoings_app.adapters.staffAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.staff;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,7 +34,7 @@ public class fragmentContactUs extends Fragment {
     RecyclerView recyclerView;
     staffAdapter staffAdapter;
     ArrayList<staff> staffArrayList;
-    FirebaseFirestore db;
+
     navBarActivities navBarActivities;
 
 
@@ -48,7 +49,6 @@ public class fragmentContactUs extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        db = FirebaseFirestore.getInstance();
         staffArrayList = new ArrayList<staff>();
         staffAdapter = new staffAdapter(staffArrayList);
 

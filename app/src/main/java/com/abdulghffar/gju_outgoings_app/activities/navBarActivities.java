@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;
@@ -40,7 +41,7 @@ public class navBarActivities extends AppCompatActivity {
     ArrayList<city> citiesArrayList;
     city cityData;
     HashMap<String, university> cityUniversities;
-    FirebaseFirestore db;
+
     university universityData;
     ArrayList<user> userArrayList;
     ProgressBar progressBar;
@@ -147,7 +148,6 @@ public class navBarActivities extends AppCompatActivity {
     }
 
     public void getUniversities() {
-        db = FirebaseFirestore.getInstance();
         cityUniversities = new HashMap<>();
         for (DocumentReference ref : cityData.getUniversities().values()) {
             System.out.println("This is the ref " + ref.toString());

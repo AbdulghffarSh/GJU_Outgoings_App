@@ -1,5 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.admin.fragments;
 
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +25,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -39,7 +40,7 @@ public class fragmentManageUsers extends Fragment {
     userAdapter userAdapter;
     TextView empty, newUsersCount;
 
-    FirebaseFirestore db;
+
 
     //Others
     View view;
@@ -74,7 +75,7 @@ public class fragmentManageUsers extends Fragment {
 
 
                 try {
-                    notificationsSender.sendNotificationToAllUsers("You have been promoted to the role of moderator.", "\"" + currentItem.getUid() + "\"");
+                    notificationsSender.sendNotificationToAllUsers("You have been promoted to the role of moderator.", "\"" + currentItem.getPlayerId() + "\"");
                 } catch (Exception e) {
                     Log.i("Error with sending notification to the user ", e.toString());
                 }
@@ -104,7 +105,7 @@ public class fragmentManageUsers extends Fragment {
                     }
                 });
                 try {
-                    notificationsSender.sendNotificationToAllUsers("Your request for registration has been approved", "\"" + currentItem.getUid() + "\"");
+                    notificationsSender.sendNotificationToAllUsers("Your request for registration has been approved", "\"" + currentItem.getPlayerId() + "\"");
                 } catch (Exception e) {
                     Log.i("Error with sending notification to the user ", e.toString());
                 }
@@ -132,7 +133,7 @@ public class fragmentManageUsers extends Fragment {
                     }
                 });
                 try {
-                    notificationsSender.sendNotificationToAllUsers("Your registration request was rejected, please contact the moderator", "\"" + currentItem.getUid() + "\"");
+                    notificationsSender.sendNotificationToAllUsers("Your registration request was rejected, please contact the moderator", "\"" + currentItem.getPlayerId() + "\"");
                 } catch (Exception e) {
                     Log.i("Error with sending notification to the user ", e.toString());
                 }
@@ -167,7 +168,6 @@ public class fragmentManageUsers extends Fragment {
         empty = (TextView) view.findViewById(R.id.empty);
         newUsersCount = view.findViewById(R.id.newUsersCount);
 
-        db = FirebaseFirestore.getInstance();
 
     }
 

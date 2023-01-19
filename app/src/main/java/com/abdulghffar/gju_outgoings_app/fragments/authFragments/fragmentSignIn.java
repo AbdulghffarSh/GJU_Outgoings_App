@@ -1,6 +1,9 @@
 package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,11 +29,9 @@ import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.annotation.Nullable;
 
@@ -43,9 +44,7 @@ public class fragmentSignIn extends Fragment {
     //Buttons
     Button signInButton;
 
-    //Firebase
-    private FirebaseAuth mAuth;
-    FirebaseFirestore db;
+
 
     //Others
     View view;
@@ -114,9 +113,6 @@ public class fragmentSignIn extends Fragment {
         //Buttons
         signInButton = view.findViewById(R.id.signInButton);
 
-        //Firebase
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -141,7 +137,6 @@ public class fragmentSignIn extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 checkUserApproval(user);
                             }

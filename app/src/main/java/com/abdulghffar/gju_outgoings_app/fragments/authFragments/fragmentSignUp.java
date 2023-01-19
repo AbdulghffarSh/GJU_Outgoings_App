@@ -1,9 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +17,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
-
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +29,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.annotation.Nullable;
 
@@ -56,7 +55,7 @@ public class fragmentSignUp extends Fragment {
 
     //Firebase
     private FirebaseAuth mAuth;
-    FirebaseFirestore db;
+
 
     //RadioGroup
     RadioGroup radioGroup;
@@ -116,7 +115,7 @@ public class fragmentSignUp extends Fragment {
         facebookButton = view.findViewById(R.id.facebookButton);
 
         //Firebase
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = mAuth;
 
         //RadioGroup
         radioGroup = view.findViewById(R.id.genderRadioGroup);
@@ -200,7 +199,6 @@ public class fragmentSignUp extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             toast("You signed up successfully");
-                            FirebaseUser user = mAuth.getCurrentUser();
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
                             assert user != null;
                             user.updateProfile(profileUpdates);
@@ -230,7 +228,6 @@ public class fragmentSignUp extends Fragment {
 
     private void checkUserInfo(FirebaseUser user) {
         System.out.println(user.getUid());
-        db = FirebaseFirestore.getInstance();
 
         String timeStamp = new java.util.Date().toString();
         user userData = new user(user.getUid(), "Not yet", user.getEmail(), gender, null, name, null, timeStamp, "Student", null, null);
