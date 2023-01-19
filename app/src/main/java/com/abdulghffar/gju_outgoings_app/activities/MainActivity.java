@@ -38,13 +38,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.onesignal.OneSignal;
 import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String ONESIGNAL_APP_ID = "5dd645a1-2b50-4708-b7ae-a297bc750799";
 
     ImageView profileImage;
     static FirebaseFirestore db;
@@ -65,16 +62,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Enable verbose OneSignal logging to debug issues if needed.
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
-
-        // OneSignal Initialization
-        OneSignal.initWithContext(this);
-        OneSignal.setAppId(ONESIGNAL_APP_ID);
-
-        // promptForPushNotifications will show the native Android notification permission prompt.
-        // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 7)
-        OneSignal.promptForPushNotifications();
 
 
         profileImage = findViewById(R.id.accountPic);
@@ -111,8 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         if (userData.getRole().equals("Moderator")) {
                             adminPanelButton.setVisibility(View.VISIBLE);
                         }
-                        getToken();
-
+                    updatePlayerId();
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -187,28 +173,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void getToken() {
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
-    }
 
-    private void updateToken(String token) {
+
+    private void updatePlayerId() {
         DocumentReference documentReference = db.collection("Users").document(user.getUid());
-        documentReference.update("fcmToken", token)
-                .addOnSuccessListener(unused -> toast("Token updated successfully")).addOnFailureListener(e -> toast("Unable to update token"));
+        documentReference.update("playerId", splashScreen.getPlayerId())
+                .addOnSuccessListener(unused -> toast("playerId updated successfully")).addOnFailureListener(e -> toast("Unable to update playerId"));
 
 
-        FirebaseMessaging.getInstance().subscribeToTopic("all")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Subscribed";
-                        if (!task.isSuccessful()) {
-                            msg = "Subscribe failed";
-                        }
-                        Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     void toast(String message) {

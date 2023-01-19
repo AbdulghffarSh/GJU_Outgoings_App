@@ -27,7 +27,6 @@ public class authentication extends AppCompatActivity {
 
 
     void setup() {
-
         //FragmentChang
         fragmentSignIn fragmentSignIn = new fragmentSignIn();
         replaceFragment(fragmentSignIn);
@@ -49,4 +48,8 @@ public class authentication extends AppCompatActivity {
     public void setUserData(user userData) {
         this.userData = userData;
     }
+
+
 }
+
+

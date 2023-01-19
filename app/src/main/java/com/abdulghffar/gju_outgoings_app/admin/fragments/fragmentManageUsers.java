@@ -18,6 +18,7 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.adapters.userAdapter;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.abdulghffar.gju_outgoings_app.utils.notificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentChange;
@@ -58,21 +59,25 @@ public class fragmentManageUsers extends Fragment {
                 user currentItem = newUsersArrayList.get(position);
 
 
-                db.collection("Users")
-                        .document(currentItem.getUid())
-                        .update("role", "Moderator", "approval", "Approved").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("Success", "Done");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("Failed", e.toString());
+                db.collection("Users").document(currentItem.getUid()).update("role", "Moderator", "approval", "Approved").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Success", "Done");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Failed", e.toString());
 
-                            }
-                        });
+                    }
+                });
 
+
+                try {
+                    notificationsSender.sendNotificationToAllUsers("You have been promoted to the role of moderator.", "\"" + currentItem.getUid() + "\"");
+                } catch (Exception e) {
+                    Log.i("Error with sending notification to the user ", e.toString());
+                }
 
 
                 newUsersArrayList.remove(position);
@@ -86,21 +91,23 @@ public class fragmentManageUsers extends Fragment {
 
                 user currentItem = newUsersArrayList.get(position);
 
-                db.collection("Users")
-                        .document(currentItem.getUid())
-                        .update("approval", "Approved").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("Success", "Done");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("Failed", e.toString());
+                db.collection("Users").document(currentItem.getUid()).update("approval", "Approved").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Success", "Done");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Failed", e.toString());
 
-                            }
-                        });
-
+                    }
+                });
+                try {
+                    notificationsSender.sendNotificationToAllUsers("Your request for registration has been approved", "\"" + currentItem.getUid() + "\"");
+                } catch (Exception e) {
+                    Log.i("Error with sending notification to the user ", e.toString());
+                }
 
                 newUsersArrayList.remove(position);
                 userAdapter.notifyDataSetChanged();
@@ -112,20 +119,23 @@ public class fragmentManageUsers extends Fragment {
 
                 System.out.println(currentItem);
 
-                db.collection("Users")
-                        .document(currentItem.getUid())
-                        .update("approval", "Denied").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("Success", "Done");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("Failed", e.toString());
+                db.collection("Users").document(currentItem.getUid()).update("approval", "Denied").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Success", "Done");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Failed", e.toString());
 
-                            }
-                        });
+                    }
+                });
+                try {
+                    notificationsSender.sendNotificationToAllUsers("Your registration request was rejected, please contact the moderator", "\"" + currentItem.getUid() + "\"");
+                } catch (Exception e) {
+                    Log.i("Error with sending notification to the user ", e.toString());
+                }
 
 
                 newUsersArrayList.remove(position);
@@ -168,32 +178,30 @@ public class fragmentManageUsers extends Fragment {
     }
 
     void getUsers() {
-        db.collection("Users")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
-                    @Override
-                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Log.e("Firestore error", error.getMessage());
-                            return;
-                        }
+        db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+            @Override
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("Firestore error", error.getMessage());
+                    return;
+                }
 
-                        assert value != null;
-                        for (DocumentChange dc : value.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED && dc.getDocument().toObject(user.class).getApproval().equals("Not yet")) {
-                                newUsersArrayList.add(dc.getDocument().toObject(user.class));
+                assert value != null;
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED && dc.getDocument().toObject(user.class).getApproval().equals("Not yet")) {
+                        newUsersArrayList.add(dc.getDocument().toObject(user.class));
 
-                            }
-
-                            userAdapter.notifyDataSetChanged();
-
-                        }
-                        newUsersCount.setText(newUsersArrayList.size() + "");
                     }
-                });
+
+                    userAdapter.notifyDataSetChanged();
+
+                }
+                newUsersCount.setText(newUsersArrayList.size() + "");
+            }
+        });
 
     }
-
 
 
 }

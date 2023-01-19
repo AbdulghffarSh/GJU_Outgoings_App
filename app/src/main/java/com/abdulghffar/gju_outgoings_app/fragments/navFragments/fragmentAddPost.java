@@ -388,6 +388,6 @@ public class fragmentAddPost extends Fragment {
     }
 
     void sendNotification(String body) {
-        notificationsSender.sendNotificationToAllUsers(body);
+        notificationsSender.sendNotificationToAllUsers(body,"\"All\"");
     }
 }

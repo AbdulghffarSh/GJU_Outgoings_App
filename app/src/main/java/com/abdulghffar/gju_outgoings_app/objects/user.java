@@ -13,12 +13,12 @@ public class user implements Serializable {
     String registrationTimeStamp;
     String role;
     String studentID;
-    String fcmToken;
+    String playerId;
 
     public user() {
     }
 
-    public user(String uid, String approval, String email, String gender, String major, String name, String profilePic, String registrationTimeStamp, String role, String studentID, String fcmToken) {
+    public user(String uid, String approval, String email, String gender, String major, String name, String profilePic, String registrationTimeStamp, String role, String studentID, String playerId) {
         this.uid = uid;
         this.approval = approval;
         this.email = email;
@@ -29,7 +29,7 @@ public class user implements Serializable {
         this.registrationTimeStamp = registrationTimeStamp;
         this.role = role;
         this.studentID = studentID;
-        this.fcmToken = fcmToken;
+        this.playerId = playerId;
     }
 
     public void setUid(String uid) {
@@ -112,11 +112,11 @@ public class user implements Serializable {
         return studentID;
     }
 
-    public String getFcmToken() {
-        return fcmToken;
+    public String getPlayerId() {
+        return playerId;
     }
 
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 }

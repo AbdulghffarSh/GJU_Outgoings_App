@@ -51,6 +51,7 @@ public class fragmentSignIn extends Fragment {
     View view;
     ProgressBar progressBar;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment

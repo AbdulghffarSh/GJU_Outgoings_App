@@ -32,8 +32,7 @@ postAdapter adapter;
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationsSender notificationsSender = new notificationsSender();
-                notificationsSender.sendNotificationToAllUsers("Hello there");
+                notificationsSender.sendNotificationToAllUsers("body","\"All\"");
             }
         });
         return view;

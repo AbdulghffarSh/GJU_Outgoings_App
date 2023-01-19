@@ -19,14 +19,13 @@ public class notificationsSender {
     private final static String app_id = "5dd645a1-2b50-4708-b7ae-a297bc750799";
     private final static String REST_API_KEY = "MmE2YzZlMWUtMDc4OS00MDU1LTg3NWYtOGIxOGMwN2U5YzZm";
 
-    public static void sendNotificationToAllUsers(String message) {
+    public static void sendNotificationToAllUsers(String message,String included_segments) {
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-
 // Create the JSON body of the request
-        String jsonBody = "{\"app_id\":\""+app_id+"\",\"included_segments\":[\"All\"],\"contents\":{\"en\":\""+message+"\"}}";
+        String jsonBody = "{\"app_id\":\""+app_id+"\",\"included_segments\":["+included_segments+"],\"contents\":{\"en\":\""+message+"\"}}";
         RequestBody body = RequestBody.create(mediaType, jsonBody);
 
 // Create the request
@@ -56,5 +55,8 @@ public class notificationsSender {
     });
 
 
-}}
+}
+
+
+}
 

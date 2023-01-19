@@ -20,19 +20,23 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.onesignal.OneSignal;
 
 public class splashScreen extends AppCompatActivity {
+
     ProgressBar progressBar;
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseFirestore db;
+    private static final String ONESIGNAL_APP_ID = "5dd645a1-2b50-4708-b7ae-a297bc750799";
+    static String playerId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
+        notificationsHandler();
         progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -98,5 +102,25 @@ public class splashScreen extends AppCompatActivity {
     void toast(String message) {
         Toast toast = Toast.makeText(splashScreen.this, message, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+
+
+    private void notificationsHandler() {
+        // Enable verbose OneSignal logging to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(this);
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+
+        // promptForPushNotifications will show the native Android notification permission prompt.
+        // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 7)
+        OneSignal.promptForPushNotifications();
+        playerId = OneSignal.getDeviceState().getUserId();
+    }
+
+    public static String getPlayerId() {
+        return playerId;
     }
 }

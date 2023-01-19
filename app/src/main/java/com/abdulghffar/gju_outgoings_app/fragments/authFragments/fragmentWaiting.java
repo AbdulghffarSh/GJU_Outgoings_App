@@ -51,22 +51,21 @@ public class fragmentWaiting extends Fragment {
         userDisplayName.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        getToken();
+        updateToken();
 
 
         //subscribe to waiting topic
-        FirebaseMessaging.getInstance().subscribeToTopic("waiting")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Subscribed";
-                        if (!task.isSuccessful()) {
-                            msg = "Subscribe failed";
-                        }
-                        Log.d(TAG, msg);
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        FirebaseMessaging.getInstance().subscribeToTopic("waiting").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                String msg = "Subscribed";
+                if (!task.isSuccessful()) {
+                    msg = "Subscribe failed";
+                }
+                Log.d(TAG, msg);
+                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +89,10 @@ public class fragmentWaiting extends Fragment {
         // Setup any handles to view objects here
     }
 
-    private void getToken() {
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
-    }
 
-    private void updateToken(String token) {
+    private void updateToken() {
         DocumentReference documentReference = db.collection("Users").document(user.getUid());
-        documentReference.update("fcmToken", token)
-                .addOnSuccessListener(unused -> toast("Token updated successfully")).addOnFailureListener(e -> toast("Unable to update token"));
+        documentReference.update("playerId", com.abdulghffar.gju_outgoings_app.activities.splashScreen.getPlayerId()).addOnSuccessListener(unused -> toast("Token updated successfully")).addOnFailureListener(e -> toast("Unable to update token"));
 
     }
 

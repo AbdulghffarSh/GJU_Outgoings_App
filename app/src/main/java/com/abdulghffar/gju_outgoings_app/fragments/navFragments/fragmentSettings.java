@@ -18,8 +18,6 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.annotation.Nullable;
 
@@ -91,53 +89,34 @@ public class fragmentSettings extends Fragment {
 
         messageField.setText("Are you sure you want to sign out?");
 
-        AlertDialog.Builder builder
-                = new AlertDialog
-                .Builder(getActivity(), R.style.AlertDialogCustom);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom);
 
         builder.setView(subView);
 
         builder.setCancelable(false);
-        builder
-                .setPositiveButton(
-                        "Yes",
-                        new DialogInterface
-                                .OnClickListener() {
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                DocumentReference documentReference = db.collection("Users").document(FirebaseAuth.getInstance().getUid());
-                                documentReference.update("fcmToken", null)
-                                        .addOnSuccessListener(unused -> {
-                                            FirebaseAuth.getInstance().signOut();
-                                            Intent intent = new Intent(getActivity(), authentication.class);
-                                            startActivity(intent);
-                                        }).addOnFailureListener(e -> toast("Unable to update token"));
-
-
-                            }
-                        });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), authentication.class);
+                startActivity(intent);
+            }
+        });
 
         // Set the Negative button with No name
         // OnClickListener method is use
         // of DialogInterface interface.
-        builder
-                .setNegativeButton(
-                        "No",
-                        new DialogInterface
-                                .OnClickListener() {
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-                                // If user click no
-                                // then dialog box is canceled.
-                                dialog.cancel();
-                            }
-                        });
+                // If user click no
+                // then dialog box is canceled.
+                dialog.cancel();
+            }
+        });
 
         // Create the Alert dialog
         AlertDialog alertDialog = builder.create();
