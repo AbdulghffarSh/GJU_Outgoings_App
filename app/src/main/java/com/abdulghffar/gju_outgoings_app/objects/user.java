@@ -2,7 +2,6 @@ package com.abdulghffar.gju_outgoings_app.objects;
 
 import android.util.Log;
 
-import com.abdulghffar.gju_outgoings_app.activities.splashScreen;
 import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -128,7 +127,7 @@ public class user implements Serializable {
 
     private void updatePlayerId() {
         DocumentReference documentReference = firebaseDb.db.collection("Users").document(this.getUid());
-        documentReference.update("playerId", splashScreen.getPlayerId()).addOnSuccessListener(unused ->Log.i("PlayerId",splashScreen.getPlayerId())).addOnFailureListener(e -> Log.e("Unable to update token",e.getMessage()));
+        documentReference.update("playerId", getPlayerId()).addOnSuccessListener(unused ->Log.i("PlayerId",getPlayerId())).addOnFailureListener(e -> Log.e("Unable to update token",e.getMessage()));
 
     }
 }

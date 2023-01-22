@@ -26,6 +26,7 @@ import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
+import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -43,7 +44,6 @@ public class fragmentSignIn extends Fragment {
     EditText passwordField;
     //Buttons
     Button signInButton;
-
 
 
     //Others
@@ -130,26 +130,32 @@ public class fragmentSignIn extends Fragment {
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            if (user != null) {
-                                checkUserApproval(user);
-                            }
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            toast("Sign in Failed:\n" + task.getException());
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success");
+                    firebaseDb.user=mAuth.getCurrentUser();
+                    if (user != null) {
+                        checkUserApproval(user);
                     }
-                });
+                } else {
+                    // If sign in fails, display a message to the user.
 
+                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                    toast("Sign in Failed:\n" + task.getException().getMessage());
+                    progressBar.setVisibility(View.INVISIBLE);
+
+
+
+                }
+
+
+            }
+        });
     }
+
 
     void updateUI(int x) {
         Intent i;

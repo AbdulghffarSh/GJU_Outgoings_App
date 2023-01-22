@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                         if (userData.getRole().equals("Moderator")) {
                             adminPanelButton.setVisibility(View.VISIBLE);
                         }
-                    updatePlayerId();
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -167,16 +166,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-
-
-    private void updatePlayerId() {
-        DocumentReference documentReference = db.collection("Users").document(user.getUid());
-        documentReference.update("playerId", splashScreen.getPlayerId())
-                .addOnSuccessListener(unused -> toast("playerId updated successfully")).addOnFailureListener(e -> toast("Unable to update playerId"));
-
-
     }
 
     void toast(String message) {

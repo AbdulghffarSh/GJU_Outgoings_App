@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
 import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
 import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
+import static com.abdulghffar.gju_outgoings_app.utils.notificationsSender.sendNotificationToAllUsers;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,7 +33,6 @@ import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
-import com.abdulghffar.gju_outgoings_app.utils.notificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -365,7 +365,7 @@ public class fragmentAddPost extends Fragment {
                         MainActivity.replaceFragment(fragmentHome, "Home");
 
                         if (userData.getRole().equals("Moderator")) {
-                            sendNotification("The moderator shared a post");
+                            sendNotificationToAllUsers("The moderator shared a post");
                         }
                     }
                 })
@@ -386,7 +386,4 @@ public class fragmentAddPost extends Fragment {
         toast.show();
     }
 
-    void sendNotification(String body) {
-        notificationsSender.sendNotificationToAllUsers(body,"\"All\"");
-    }
 }

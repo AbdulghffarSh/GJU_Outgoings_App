@@ -75,9 +75,9 @@ public class fragmentManageUsers extends Fragment {
 
 
                 try {
-                    notificationsSender.sendNotificationToAllUsers("You have been promoted to the role of moderator.", "\"" + currentItem.getPlayerId() + "\"");
+                    notificationsSender.sendNotification("You have been promoted to the role of moderator.", currentItem.getPlayerId());
                 } catch (Exception e) {
-                    Log.i("Error with sending notification to the user ", e.toString());
+                    toast("Error with sending notification to the user "+e.toString());
                 }
 
 
@@ -105,9 +105,9 @@ public class fragmentManageUsers extends Fragment {
                     }
                 });
                 try {
-                    notificationsSender.sendNotificationToAllUsers("Your request for registration has been approved", "\"" + currentItem.getPlayerId() + "\"");
+                    notificationsSender.sendNotification("Your request for registration has been approved", currentItem.getPlayerId());
                 } catch (Exception e) {
-                    Log.i("Error with sending notification to the user ", e.toString());
+                    toast("Error with sending notification to the user "+e.toString());
                 }
 
                 newUsersArrayList.remove(position);
@@ -133,9 +133,9 @@ public class fragmentManageUsers extends Fragment {
                     }
                 });
                 try {
-                    notificationsSender.sendNotificationToAllUsers("Your registration request was rejected, please contact the moderator", "\"" + currentItem.getPlayerId() + "\"");
+                    notificationsSender.sendNotification("Your registration request was rejected, please contact the moderator",currentItem.getPlayerId());
                 } catch (Exception e) {
-                    Log.i("Error with sending notification to the user ", e.toString());
+                    toast("Error with sending notification to the user "+e.toString());
                 }
 
 

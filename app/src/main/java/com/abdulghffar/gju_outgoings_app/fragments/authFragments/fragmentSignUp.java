@@ -1,6 +1,8 @@
 package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.updatePlayerId;
 import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.os.Bundle;
@@ -52,9 +54,6 @@ public class fragmentSignUp extends Fragment {
     //Buttons
     Button signUpButton;
     ImageButton facebookButton;
-
-    //Firebase
-    private FirebaseAuth mAuth;
 
 
     //RadioGroup
@@ -114,8 +113,6 @@ public class fragmentSignUp extends Fragment {
         signUpButton = view.findViewById(R.id.signUpButton);
         facebookButton = view.findViewById(R.id.facebookButton);
 
-        //Firebase
-        mAuth = mAuth;
 
         //RadioGroup
         radioGroup = view.findViewById(R.id.genderRadioGroup);
@@ -190,6 +187,7 @@ public class fragmentSignUp extends Fragment {
 
     private void FirebaseRegistration(String email, String password) {
         progressBar.setVisibility(View.VISIBLE);
+        if(mAuth==null) mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -200,7 +198,7 @@ public class fragmentSignUp extends Fragment {
                             Log.d(TAG, "createUserWithEmail:success");
                             toast("You signed up successfully");
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                            assert user != null;
+                            if(user==null)user = mAuth.getCurrentUser();
                             user.updateProfile(profileUpdates);
                             updateUI(user);
 
@@ -223,6 +221,7 @@ public class fragmentSignUp extends Fragment {
         authentication registration = (authentication) getActivity();
         fragmentMoreInfo fragmentMoreInfo = new fragmentMoreInfo();
         assert registration != null;
+        updatePlayerId();
         registration.replaceFragment(fragmentMoreInfo);
     }
 
