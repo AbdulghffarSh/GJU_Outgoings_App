@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +49,8 @@ public class fragmentSignIn extends Fragment {
 
     //Others
     View view;
-    ProgressBar progressBar;
+    ImageView loadingLogo;
+    authentication authentication = (authentication) getActivity();
 
 
     @Override
@@ -124,13 +125,11 @@ public class fragmentSignIn extends Fragment {
             checkUserApproval(currentUser);
         }
 
-        //Others
-        progressBar = view.findViewById(R.id.progressBar);
 
     }
 
     void signIn() {
-        progressBar.setVisibility(View.VISIBLE);
+        authentication.loadingUI(1);
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
 
@@ -149,7 +148,7 @@ public class fragmentSignIn extends Fragment {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             toast("Sign in Failed:\n" + task.getException());
-                            progressBar.setVisibility(View.INVISIBLE);
+                            authentication.loadingUI(0);
                         }
                     }
                 });
@@ -168,7 +167,6 @@ public class fragmentSignIn extends Fragment {
                 startActivity(i);
                 break;
             case 3:
-                authentication authentication = (authentication) getActivity();
                 fragmentWaiting fragmentWaiting = new fragmentWaiting();
                 assert authentication != null;
                 authentication.replaceFragment(fragmentWaiting);
@@ -192,7 +190,7 @@ public class fragmentSignIn extends Fragment {
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                progressBar.setVisibility(View.INVISIBLE);
+                authentication.loadingUI(0);
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());

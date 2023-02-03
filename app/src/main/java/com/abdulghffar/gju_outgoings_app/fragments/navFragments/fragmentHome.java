@@ -48,7 +48,7 @@ public class fragmentHome extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_home, parent, false);
         pinnedPostsArraylist = new ArrayList<>();
         postsArraylist = new ArrayList<>();
-        MainActivity = (MainActivity) getActivity();
+        MainActivity=(MainActivity) getActivity();
         assert MainActivity != null;
 
         pinnedPostsRecyclerView = view.findViewById(R.id.pinnedPostsRecyclerView);
@@ -94,7 +94,7 @@ public class fragmentHome extends Fragment {
     }
 
     void getData() {
-        MainActivity.progressBarStatus(true);
+        MainActivity.loadingUI(1);
         db = FirebaseFirestore.getInstance();
 
         db.collection("PinnedPosts").orderBy("timeStamp", Query.Direction.ASCENDING)
@@ -116,7 +116,9 @@ public class fragmentHome extends Fragment {
 
                         }
                         pinnedPostAdapter.notifyDataSetChanged();
+                        MainActivity.loadingUI(0);
                     }
+
                 });
         db.collection("Posts").orderBy("timeStamp", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -137,7 +139,7 @@ public class fragmentHome extends Fragment {
 
                         }
                         postAdapter.notifyDataSetChanged();
-                        MainActivity.progressBarStatus(false);
+                        MainActivity.loadingUI(0);
                     }
                 });
 

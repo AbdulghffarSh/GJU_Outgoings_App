@@ -2,9 +2,6 @@ package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,15 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
-
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -54,6 +52,7 @@ public class fragmentSignUp extends Fragment {
     Button signUpButton;
     ImageButton facebookButton;
 
+
     //Firebase
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -64,8 +63,8 @@ public class fragmentSignUp extends Fragment {
     RadioButton femaleRadioButton;
 
     //others
-    ProgressBar progressBar;
     View view;
+    authentication authentication = (authentication) getActivity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
@@ -83,7 +82,6 @@ public class fragmentSignUp extends Fragment {
         signInTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                authentication authentication = (authentication) getActivity();
                 fragmentSignIn fragmentSignIn = new fragmentSignIn();
                 assert authentication != null;
                 authentication.replaceFragment(fragmentSignIn);
@@ -123,8 +121,6 @@ public class fragmentSignUp extends Fragment {
         maleRadioButton = view.findViewById(R.id.maleRadioButton);
         femaleRadioButton = view.findViewById(R.id.femaleRadioButton);
 
-        //others
-        progressBar = view.findViewById(R.id.progressBar);
 
     }
 
@@ -190,7 +186,7 @@ public class fragmentSignUp extends Fragment {
 
 
     private void FirebaseRegistration(String email, String password) {
-        progressBar.setVisibility(View.VISIBLE);
+        authentication.loadingUI(1);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -211,7 +207,7 @@ public class fragmentSignUp extends Fragment {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             toast("Authentication failed" + task.getException());
                         }
-                        progressBar.setVisibility(View.INVISIBLE);
+                        authentication.loadingUI(0);
                     }
 
 
@@ -222,10 +218,9 @@ public class fragmentSignUp extends Fragment {
 
     private void updateUI(FirebaseUser user) {
         checkUserInfo(user);
-        authentication registration = (authentication) getActivity();
         fragmentMoreInfo fragmentMoreInfo = new fragmentMoreInfo();
-        assert registration != null;
-        registration.replaceFragment(fragmentMoreInfo);
+        assert authentication != null;
+        authentication.replaceFragment(fragmentMoreInfo);
     }
 
     private void checkUserInfo(FirebaseUser user) {
@@ -235,10 +230,12 @@ public class fragmentSignUp extends Fragment {
         String timeStamp = new java.util.Date().toString();
         user userData = new user(user.getUid(), "Not yet", user.getEmail(), gender, null, name, null, timeStamp, "Student", null, null);
 
-        authentication authentication = (authentication) getActivity();
         assert authentication != null;
         authentication.setUserData(userData);
 
     }
+
+
+
 }
 

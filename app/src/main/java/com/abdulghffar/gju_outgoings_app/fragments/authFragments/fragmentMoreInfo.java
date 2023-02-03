@@ -2,12 +2,6 @@ package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +19,12 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
@@ -53,7 +53,7 @@ public class fragmentMoreInfo extends Fragment {
 
     //Vars
     user userData;
-    authentication authentication;
+    authentication authentication = (authentication) getActivity();
 
     //Firebase
     FirebaseFirestore db;
@@ -62,7 +62,7 @@ public class fragmentMoreInfo extends Fragment {
     //Spinner
     Spinner majorsSpinner;
 
-    ProgressBar progressBar;
+    ImageView loadingLogo;
     View view;
 
     @Override
@@ -75,13 +75,15 @@ public class fragmentMoreInfo extends Fragment {
         doneButton = view.findViewById(R.id.doneButton);
         studentIDField = view.findViewById(R.id.studentID);
         majorsSpinner = view.findViewById(R.id.majorsSpinner);
-        progressBar = view.findViewById(R.id.progressBar);
+        loadingLogo = view.findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
+
         userData = authentication.getUserData();
         addImage = view.findViewById(R.id.addImage);
         profileImage = view.findViewById(R.id.uPic);
 
         // Creating an Array Adapter to populate the spinner with the data in the string resources
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),R.array.Majors,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.Majors, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -142,7 +144,7 @@ public class fragmentMoreInfo extends Fragment {
     }
 
     void addToFireStore() {
-        progressBar.setVisibility(View.VISIBLE);
+        authentication.loadingUI(1);
         db = FirebaseFirestore.getInstance();
         // Add a new document with a generated ID
         db.collection("Users").document(userData.getUid())
@@ -152,7 +154,7 @@ public class fragmentMoreInfo extends Fragment {
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                         checkUserApproval(FirebaseAuth.getInstance().getCurrentUser());
-                        progressBar.setVisibility(View.INVISIBLE);
+                        authentication.loadingUI(0);
 
                     }
                 })
@@ -160,7 +162,7 @@ public class fragmentMoreInfo extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error writing document", e);
-                        progressBar.setVisibility(View.INVISIBLE);
+                        authentication.loadingUI(0);
 
                     }
                 });
@@ -168,14 +170,13 @@ public class fragmentMoreInfo extends Fragment {
     }
 
     private void updateUI(int x) {
-        authentication registration = (authentication) getActivity();
-        assert registration != null;
+        assert authentication != null;
         if (x == 1) {
             fragmentWaiting fragmentWaiting = new fragmentWaiting();
-            registration.replaceFragment(fragmentWaiting);
+            authentication.replaceFragment(fragmentWaiting);
         } else {
             fragmentSignIn fragmentSignIn = new fragmentSignIn();
-            registration.replaceFragment(fragmentSignIn);
+            authentication.replaceFragment(fragmentSignIn);
         }
     }
 
@@ -200,7 +201,7 @@ public class fragmentMoreInfo extends Fragment {
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
-                progressBar.setVisibility(View.INVISIBLE);
+                authentication.loadingUI(0);
             }
         });
 
@@ -208,7 +209,7 @@ public class fragmentMoreInfo extends Fragment {
     }
 
     private void uploadImage(Uri photo) {
-        progressBar.setVisibility(View.VISIBLE);
+        authentication.loadingUI(1);
         storage = FirebaseStorage.getInstance();
         if (photo != null) {
 
@@ -250,6 +251,8 @@ public class fragmentMoreInfo extends Fragment {
                                             //Set Image Link in user
                                             //changeData("profilePic", downloadUrl.toString());
                                             userData.setProfilePic(downloadUrl.toString());
+                                            authentication.loadingUI(0);
+
                                         }
 
                                     });
@@ -269,6 +272,8 @@ public class fragmentMoreInfo extends Fragment {
                                             "Failed " + e.getMessage(),
                                             Toast.LENGTH_SHORT)
                                     .show();
+                            authentication.loadingUI(0);
+
                         }
                     });
 
@@ -290,4 +295,6 @@ public class fragmentMoreInfo extends Fragment {
                 }
             }
     );
+
+
 }

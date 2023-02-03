@@ -82,7 +82,7 @@ public class fragmentContactUs extends Fragment {
 
 
     private void EventChangeListener() {
-        navBarActivities.progressBarStatus(true);
+        navBarActivities.loadingUI(1);
         db.collection("Staff").orderBy("name", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -100,7 +100,7 @@ public class fragmentContactUs extends Fragment {
                             }
 
                             staffAdapter.notifyDataSetChanged();
-                            navBarActivities.progressBarStatus(false);
+                            navBarActivities.loadingUI(0);
 
 
                         }

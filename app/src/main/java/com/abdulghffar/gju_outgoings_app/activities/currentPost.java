@@ -1,13 +1,13 @@
 package com.abdulghffar.gju_outgoings_app.activities;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +58,7 @@ public class currentPost extends AppCompatActivity {
     ImageView accountPic;
     ImageView postImage;
     ImageView addCommentButton;
-    ProgressBar progressBar;
+    ImageView loadingLogo;
 
     EditText commentField;
 
@@ -112,8 +112,8 @@ public class currentPost extends AppCompatActivity {
         userName.setText(currentPost.getUser().getName());
         postBody.setText(currentPost.getBody());
         timeStamp.setText(currentPost.getTimeStamp());
-
-        progressBar = findViewById(R.id.progressBar);
+        loadingLogo = findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
 
 
         try {
@@ -144,58 +144,8 @@ public class currentPost extends AppCompatActivity {
         getComments();
     }
 
-//    void getData() {
-//
-//        db = FirebaseFirestore.getInstance();
-//
-//        db.collection("PinnedPosts").orderBy("timeStamp", Query.Direction.ASCENDING)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    @Override
-//                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
-//                        if (error != null) {
-//                            Log.e("Firestore error", error.getMessage());
-//                            return;
-//                        }
-//
-//                        assert value != null;
-//                        for (DocumentChange dc : value.getDocumentChanges()) {
-//                            if (dc.getType() == DocumentChange.Type.ADDED) {
-//                                postCommentsArrayList.add(dc.getDocument().toObject(comment.class));
-//                            }
-//
-//
-//                        }
-//                        postCommentsAdapter.notifyDataSetChanged();
-//                    }
-//                });
-//        db.collection("Posts").orderBy("timeStamp", Query.Direction.ASCENDING)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    @Override
-//                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
-//                        if (error != null) {
-//                            Log.e("Firestore error", error.getMessage());
-//                            return;
-//                        }
-//
-//                        assert value != null;
-//                        for (DocumentChange dc : value.getDocumentChanges()) {
-//                            if (dc.getType() == DocumentChange.Type.ADDED) {
-//                                postCommentsArrayList.add(dc.getDocument().toObject(comment.class));
-//                            }
-//
-//
-//                        }
-//                        postAdapter.notifyDataSetChanged();
-//                    }
-//                });
-//
-//
-//    }
-
     void getComments() {
-        progressBar.setVisibility(View.VISIBLE);
+        loadingUI(1);
         realTimeDB = FirebaseDatabase.getInstance();
         String ref = "/Posts/" + "/Users/" + currentPost.getUser().getUid() + "/UserPosts/" + currentPost.getPostID() + "/Comments";
 
@@ -221,7 +171,7 @@ public class currentPost extends AppCompatActivity {
                                     comment commentObject = new comment(comment, Uid, timeStamp, user, ref);
                                     postCommentsArrayList.add(commentObject);
                                     postCommentsAdapter.notifyDataSetChanged();
-                                    progressBar.setVisibility(View.INVISIBLE);
+                                    loadingUI(0);
 
 
                                 }
@@ -233,6 +183,8 @@ public class currentPost extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
+                        loadingUI(0);
+
                     }
                 });
 
@@ -270,5 +222,17 @@ public class currentPost extends AppCompatActivity {
                     .getApplicationWindowToken(), 0);
     }
 
+    void loadingUI(int value){
+        switch (value){
+            case 0:
+                ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+                loadingLogo.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                ((AnimationDrawable) loadingLogo.getDrawable()).start();
+                loadingLogo.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
 
 }

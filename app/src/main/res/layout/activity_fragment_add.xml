@@ -33,13 +33,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminateTint="@android:color/holo_blue_dark"
-            android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/loadingLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true" />
 
         <ImageView
             android:id="@+id/attachImage"

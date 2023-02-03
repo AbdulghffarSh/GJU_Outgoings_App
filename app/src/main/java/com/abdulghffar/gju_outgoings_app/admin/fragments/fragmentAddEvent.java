@@ -225,7 +225,7 @@ public class fragmentAddEvent extends Fragment {
 
     void addToFirebase(event event) {
 
-        Admin.setProgressBar(true);
+        Admin.loadingUI(1);
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("Events").document();
         ref.set(event)
@@ -237,7 +237,7 @@ public class fragmentAddEvent extends Fragment {
                         toast("Event added");
                         sendNotification("The moderator shared an event");
 
-                        Admin.setProgressBar(false);
+                        Admin.loadingUI(0);
 
 
                     }
@@ -246,7 +246,7 @@ public class fragmentAddEvent extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error writing document", e);
-                        Admin.setProgressBar(false);
+                        Admin.loadingUI(0);
 
                     }
                 });
@@ -255,7 +255,7 @@ public class fragmentAddEvent extends Fragment {
     }
 
     void sendNotification(String body) {
-        notificationsSender.sendNotificationToAllUsers(body,"\"All\"");
+        notificationsSender.sendNotificationToAllUsers(body);
     }
 
 }

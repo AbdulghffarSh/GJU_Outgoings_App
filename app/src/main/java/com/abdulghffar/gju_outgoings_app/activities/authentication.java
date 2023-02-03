@@ -1,6 +1,9 @@
 package com.abdulghffar.gju_outgoings_app.activities;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,6 +17,7 @@ import com.abdulghffar.gju_outgoings_app.objects.user;
 public class authentication extends AppCompatActivity {
 
     static user userData;
+    ImageView loadingLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class authentication extends AppCompatActivity {
         //FragmentChang
         fragmentSignIn fragmentSignIn = new fragmentSignIn();
         replaceFragment(fragmentSignIn);
+        loadingLogo = findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
 
     }
 
@@ -48,6 +54,20 @@ public class authentication extends AppCompatActivity {
     public void setUserData(user userData) {
         this.userData = userData;
     }
+
+    public void loadingUI(int value){
+    switch (value){
+        case 0: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+            loadingLogo.setVisibility(View.INVISIBLE);
+            break;
+        case 1: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).start();
+            loadingLogo.setVisibility(View.VISIBLE);
+            break;
+    }
+}
+
 
 
 }

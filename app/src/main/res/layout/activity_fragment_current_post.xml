@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:orientation="vertical">
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <ImageView
+        android:id="@+id/loadingLogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerInParent="true"
-        android:indeterminateTint="@android:color/holo_blue_dark"
-        android:translationZ="1dp"
-        android:visibility="invisible" />
+        android:translationZ="90dp"
+ />
 
     <ScrollView
         android:layout_width="match_parent"

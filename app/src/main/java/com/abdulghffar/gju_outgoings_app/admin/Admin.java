@@ -3,10 +3,11 @@ package com.abdulghffar.gju_outgoings_app.admin;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,7 @@ public class Admin extends AppCompatActivity {
     FirebaseUser user;
     FirebaseFirestore db;
     FragmentManager fragmentManager;
-    ProgressBar progressBar;
+    ImageView loadingLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,6 @@ public class Admin extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
 
         setup();
-
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -74,7 +74,9 @@ public class Admin extends AppCompatActivity {
     void setup() {
         fragmentManager = getSupportFragmentManager();
         replaceFragment(new fragmentDashboard());
-        progressBar = findViewById(R.id.progressBar);
+        loadingLogo = findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
+
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -112,15 +114,19 @@ public class Admin extends AppCompatActivity {
 
         }
     }
-
-    public void setProgressBar(boolean i) {
-        if (i) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-        if (!i) {
-            progressBar.setVisibility(View.INVISIBLE);
-        }
-
+    public void loadingUI(int value){
+    switch (value){
+        case 0: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+            loadingLogo.setVisibility(View.INVISIBLE);
+            break;
+        case 1: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).start();
+            loadingLogo.setVisibility(View.VISIBLE);
+            break;
     }
+}
+
+
 
 }

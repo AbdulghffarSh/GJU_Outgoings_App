@@ -2,11 +2,11 @@ package com.abdulghffar.gju_outgoings_app.activities;
 
 import static android.content.ContentValues.TAG;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,7 +43,7 @@ public class navBarActivities extends AppCompatActivity {
     FirebaseFirestore db;
     university universityData;
     ArrayList<user> userArrayList;
-    ProgressBar progressBar;
+    ImageView loadingLogo;
 
     FragmentManager fragmentManager;
 
@@ -55,7 +55,9 @@ public class navBarActivities extends AppCompatActivity {
 
         backButton = findViewById(R.id.backButton);
         label = findViewById(R.id.activityLabel);
-        progressBar = findViewById(R.id.progressBar);
+        loadingLogo = findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
+
         fragmentManager = getSupportFragmentManager();
 
 
@@ -203,12 +205,6 @@ public class navBarActivities extends AppCompatActivity {
         return userArrayList;
     }
 
-    public void progressBarStatus(boolean status) {
-        if (status) progressBar.setVisibility(View.VISIBLE);
-        else {
-            progressBar.setVisibility(View.INVISIBLE);
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -224,5 +220,19 @@ public class navBarActivities extends AppCompatActivity {
 
 
     }
+
+    public void loadingUI(int value){
+    switch (value){
+        case 0: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+            loadingLogo.setVisibility(View.INVISIBLE);
+            break;
+        case 1: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).start();
+            loadingLogo.setVisibility(View.VISIBLE);
+            break;
+    }
+}
+
 
 }

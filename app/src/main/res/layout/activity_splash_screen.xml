@@ -20,12 +20,11 @@
         android:layout_marginBottom="5dp"
         android:src="@mipmap/gju_logo" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/loadingLogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:indeterminateTint="@color/Primary_orange"
-        android:visibility="invisible" />
+        android:translationZ="90dp"
+ />
 </RelativeLayout>

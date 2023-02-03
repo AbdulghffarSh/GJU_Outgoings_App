@@ -3,6 +3,7 @@ package com.abdulghffar.gju_outgoings_app.activities;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,7 +11,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     static user userData;
     BottomNavigationView nav;
     TextView activityNameField;
-    ProgressBar progressBar;
+
+    ImageView loadingLogo;
 
     post currentPost;
     FragmentManager fragmentManager;
@@ -68,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         activityNameField = findViewById(R.id.activityName);
-        progressBar = findViewById(R.id.progressBar);
+        loadingLogo = findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
+
         fragmentManager = getSupportFragmentManager();
         adminPanelButton = findViewById(R.id.adminPanelButton);
 
@@ -204,13 +207,6 @@ public class MainActivity extends AppCompatActivity {
         return currentPost;
     }
 
-    public void progressBarStatus(boolean status) {
-        if (status) progressBar.setVisibility(View.VISIBLE);
-        else {
-            progressBar.setVisibility(View.INVISIBLE);
-        }
-    }
-
     @Override
     public void onBackPressed() {
         if (doubleBackClick) {
@@ -236,5 +232,18 @@ public class MainActivity extends AppCompatActivity {
         }, 500);
 
     }
+    public void loadingUI(int value){
+    switch (value){
+        case 0: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+            loadingLogo.setVisibility(View.INVISIBLE);
+            break;
+        case 1: 
+            ((AnimationDrawable) loadingLogo.getDrawable()).start();
+            loadingLogo.setVisibility(View.VISIBLE);
+            break;
+    }
+}
+
 
 }

@@ -73,7 +73,7 @@ public class fragmentEvents extends Fragment {
     }
 
     private void EventChangeListener() {
-        navBarActivities.progressBarStatus(true);
+        navBarActivities.loadingUI(1);
         db.collection("Events").orderBy("startDate", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -94,7 +94,7 @@ public class fragmentEvents extends Fragment {
                         }
                         eventsArrayList = event.filterEvents(eventsArrayList);
                         eventAdapter.notifyDataSetChanged();
-                        navBarActivities.progressBarStatus(false);
+                        navBarActivities.loadingUI(0);
 
                     }
                 });

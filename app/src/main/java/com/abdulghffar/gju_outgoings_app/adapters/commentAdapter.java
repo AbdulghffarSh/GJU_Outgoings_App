@@ -1,5 +1,6 @@
 package com.abdulghffar.gju_outgoings_app.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,20 +48,6 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
             reportButton = itemView.findViewById(R.id.reportButton);
             timeStamp = itemView.findViewById(R.id.timeStamp);
 
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (listener != null) {
-//                        int position = getAdapterPosition();
-//                        if (position != RecyclerView.NO_POSITION) {
-//                            listener.reportItemClick(position);
-//                        }
-//                    }
-//                }
-//            });
-
-
             reportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,10 +89,17 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
             System.out.println("this is the error " + e);
         }
 
-        holder.userName.setText(currentItem.getUser().getName());
+        try {
+            holder.userName.setText(currentItem.getUser().getName());
+        }
+        catch (Exception e){
+            holder.userName.setText("[deleted]");
+        }
         holder.comment.setText(currentItem.getCommentText());
-        if (currentItem.getUser().getProfilePic() != null) {
+        try {
             Picasso.get().load(currentItem.getUser().getProfilePic()).into(holder.userPic);
+        }catch (Exception e){
+            Log.i("Exception:",e.getMessage());
         }
 
     }

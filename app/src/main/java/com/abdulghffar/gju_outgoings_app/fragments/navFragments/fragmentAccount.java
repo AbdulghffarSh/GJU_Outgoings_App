@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -61,7 +61,8 @@ public class fragmentAccount extends Fragment {
     TextView status;
     TextView changeImage;
 
-    ProgressBar progressBar;
+    navBarActivities navBarActivities = (navBarActivities) getActivity();
+
 
     View view;
 
@@ -153,7 +154,6 @@ public class fragmentAccount extends Fragment {
         changeImage = view.findViewById(R.id.changeImage);
         editMajor = view.findViewById(R.id.editMajor);
         editStatus = view.findViewById(R.id.editStatus);
-        progressBar = view.findViewById(R.id.progressBar);
     }
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(
@@ -172,14 +172,9 @@ public class fragmentAccount extends Fragment {
 
 
     private void uploadImage(Uri photo) {
-        progressBar.setVisibility(View.VISIBLE);
+        navBarActivities.loadingUI(1);
         storage = FirebaseStorage.getInstance();
         if (photo != null) {
-
-            // Code for showing progressDialog while uploading
-            ProgressBar ProgressBar
-                    = new ProgressBar(getActivity());
-            ProgressBar.setVisibility(View.VISIBLE);
 
             // Defining the child of storageReference
             StorageReference ref
@@ -200,7 +195,8 @@ public class fragmentAccount extends Fragment {
 
                                     // Image uploaded successfully
                                     // Dismiss dialog
-                                    ProgressBar.setVisibility(View.INVISIBLE);
+                                    navBarActivities.loadingUI(0);
+
                                     Toast
                                             .makeText(getActivity(),
                                                     "Done",
@@ -226,7 +222,8 @@ public class fragmentAccount extends Fragment {
                         public void onFailure(@NonNull Exception e) {
 
                             // Error, Image not uploaded
-                            ProgressBar.setVisibility(View.INVISIBLE);
+                            navBarActivities.loadingUI(0);
+
                             Toast
                                     .makeText(getActivity(),
                                             "Failed " + e.getMessage(),
@@ -241,90 +238,20 @@ public class fragmentAccount extends Fragment {
 
 
     void changeData(String field, String newData) {
-        progressBar.setVisibility(View.VISIBLE);
+        navBarActivities.loadingUI(1);
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.update(field, newData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 System.out.println("Updated");
-                progressBar.setVisibility(View.INVISIBLE);
+                navBarActivities.loadingUI(0);
                 getProfileData();
 
             }
         });
 
     }
-
-
-//    public void updateUserData(String field, String message) {
-//        ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
-//                inflate(R.layout.update_data_dialog, null, false);
-//        EditText newData = subView.findViewById(R.id.editText);
-//        TextView messageField = subView.findViewById(R.id.text);
-//
-//        messageField.setText(message);
-//        // Create the object of
-//        // AlertDialog Builder class
-//        AlertDialog.Builder builder
-//                = new AlertDialog
-//                .Builder(getActivity(), R.style.AlertDialogCustom);
-//
-//        builder.setView(subView);
-//
-//        // Set the message show for the Alert time
-//
-//        // Set Alert Title
-////        builder.setTitle("Update user " + field);
-//
-//        // Set Cancelable false
-//        // for when the user clicks on the outside
-//        // the Dialog Box then it will remain show
-//        builder.setCancelable(false);
-//
-//        // Set the positive button with yes name
-//        // OnClickListener method is use of
-//        // DialogInterface interface.
-//
-//        builder
-//                .setPositiveButton(
-//                        "Save",
-//                        new DialogInterface
-//                                .OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog,
-//                                                int which) {
-//                                changeData(field, newData.getText().toString());
-//                            }
-//                        });
-//
-//        // Set the Negative button with No name
-//        // OnClickListener method is use
-//        // of DialogInterface interface.
-//        builder
-//                .setNegativeButton(
-//                        "Cancel",
-//                        new DialogInterface
-//                                .OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog,
-//                                                int which) {
-//
-//                                // If user click no
-//                                // then dialog box is canceled.
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//        // Create the Alert dialog
-//        AlertDialog alertDialog = builder.create();
-//
-//        // Show the Alert Dialog box
-//        alertDialog.show();
-//
-//    }
 
     public void updateUserMajor() {
         ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view

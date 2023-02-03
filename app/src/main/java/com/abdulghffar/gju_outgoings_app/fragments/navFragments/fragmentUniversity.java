@@ -128,7 +128,7 @@ public class fragmentUniversity extends Fragment {
     }
 
     void getComments() {
-        navBarActivities.progressBarStatus(true);
+        navBarActivities.loadingUI(1);
         realTimeDB = FirebaseDatabase.getInstance("https://gju-outgings-app-24c61-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference myRef = realTimeDB.getReference("/Cities/" + universityData.getCityName() + "/" + universityData.getUniversityName() + "/Comments/");
         commentsArraylist.clear();
@@ -165,7 +165,7 @@ public class fragmentUniversity extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-        navBarActivities.progressBarStatus(false);
+        navBarActivities.loadingUI(0);
 
 
     }
@@ -193,7 +193,7 @@ public class fragmentUniversity extends Fragment {
     }
 
     void reportComment(int position) {
-        navBarActivities.progressBarStatus(true);
+        navBarActivities.loadingUI(1);
 
         comment selectedComment = commentsArraylist.get(position);
         ArrayList<String> reportedBy = new ArrayList<>();
@@ -238,7 +238,7 @@ public class fragmentUniversity extends Fragment {
 
                                         }
                                     });
-                            navBarActivities.progressBarStatus(false);
+                            navBarActivities.loadingUI(0);
 
                         }
 
@@ -260,13 +260,13 @@ public class fragmentUniversity extends Fragment {
 
                                     }
                                 });
-                        navBarActivities.progressBarStatus(false);
+                        navBarActivities.loadingUI(0);
 
                     }
-                    navBarActivities.progressBarStatus(false);
+                    navBarActivities.loadingUI(0);
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
-                    navBarActivities.progressBarStatus(false);
+                    navBarActivities.loadingUI(0);
 
                 }
             }

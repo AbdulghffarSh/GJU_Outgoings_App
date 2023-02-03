@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -65,7 +66,7 @@ public class fragmentAddPost extends Fragment {
 
 
     ImageView attachImage;
-    ProgressBar progressBar;
+    ImageView loadingLogo;
     FirebaseStorage storage;
     FirebaseUser user;
     FirebaseFirestore db;
@@ -173,7 +174,8 @@ public class fragmentAddPost extends Fragment {
         submit = view.findViewById(R.id.postButton);
 
         attachImage = view.findViewById(R.id.attachImage);
-        progressBar = view.findViewById(R.id.progressBar);
+        loadingLogo = view.findViewById(R.id.loadingLogo);
+
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         try {
@@ -253,7 +255,7 @@ public class fragmentAddPost extends Fragment {
             toast("Add more words to the post");
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
+        loadingUI(1);
         storage = FirebaseStorage.getInstance();
         if (currentImage != null) {
 
@@ -352,7 +354,7 @@ public class fragmentAddPost extends Fragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-                        progressBar.setVisibility(View.INVISIBLE);
+                        loadingUI(0);
 
                         //add to RealTimeDB for comments
                         realTimeDB = FirebaseDatabase.getInstance();
@@ -374,7 +376,7 @@ public class fragmentAddPost extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error writing document", e);
-                        progressBar.setVisibility(View.INVISIBLE);
+                        loadingUI(0);
 
                     }
                 });
@@ -388,6 +390,22 @@ public class fragmentAddPost extends Fragment {
     }
 
     void sendNotification(String body) {
-        notificationsSender.sendNotificationToAllUsers(body,"\"All\"");
+        notificationsSender.sendNotificationToAllUsers(body);
     }
+    void loadingUI(int value){
+        loadingLogo.setImageResource(R.drawable.loading_logo);
+
+        switch (value){
+
+            case 0:
+                ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+                loadingLogo.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                ((AnimationDrawable) loadingLogo.getDrawable()).start();
+                loadingLogo.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
 }

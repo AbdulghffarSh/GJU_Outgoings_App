@@ -68,7 +68,7 @@ public class fragmentRating extends Fragment {
     }
 
     private void EventChangeListener() {
-        navBarActivities.progressBarStatus(true);
+        navBarActivities.loadingUI(1);
         db.collection("Cities").orderBy("cityName", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -87,7 +87,7 @@ public class fragmentRating extends Fragment {
 
                             navBarActivities.setCitiesArrayList(citiesArrayList);
                             citiesAdapter.notifyDataSetChanged();
-                            navBarActivities.progressBarStatus(false);
+                            navBarActivities.loadingUI(0);
                         }
 
                     }

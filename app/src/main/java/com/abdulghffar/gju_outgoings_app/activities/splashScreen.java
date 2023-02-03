@@ -5,7 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +24,7 @@ import com.onesignal.OneSignal;
 
 public class splashScreen extends AppCompatActivity {
 
-    ProgressBar progressBar;
+    ImageView loadingLogo;
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseFirestore db;
@@ -37,7 +37,9 @@ public class splashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         notificationsHandler();
-        progressBar = findViewById(R.id.progressBar);
+        loadingLogo = findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         checkUser();
@@ -103,7 +105,6 @@ public class splashScreen extends AppCompatActivity {
         Toast toast = Toast.makeText(splashScreen.this, message, Toast.LENGTH_LONG);
         toast.show();
     }
-
 
 
     private void notificationsHandler() {
