@@ -28,7 +28,6 @@ postAdapter adapter;
         recyclerView = view.findViewById(R.id.recyclerView);
 
         textView = view.findViewById(R.id.textViewSearch);
-
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

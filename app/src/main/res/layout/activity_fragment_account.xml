@@ -90,8 +90,11 @@
         android:layout_below="@+id/uPicFrame"
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
+        android:layout_toStartOf="@+id/editMajor"
         android:layout_toEndOf="@+id/major"
         android:fontFamily="@font/ubuntu_regular"
+        android:max="15"
+        android:paddingHorizontal="2dp"
         android:text="User major"
         android:textSize="20sp" />
 
@@ -142,7 +145,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
-        android:translationZ="90dp"
- />
+        android:translationZ="90dp" />
 
 </RelativeLayout>

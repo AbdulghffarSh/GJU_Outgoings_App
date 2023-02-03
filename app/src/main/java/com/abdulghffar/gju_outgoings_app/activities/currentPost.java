@@ -132,10 +132,10 @@ public class currentPost extends AppCompatActivity {
 
 
         if (currentPost.getUser().getProfilePic() != null) {
-            Picasso.get().load(currentPost.getUser().getProfilePic()).into(accountPic);
+            Picasso.get().load(currentPost.getUser().getProfilePic()).rotate(0f).into(accountPic);
         }
         if (currentPost.getImage() != null) {
-            Picasso.get().load(currentPost.getImage()).into(postImage);
+            Picasso.get().load(currentPost.getImage()).rotate(0f).into(postImage);
         } else {
             ((ViewManager) postImage.getParent()).removeView(postImage);
         }
@@ -156,7 +156,6 @@ public class currentPost extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
                             String Uid = snapshot.child("uid").getValue(String.class);
                             String timeStamp = snapshot.child("timeStamp").getValue(String.class);
                             String comment = snapshot.child("commentText").getValue(String.class);
@@ -172,24 +171,21 @@ public class currentPost extends AppCompatActivity {
                                     postCommentsArrayList.add(commentObject);
                                     postCommentsAdapter.notifyDataSetChanged();
                                     loadingUI(0);
-
-
                                 }
                             });
-
-
+                        }
+                        if (!dataSnapshot.exists()) {
+                            loadingUI(0);
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         loadingUI(0);
-
                     }
                 });
-
-
     }
+
 
     void addComment() {
         realTimeDB = FirebaseDatabase.getInstance();
@@ -222,8 +218,8 @@ public class currentPost extends AppCompatActivity {
                     .getApplicationWindowToken(), 0);
     }
 
-    void loadingUI(int value){
-        switch (value){
+    void loadingUI(int value) {
+        switch (value) {
             case 0:
                 ((AnimationDrawable) loadingLogo.getDrawable()).stop();
                 loadingLogo.setVisibility(View.INVISIBLE);

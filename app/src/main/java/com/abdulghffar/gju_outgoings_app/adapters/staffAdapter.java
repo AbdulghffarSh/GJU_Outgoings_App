@@ -1,6 +1,5 @@
 package com.abdulghffar.gju_outgoings_app.adapters;
 
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +75,7 @@ public class staffAdapter extends RecyclerView.Adapter<staffAdapter.viewHolder> 
         holder.staffName.setText(currentItem.getName());
         holder.staffInfo.setText(currentItem.getInfo());
         if (currentItem.getProfilePic() != null) {
-            Picasso.get().load(currentItem.getProfilePic()).into(holder.staffPic);
+            Picasso.get().load(currentItem.getProfilePic()).rotate(0f).into(holder.staffPic);
         }
     }
 

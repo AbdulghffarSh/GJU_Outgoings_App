@@ -3,8 +3,10 @@ package com.abdulghffar.gju_outgoings_app.activities;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -48,6 +50,7 @@ public class splashScreen extends AppCompatActivity {
 
 
     private void checkUser() {
+        loadingUI(1);
         db = FirebaseFirestore.getInstance();
         if (user != null) {
             DocumentReference docRef = db.collection("Users").document(user.getUid());
@@ -58,7 +61,7 @@ public class splashScreen extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
+                            loadingUI(0);
                             if (document.get("role").toString().matches("Moderator")) {
                                 Intent intent = new Intent(splashScreen.this, Admin.class);
                                 startActivity(intent);
@@ -121,7 +124,17 @@ public class splashScreen extends AppCompatActivity {
         playerId = OneSignal.getDeviceState().getUserId();
     }
 
-    public static String getPlayerId() {
-        return playerId;
+
+    void loadingUI(int value) {
+        switch (value) {
+            case 0:
+                ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+                loadingLogo.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                ((AnimationDrawable) loadingLogo.getDrawable()).start();
+                loadingLogo.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 }

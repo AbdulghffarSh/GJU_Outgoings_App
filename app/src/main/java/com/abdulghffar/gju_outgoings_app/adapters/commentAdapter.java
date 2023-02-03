@@ -97,7 +97,7 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
         }
         holder.comment.setText(currentItem.getCommentText());
         try {
-            Picasso.get().load(currentItem.getUser().getProfilePic()).into(holder.userPic);
+            Picasso.get().load(currentItem.getUser().getProfilePic()).rotate(0f).into(holder.userPic);
         }catch (Exception e){
             Log.i("Exception:",e.getMessage());
         }
