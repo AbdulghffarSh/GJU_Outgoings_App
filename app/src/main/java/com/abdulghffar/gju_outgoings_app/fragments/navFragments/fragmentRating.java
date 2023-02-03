@@ -1,5 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.fragments.navFragments;
 
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,6 @@ import com.abdulghffar.gju_outgoings_app.adapters.cityAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,7 +33,7 @@ public class fragmentRating extends Fragment {
     RecyclerView recyclerView;
     cityAdapter citiesAdapter;
     ArrayList<city> citiesArrayList;
-    FirebaseFirestore db;
+
     navBarActivities navBarActivities;
 
     View view;
@@ -46,7 +47,6 @@ public class fragmentRating extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        db = FirebaseFirestore.getInstance();
         citiesArrayList = new ArrayList<city>();
         citiesAdapter = new cityAdapter(citiesArrayList);
         navBarActivities = (navBarActivities) getActivity();

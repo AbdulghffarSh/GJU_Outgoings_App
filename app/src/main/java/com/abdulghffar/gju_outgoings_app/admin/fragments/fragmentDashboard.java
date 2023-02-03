@@ -1,5 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.admin.fragments;
 
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +22,6 @@ import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAddPost;
-import com.google.firebase.auth.FirebaseAuth;
 
 import javax.annotation.Nullable;
 
@@ -137,7 +138,7 @@ public class fragmentDashboard extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
-                                FirebaseAuth.getInstance().signOut();
+                                mAuth.signOut();
                                 Intent i = new Intent(getActivity(), authentication.class);
                                 startActivity(i);
                             }

@@ -1,5 +1,10 @@
 package com.abdulghffar.gju_outgoings_app.objects;
 
+import android.util.Log;
+
+import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
+import com.google.firebase.firestore.DocumentReference;
+
 import java.io.Serializable;
 
 public class user implements Serializable {
@@ -118,5 +123,11 @@ public class user implements Serializable {
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    private void updatePlayerId() {
+        DocumentReference documentReference = firebaseDb.db.collection("Users").document(this.getUid());
+        documentReference.update("playerId", getPlayerId()).addOnSuccessListener(unused ->Log.i("PlayerId",getPlayerId())).addOnFailureListener(e -> Log.e("Unable to update token",e.getMessage()));
+
     }
 }

@@ -1,6 +1,9 @@
 package com.abdulghffar.gju_outgoings_app.admin;
 
 import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -21,17 +24,13 @@ import com.abdulghffar.gju_outgoings_app.admin.fragments.fragmentDashboard;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Admin extends AppCompatActivity {
 
     user userData;
-    FirebaseUser user;
-    FirebaseFirestore db;
+
     FragmentManager fragmentManager;
     ImageView loadingLogo;
 
@@ -80,8 +79,7 @@ public class Admin extends AppCompatActivity {
     }
 
     public void replaceFragment(Fragment fragment) {
-        db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        user = mAuth.getCurrentUser();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer, fragment);
         fragmentTransaction.commit();

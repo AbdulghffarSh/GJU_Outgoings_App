@@ -1,9 +1,11 @@
 package com.abdulghffar.gju_outgoings_app.fragments.authFragments;
 
-import static android.content.ContentValues.TAG;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.currentPlayerId;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.updatePlayerId;
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.authentication;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.abdulghffar.gju_outgoings_app.utils.notificationsSender;
+import com.onesignal.OneSignal;
 
 import java.util.Objects;
 
@@ -37,10 +33,7 @@ public class fragmentWaiting extends Fragment {
     TextView userDisplayName;
 
     View view;
-    FirebaseFirestore db;
-    authentication authentication;
 
-    FirebaseUser user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
@@ -48,29 +41,16 @@ public class fragmentWaiting extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_waiting, parent, false);
         logOutButton = view.findViewById(R.id.signOutButton);
         userDisplayName = view.findViewById(R.id.userDisplayName);
-        userDisplayName.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
-        db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        updateToken();
+        userDisplayName.setText(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName());
+        user = mAuth.getCurrentUser();
+        getPlayerId();
+        updatePlayerId();
 
-
-        //subscribe to waiting topic
-        FirebaseMessaging.getInstance().subscribeToTopic("waiting").addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                String msg = "Subscribed";
-                if (!task.isSuccessful()) {
-                    msg = "Subscribe failed";
-                }
-                Log.d(TAG, msg);
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-            }
-        });
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
+                mAuth.signOut();
                 authentication registration = (authentication) getActivity();
                 fragmentSignIn fragmentSignIn = new fragmentSignIn();
                 assert registration != null;
@@ -90,15 +70,26 @@ public class fragmentWaiting extends Fragment {
     }
 
 
-    private void updateToken() {
-        DocumentReference documentReference = db.collection("Users").document(user.getUid());
-        documentReference.update("playerId", com.abdulghffar.gju_outgoings_app.activities.splashScreen.getPlayerId()).addOnSuccessListener(unused -> toast("Token updated successfully")).addOnFailureListener(e -> toast("Unable to update token"));
-
-    }
-
     void toast(String message) {
         Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    public String getPlayerId() {
+        if (currentPlayerId == null) {
+            // Enable verbose OneSignal logging to debug issues if needed.
+            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+            // OneSignal Initialization
+            OneSignal.initWithContext(view.getContext());
+            OneSignal.setAppId(notificationsSender.app_id);
+
+            // promptForPushNotifications will show the native Android notification permission prompt.
+            // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 7)
+            OneSignal.promptForPushNotifications();
+            currentPlayerId = OneSignal.getDeviceState().getUserId();
+        }
+        return currentPlayerId;
     }
 
 }

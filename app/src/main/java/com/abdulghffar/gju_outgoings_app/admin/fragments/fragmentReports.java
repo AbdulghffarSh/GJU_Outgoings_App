@@ -1,5 +1,7 @@
 package com.abdulghffar.gju_outgoings_app.admin.fragments;
 
+import static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
 import com.abdulghffar.gju_outgoings_app.admin.adapters.reportsAdapter;
+import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
 import com.abdulghffar.gju_outgoings_app.objects.report;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -35,8 +37,9 @@ public class fragmentReports extends Fragment {
     reportsAdapter reportsAdapter;
     TextView empty;
 
-    FirebaseFirestore db;
-    FirebaseDatabase realTimeDb;
+
+    FirebaseDatabase realTimeDB = firebaseDb.realDb;
+
 
     //Others
     View view;
@@ -55,7 +58,7 @@ public class fragmentReports extends Fragment {
             public void onItemClick(int position) {
                 report selectedItem = reportArrayList.get(position);
                 try {
-                    realTimeDb.getReference(selectedItem.getReference()).removeValue();
+                    realTimeDB.getReference(selectedItem.getReference()).removeValue();
                     db.collection("Reports").document(selectedItem.getTimeStamp()).delete();
                     reportArrayList.clear();
                     getReports();
@@ -107,8 +110,6 @@ public class fragmentReports extends Fragment {
         reportsRecyclerView.setAdapter(reportsAdapter);
         empty = (TextView) view.findViewById(R.id.empty);
 
-        db = FirebaseFirestore.getInstance();
-        realTimeDb = FirebaseDatabase.getInstance();
 
     }
 
