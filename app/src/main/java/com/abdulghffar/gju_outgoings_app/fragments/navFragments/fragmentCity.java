@@ -119,7 +119,7 @@ public class fragmentCity extends Fragment {
 
         cityName.setText(cityData.getCityName());
         if (cityData.getPics() != null) {
-            Picasso.get().load(cityData.getPics().get(0)).into(cityPic);
+            Picasso.get().load(cityData.getPics().get(0)).rotate(0f).into(cityPic);
         }
 
 

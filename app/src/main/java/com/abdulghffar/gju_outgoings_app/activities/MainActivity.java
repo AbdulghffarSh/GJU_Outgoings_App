@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         profileImage = findViewById(R.id.accountPic);
         activityNameField = findViewById(R.id.activityName);
         loadingLogo = findViewById(R.id.loadingLogo);
@@ -89,10 +88,9 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println(userData.getUid());
                         assert userData != null;
                         setUser(userData);
-
                         //Using Picasso
                         if (userData.getProfilePic() != null) {
-                            Picasso.get().load(userData.getProfilePic()).into(profileImage);
+                            Picasso.get().load(userData.getProfilePic()).rotate(0f).into(profileImage);
                         }
                         if (userData.getRole().equals("Moderator")) {
                             adminPanelButton.setVisibility(View.VISIBLE);
@@ -217,18 +215,19 @@ public class MainActivity extends AppCompatActivity {
         }, 500);
 
     }
-    public void loadingUI(int value){
-    switch (value){
-        case 0: 
-            ((AnimationDrawable) loadingLogo.getDrawable()).stop();
-            loadingLogo.setVisibility(View.INVISIBLE);
-            break;
-        case 1: 
-            ((AnimationDrawable) loadingLogo.getDrawable()).start();
-            loadingLogo.setVisibility(View.VISIBLE);
-            break;
+
+    public void loadingUI(int value) {
+        switch (value) {
+            case 0:
+                ((AnimationDrawable) loadingLogo.getDrawable()).stop();
+                loadingLogo.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                ((AnimationDrawable) loadingLogo.getDrawable()).start();
+                loadingLogo.setVisibility(View.VISIBLE);
+                break;
+        }
     }
-}
 
 
 }

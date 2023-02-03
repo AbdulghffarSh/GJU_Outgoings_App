@@ -108,12 +108,12 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
         holder.postBody.setText(textBody);
         if (currentItem.getImage() != null) {
             holder.postImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(currentItem.getImage()).into(holder.postImage);
+            Picasso.get().load(currentItem.getImage()).rotate(0f).into(holder.postImage);
         }
 
         if (currentItem.getUser() != null) {
             System.out.println(currentItem.getUser().getName());
-            Picasso.get().load(currentItem.getUser().getProfilePic()).into(holder.accountPic);
+            Picasso.get().load(currentItem.getUser().getProfilePic()).rotate(0f).into(holder.accountPic);
             holder.userName.setText(currentItem.getUser().getName());
 
         }

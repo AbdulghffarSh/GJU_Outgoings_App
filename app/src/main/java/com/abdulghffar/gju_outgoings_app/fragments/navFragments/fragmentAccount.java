@@ -61,7 +61,7 @@ public class fragmentAccount extends Fragment {
     TextView status;
     TextView changeImage;
 
-    navBarActivities navBarActivities = (navBarActivities) getActivity();
+    navBarActivities navBarActivities;
 
 
     View view;
@@ -109,7 +109,8 @@ public class fragmentAccount extends Fragment {
     }
 
     public void getProfileData() {
-
+        // Show the loading UI
+        navBarActivities.loadingUI(1);
 
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -124,22 +125,21 @@ public class fragmentAccount extends Fragment {
                         //Using Picasso
                         if (userData.getProfilePic() != null) {
 
-                            Picasso.get().load(userData.getProfilePic()).into(profileImage);
-
-
+                            Picasso.get().load(userData.getProfilePic()).rotate(0f).into(profileImage);
                         }
-                        fullName.setText(userData.getName().toString());
-                        sID.setText(userData.getStudentID().toString());
-                        email.setText(userData.getEmail().toString());
-                        major.setText(userData.getMajor().toString());
-                        status.setText("None");
-
+                        fullName.setText(userData.getName());
+                        sID.setText(userData.getStudentID());
+                        email.setText(userData.getEmail());
+                        major.setText(userData.getMajor());
+//                        status.setText(userData.getStatus());
                     } else {
                         Log.d(TAG, "No such document");
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
+                // Hide the loading UI
+                navBarActivities.loadingUI(0);
             }
         });
     }
@@ -154,6 +154,7 @@ public class fragmentAccount extends Fragment {
         changeImage = view.findViewById(R.id.changeImage);
         editMajor = view.findViewById(R.id.editMajor);
         editStatus = view.findViewById(R.id.editStatus);
+        navBarActivities = (navBarActivities) getActivity();
     }
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(

@@ -48,7 +48,7 @@ public class fragmentHome extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment_home, parent, false);
         pinnedPostsArraylist = new ArrayList<>();
         postsArraylist = new ArrayList<>();
-        MainActivity=(MainActivity) getActivity();
+        MainActivity = (MainActivity) getActivity();
         assert MainActivity != null;
 
         pinnedPostsRecyclerView = view.findViewById(R.id.pinnedPostsRecyclerView);
