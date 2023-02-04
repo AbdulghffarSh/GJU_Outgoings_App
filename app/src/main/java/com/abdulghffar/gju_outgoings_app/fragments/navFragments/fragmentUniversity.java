@@ -31,6 +31,7 @@ import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.abdulghffar.gju_outgoings_app.objects.report;
 import com.abdulghffar.gju_outgoings_app.objects.university;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,6 +43,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -54,6 +57,7 @@ public class fragmentUniversity extends Fragment {
     TextView cityName;
     EditText commentField;
     ImageView addCommentButton;
+    ImageView universityPic;
 
     ArrayList<comment> commentsArraylist;
 
@@ -101,12 +105,23 @@ public class fragmentUniversity extends Fragment {
     }
 
     private void setUpUI() {
-
+        universityPic = view.findViewById(R.id.universityPic);
         universityName = view.findViewById(R.id.universityName);
         universityNote = view.findViewById(R.id.noteField);
         cityName = view.findViewById(R.id.cityNameField);
 
         universityName.setText(universityData.getUniversityName());
+        if (universityData.getPics() != null) {
+            System.out.println(universityData.getUniversityName());
+            try {
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("universitiesImages/" + universityData.getUniversityName()+ "/image1.jpg");
+                Glide.with(this).load(storageRef).into(universityPic);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+
+            }
+
+        }
         universityNote.setText(universityData.getNote());
         cityName.setText(universityData.getCityName());
 

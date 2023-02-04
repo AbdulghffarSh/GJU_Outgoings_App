@@ -26,24 +26,22 @@
 
 
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/universityPic"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_below="@+id/universityName"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="21dp"
             android:layout_marginBottom="30dp"
             android:background="@color/blue"
             android:paddingHorizontal="10dp"
             android:paddingVertical="10dp"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_no_image" />
-
 
         <RelativeLayout
             android:id="@+id/universityInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/img"
+            android:layout_below="@+id/universityPic"
             android:background="@color/blue"
             android:orientation="vertical">
 

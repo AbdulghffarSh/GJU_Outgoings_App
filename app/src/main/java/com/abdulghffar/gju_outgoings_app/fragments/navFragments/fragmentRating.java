@@ -69,29 +69,28 @@ public class fragmentRating extends Fragment {
 
     private void EventChangeListener() {
         navBarActivities.loadingUI(1);
-        db.collection("Cities").orderBy("cityName", Query.Direction.ASCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Log.e("Firestore error", error.getMessage());
-                            return;
-                        }
+        db.collection("Cities").orderBy("cityName", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot value, @androidx.annotation.Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("Firestore error", error.getMessage());
+                    return;
+                }
 
-                        assert value != null;
-                        for (DocumentChange dc : value.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                citiesArrayList.add(dc.getDocument().toObject(city.class));
-                            }
-
-                            navBarActivities.setCitiesArrayList(citiesArrayList);
-                            citiesAdapter.notifyDataSetChanged();
-                            navBarActivities.loadingUI(0);
-                        }
-
+                assert value != null;
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED) {
+                        citiesArrayList.add(dc.getDocument().toObject(city.class));
                     }
-                });
+
+                    navBarActivities.setCitiesArrayList(citiesArrayList);
+                    citiesAdapter.notifyDataSetChanged();
+                    navBarActivities.loadingUI(0);
+                }
+
+            }
+        });
 
 
     }

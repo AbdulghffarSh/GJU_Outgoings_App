@@ -19,7 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:ellipsize="end"
             android:fontFamily="@font/ubuntu_bold"
+            android:maxLength="20"
+            android:maxLines="1"
             android:padding="10dp"
             android:text="Title"
             android:textSize="25sp" />
@@ -30,7 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:ellipsize="end"
             android:fontFamily="@font/ubuntu_regular"
+            android:maxLength="20"
+            android:maxLines="1"
             android:padding="10dp"
             android:text="Post text"
             android:textSize="20sp" />
@@ -38,10 +44,9 @@
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             android:layout_marginTop="10dp"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
             android:layout_width="match_parent"

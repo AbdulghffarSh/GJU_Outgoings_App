@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -97,7 +97,9 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.viewHold
         }
         holder.comment.setText(currentItem.getCommentText());
         try {
-            Picasso.get().load(currentItem.getUser().getProfilePic()).rotate(0f).into(holder.userPic);
+            Glide.with(holder.itemView)
+                    .load(currentItem.getUser().getProfilePic())
+                    .into(holder.userPic);
         }catch (Exception e){
             Log.i("Exception:",e.getMessage());
         }

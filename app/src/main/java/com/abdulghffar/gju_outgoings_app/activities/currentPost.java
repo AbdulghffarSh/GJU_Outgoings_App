@@ -21,6 +21,7 @@ import com.abdulghffar.gju_outgoings_app.adapters.commentAdapter;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -132,10 +132,11 @@ public class currentPost extends AppCompatActivity {
 
 
         if (currentPost.getUser().getProfilePic() != null) {
-            Picasso.get().load(currentPost.getUser().getProfilePic()).rotate(0f).into(accountPic);
+            Glide.with(this).load(currentPost.getUser().getProfilePic()).into(accountPic);
         }
         if (currentPost.getImage() != null) {
-            Picasso.get().load(currentPost.getImage()).rotate(0f).into(postImage);
+            Glide.with(this).load(currentPost.getImage()).into(postImage);
+
         } else {
             ((ViewManager) postImage.getParent()).removeView(postImage);
         }

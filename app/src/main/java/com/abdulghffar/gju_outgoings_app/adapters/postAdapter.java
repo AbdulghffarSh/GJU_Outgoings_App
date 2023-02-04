@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.post;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -108,12 +108,16 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
         holder.postBody.setText(textBody);
         if (currentItem.getImage() != null) {
             holder.postImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(currentItem.getImage()).rotate(0f).into(holder.postImage);
+            Glide.with(holder.itemView)
+                    .load(currentItem.getImage())
+                    .into(holder.postImage);
         }
 
         if (currentItem.getUser() != null) {
             System.out.println(currentItem.getUser().getName());
-            Picasso.get().load(currentItem.getUser().getProfilePic()).rotate(0f).into(holder.accountPic);
+            Glide.with(holder.itemView)
+                    .load(currentItem.getUser().getProfilePic())
+                    .into(holder.accountPic);
             holder.userName.setText(currentItem.getUser().getName());
 
         }

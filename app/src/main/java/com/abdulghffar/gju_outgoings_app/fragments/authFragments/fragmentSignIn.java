@@ -50,7 +50,7 @@ public class fragmentSignIn extends Fragment {
     //Others
     View view;
     ImageView loadingLogo;
-    authentication authentication = (authentication) getActivity();
+    authentication authentication;
 
 
     @Override
@@ -124,7 +124,7 @@ public class fragmentSignIn extends Fragment {
         if (currentUser != null) {
             checkUserApproval(currentUser);
         }
-
+        authentication = (authentication) getActivity();
 
     }
 
@@ -133,25 +133,24 @@ public class fragmentSignIn extends Fragment {
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                checkUserApproval(user);
-                            }
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            toast("Sign in Failed:\n" + task.getException());
-                            authentication.loadingUI(0);
-                        }
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success");
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null) {
+                        checkUserApproval(user);
                     }
-                });
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                    toast("Sign in Failed:\n" + task.getException());
+                    authentication.loadingUI(0);
+                }
+            }
+        });
 
     }
 
