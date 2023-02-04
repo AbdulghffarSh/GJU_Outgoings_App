@@ -50,7 +50,7 @@ public class fragmentSignIn extends Fragment {
     //Others
     View view;
     ImageView loadingLogo;
-    authentication authentication = (authentication) getActivity();
+    authentication authentication;
 
 
     @Override
@@ -124,7 +124,7 @@ public class fragmentSignIn extends Fragment {
         if (currentUser != null) {
             checkUserApproval(currentUser);
         }
-
+        authentication = (authentication) getActivity();
 
     }
 

@@ -31,13 +31,14 @@ import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentSearch;
 import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentSettings;
 import com.abdulghffar.gju_outgoings_app.objects.post;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.squareup.picasso.Picasso;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -90,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
                         setUser(userData);
                         //Using Picasso
                         if (userData.getProfilePic() != null) {
-                            Picasso.get().load(userData.getProfilePic()).rotate(0f).into(profileImage);
+                            Glide.with(MainActivity.this)
+                                    .load(userData.getProfilePic())
+                                    .into(profileImage);
                         }
                         if (userData.getRole().equals("Moderator")) {
                             adminPanelButton.setVisibility(View.VISIBLE);

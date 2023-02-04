@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +40,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import javax.annotation.Nullable;
 
@@ -124,8 +124,9 @@ public class fragmentAccount extends Fragment {
                         assert userData != null;
                         //Using Picasso
                         if (userData.getProfilePic() != null) {
-
-                            Picasso.get().load(userData.getProfilePic()).rotate(0f).into(profileImage);
+                            Glide.with(view)
+                                    .load(userData.getProfilePic())
+                                    .into(profileImage);
                         }
                         fullName.setText(userData.getName());
                         sID.setText(userData.getStudentID());
@@ -150,7 +151,7 @@ public class fragmentAccount extends Fragment {
         sID = view.findViewById(R.id.sId);
         email = view.findViewById(R.id.uEmail);
         major = view.findViewById(R.id.uMajor);
-        status = view.findViewById(R.id.uStatus);
+//        status = view.findViewById(R.id.uStatus);
         changeImage = view.findViewById(R.id.changeImage);
         editMajor = view.findViewById(R.id.editMajor);
         editStatus = view.findViewById(R.id.editStatus);

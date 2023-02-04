@@ -64,7 +64,7 @@ public class fragmentSignUp extends Fragment {
 
     //others
     View view;
-    authentication authentication = (authentication) getActivity();
+    authentication authentication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
@@ -78,7 +78,6 @@ public class fragmentSignUp extends Fragment {
                 getValues();
             }
         });
-
         signInTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +119,8 @@ public class fragmentSignUp extends Fragment {
         radioGroup = view.findViewById(R.id.genderRadioGroup);
         maleRadioButton = view.findViewById(R.id.maleRadioButton);
         femaleRadioButton = view.findViewById(R.id.femaleRadioButton);
+
+        authentication = (authentication) getActivity();
 
 
     }

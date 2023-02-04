@@ -32,6 +32,7 @@ import com.abdulghffar.gju_outgoings_app.objects.city;
 import com.abdulghffar.gju_outgoings_app.objects.comment;
 import com.abdulghffar.gju_outgoings_app.objects.report;
 import com.abdulghffar.gju_outgoings_app.objects.user;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,7 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
@@ -119,7 +120,9 @@ public class fragmentCity extends Fragment {
 
         cityName.setText(cityData.getCityName());
         if (cityData.getPics() != null) {
-            Picasso.get().load(cityData.getPics().get(0)).rotate(0f).into(cityPic);
+            Glide.with(view)
+                    .load(cityData.getPics().get(0))
+                    .into(cityPic);
         }
 
 

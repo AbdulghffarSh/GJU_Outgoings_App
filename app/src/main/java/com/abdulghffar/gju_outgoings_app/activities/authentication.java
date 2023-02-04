@@ -56,6 +56,9 @@ public class authentication extends AppCompatActivity {
     }
 
     public void loadingUI(int value){
+            loadingLogo = findViewById(R.id.loadingLogo);
+            loadingLogo.setImageResource(R.drawable.loading_logo);
+
     switch (value){
         case 0: 
             ((AnimationDrawable) loadingLogo.getDrawable()).stop();

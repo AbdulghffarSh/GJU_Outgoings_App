@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.objects.staff;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+
 
 import java.util.ArrayList;
 
@@ -75,7 +76,9 @@ public class staffAdapter extends RecyclerView.Adapter<staffAdapter.viewHolder> 
         holder.staffName.setText(currentItem.getName());
         holder.staffInfo.setText(currentItem.getInfo());
         if (currentItem.getProfilePic() != null) {
-            Picasso.get().load(currentItem.getProfilePic()).rotate(0f).into(holder.staffPic);
+            Glide.with(holder.itemView)
+                    .load(currentItem.getProfilePic())
+                    .into(holder.staffPic);
         }
     }
 
