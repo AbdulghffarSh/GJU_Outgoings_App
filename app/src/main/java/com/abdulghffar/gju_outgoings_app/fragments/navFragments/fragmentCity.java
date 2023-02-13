@@ -241,7 +241,6 @@ public class fragmentCity extends Fragment {
     }
 
     void setup() {
-
         wikiButton = view.findViewById(R.id.wikiButton);
         navBarActivities = (navBarActivities) getActivity();
         assert navBarActivities != null;
