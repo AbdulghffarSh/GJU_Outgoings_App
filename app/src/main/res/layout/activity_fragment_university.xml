@@ -49,12 +49,11 @@
                 android:id="@+id/note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/cityName"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/ubuntu_bold"
+                android:text="Enrollment note:"
                 android:paddingHorizontal="10dp"
-                android:text="Note:"
                 android:textSize="18sp" />
 
             <TextView
@@ -76,6 +75,7 @@
                 android:layout_below="@+id/noteField"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="40dp"
+                android:layout_alignEnd="@+id/note"
                 android:fontFamily="@font/ubuntu_bold"
                 android:paddingHorizontal="10dp"
                 android:text="City name:"

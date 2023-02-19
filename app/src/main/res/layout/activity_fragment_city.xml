@@ -30,12 +30,25 @@
             android:textColor="@color/Primary_orange"
             android:textSize="30sp" />
 
+        <TextView
+            android:id="@+id/zipCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cityName"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/ubuntu_regular"
+            android:gravity="center"
+            android:text="Zip code"
+            android:textColor="@color/black"
+
+            />
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_below="@+id/cityName"
+            android:layout_below="@+id/zipCode"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
             android:background="@color/blue"
@@ -43,12 +56,14 @@
             android:paddingVertical="10dp"
             android:src="@drawable/ic_no_image" />
 
+
         <!--        information-->
         <LinearLayout
             android:id="@+id/cityOverviewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/img"
+            android:layout_marginTop="20dp"
             android:background="@color/blue"
             android:orientation="vertical">
 

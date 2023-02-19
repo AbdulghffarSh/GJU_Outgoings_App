@@ -111,6 +111,7 @@ public class fragmentUniversity extends Fragment {
         cityName = view.findViewById(R.id.cityNameField);
 
         universityName.setText(universityData.getUniversityName());
+
         if (universityData.getPics() != null) {
             System.out.println(universityData.getUniversityName());
             try {

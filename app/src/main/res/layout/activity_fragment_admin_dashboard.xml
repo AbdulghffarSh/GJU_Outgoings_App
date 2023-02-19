@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,7 +30,6 @@
             android:translationZ="1dp"
             app:civ_border_color="@color/Primary_orange" />
 
-
         <ImageView
             android:id="@+id/logo"
             android:layout_width="100dp"
@@ -41,14 +41,12 @@
             android:src="@drawable/ic_logo"
             android:layout_centerHorizontal="true"/>
 
-
-
         <GridLayout
+            android:id="@+id/main_grid_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/logo"
             android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
             android:background="@drawable/top_corners"
             android:backgroundTint="@color/blue"
             android:columnCount="2"
@@ -86,7 +84,6 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
                         android:src="@drawable/add_post" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -275,6 +272,51 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/announceCardView"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="15dp"
+                app:cardBackgroundColor="@color/Primary_orange"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="5dp">
+
+                <Button
+                    android:id="@+id/announceButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/ic_announce" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:text="Announce"
+                        android:textAlignment="center"
+                        android:textColor="#272932"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
 
 
         </GridLayout>

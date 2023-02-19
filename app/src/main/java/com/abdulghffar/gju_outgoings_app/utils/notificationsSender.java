@@ -58,13 +58,14 @@ public class notificationsSender {
 
 
     public static void sendNotificationToAllUsers(String message) {
+        System.out.println("clicked");
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
 // Create the JSON body of the request
         String jsonBody = "{\"app_id\":\""+app_id+"\",\"included_segments\":[\"All\"],\"contents\":{\"en\":\""+message+"\"}}";
-        RequestBody body = RequestBody.create(mediaType, jsonBody);
+        RequestBody body = RequestBody.Companion.create(jsonBody, mediaType);
 
 // Create the request
         Request request = new Request.Builder()

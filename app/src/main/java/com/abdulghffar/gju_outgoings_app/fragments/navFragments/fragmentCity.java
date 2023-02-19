@@ -80,6 +80,7 @@ public class fragmentCity extends Fragment {
 
     TextView cityName;
     TextView cityOverview;
+    TextView zipCode;
 
     EditText commentField;
     ImageView cityPic;
@@ -147,7 +148,8 @@ public class fragmentCity extends Fragment {
         cityName = view.findViewById(R.id.cityName);
         cityPic = view.findViewById(R.id.img);
         addCommentButton = view.findViewById(R.id.addCommentButton);
-
+        zipCode = view.findViewById(R.id.zipCode);
+        zipCode.setText(cityData.getZipCode());
         cityName.setText(cityData.getCityName());
         if (cityData.getPics() != null) {
             try {
