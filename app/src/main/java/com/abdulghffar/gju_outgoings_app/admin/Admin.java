@@ -86,7 +86,7 @@ public class Admin extends AppCompatActivity {
     }
 
 
-    void toast(String message) {
+    public void toast(String message) {
         Toast toast = Toast.makeText(Admin.this, message, Toast.LENGTH_LONG);
         toast.show();
     }
