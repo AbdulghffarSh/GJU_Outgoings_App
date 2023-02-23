@@ -17,9 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GJU_Outgoings_App">
         <activity
-            android:name=".fragmentAnnounce"
-            android:exported="false" />
-        <activity
             android:name=".admin.Admin"
             android:exported="false"
             android:noHistory="false" />

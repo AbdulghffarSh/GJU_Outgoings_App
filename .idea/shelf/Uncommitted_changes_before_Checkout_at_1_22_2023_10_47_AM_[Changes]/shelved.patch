@@ -1,0 +1,560 @@
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignIn.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.fragments.authFragments;\r\n\r\nimport static android.content.ContentValues.TAG;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.view.inputmethod.InputMethodManager;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\nimport com.abdulghffar.gju_outgoings_app.activities.MainActivity;\r\nimport com.abdulghffar.gju_outgoings_app.activities.authentication;\r\nimport com.abdulghffar.gju_outgoings_app.admin.Admin;\r\nimport com.abdulghffar.gju_outgoings_app.database.firebaseDb;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.firestore.DocumentSnapshot;\r\n\r\nimport javax.annotation.Nullable;\r\n\r\npublic class fragmentSignIn extends Fragment {\r\n\r\n    //Fields\r\n    TextView signUpTextView;\r\n    EditText emailField;\r\n    EditText passwordField;\r\n    //Buttons\r\n    Button signInButton;\r\n\r\n\r\n    //Others\r\n    View view;\r\n    ProgressBar progressBar;\r\n\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {\r\n        // Defines the xml file for the fragment\r\n        view = inflater.inflate(R.layout.activity_fragment_sign_in, parent, false);\r\n\r\n        setup();\r\n\r\n        signInButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                //Check email\r\n                if (emailField.getText().toString().matches(\"\")) {\r\n                    toast(\"Please enter your email\");\r\n                    return;\r\n                }\r\n                if ((!emailField.getText().toString().contains(\"@\")) || (!emailField.getText().toString().contains(\".com\"))) {\r\n                    toast(\"Invalid email format\");\r\n                    return;\r\n                }\r\n                //Check password\r\n                if (passwordField.getText().toString().matches(\"\")) {\r\n                    toast(\"Please enter your password\");\r\n                    return;\r\n                }\r\n                if (getActivity() != null) {\r\n                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);\r\n                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);\r\n                }\r\n                signIn();\r\n            }\r\n        });\r\n\r\n        signUpTextView.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                authentication registration = (authentication) getActivity();\r\n                fragmentSignUp fragmentSignUp = new fragmentSignUp();\r\n                assert registration != null;\r\n                registration.replaceFragment(fragmentSignUp);\r\n            }\r\n        });\r\n\r\n        return view;\r\n    }\r\n\r\n    // This event is triggered soon after onCreateView().\r\n    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.\r\n    @Override\r\n    public void onViewCreated(View view, Bundle savedInstanceState) {\r\n        // Setup any handles to view objects here\r\n        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);\r\n    }\r\n\r\n    void setup() {\r\n        //Fields\r\n        signUpTextView = view.findViewById(R.id.signUp);\r\n        emailField = view.findViewById(R.id.emailField);\r\n        passwordField = view.findViewById(R.id.passwordField);\r\n\r\n        //Buttons\r\n        signInButton = view.findViewById(R.id.signInButton);\r\n\r\n\r\n        // Check if user is signed in (non-null) and update UI accordingly.\r\n        FirebaseUser currentUser = mAuth.getCurrentUser();\r\n        if (currentUser != null) {\r\n            checkUserApproval(currentUser);\r\n        }\r\n\r\n        //Others\r\n        progressBar = view.findViewById(R.id.progressBar);\r\n\r\n    }\r\n\r\n    void signIn() {\r\n        progressBar.setVisibility(View.VISIBLE);\r\n        String email = emailField.getText().toString();\r\n        String password = passwordField.getText().toString();\r\n\r\n        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<AuthResult> task) {\r\n                if (task.isSuccessful()) {\r\n                    // Sign in success, update UI with the signed-in user's information\r\n                    Log.d(TAG, \"signInWithEmail:success\");\r\n                    firebaseDb.user=mAuth.getCurrentUser();\r\n                    if (user != null) {\r\n                        checkUserApproval(user);\r\n                    }\r\n                } else {\r\n                    // If sign in fails, display a message to the user.\r\n\r\n                    Log.w(TAG, \"signInWithEmail:failure\", task.getException());\r\n                    toast(\"Sign in Failed:\\n\" + task.getException().getMessage());\r\n                    progressBar.setVisibility(View.INVISIBLE);\r\n\r\n\r\n\r\n                }\r\n\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n\r\n    void updateUI(int x) {\r\n        Intent i;\r\n        switch (x) {\r\n            case 1:\r\n                i = new Intent(getActivity(), Admin.class);\r\n                startActivity(i);\r\n                break;\r\n            case 2:\r\n                i = new Intent(getActivity(), MainActivity.class);\r\n                startActivity(i);\r\n                break;\r\n            case 3:\r\n                authentication authentication = (authentication) getActivity();\r\n                fragmentWaiting fragmentWaiting = new fragmentWaiting();\r\n                assert authentication != null;\r\n                authentication.replaceFragment(fragmentWaiting);\r\n                break;\r\n            case 4:\r\n                toast(\"Your registration request was rejected, please contact the moderator\");\r\n                break;\r\n            case 5:\r\n                toast(\"You have been blocked, please contact the moderator\");\r\n                break;\r\n        }\r\n    }\r\n\r\n    void toast(String message) {\r\n        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG);\r\n        toast.show();\r\n    }\r\n\r\n    private void checkUserApproval(FirebaseUser user) {\r\n        DocumentReference docRef = db.collection(\"Users\").document(user.getUid());\r\n        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<DocumentSnapshot> task) {\r\n                progressBar.setVisibility(View.INVISIBLE);\r\n                if (task.isSuccessful()) {\r\n                    DocumentSnapshot document = task.getResult();\r\n                    Log.d(TAG, \"DocumentSnapshot data: \" + document.getData());\r\n\r\n                    if (document.exists()) {\r\n                        if (document.get(\"role\").toString().matches(\"Moderator\")) {\r\n                            updateUI(1);\r\n                        } else if (document.get(\"role\").toString().matches(\"Student\")) {\r\n\r\n                            if (document.get(\"approval\").toString().matches(\"Approved\")) {\r\n                                updateUI(2);\r\n                            } else if (document.get(\"approval\").toString().matches(\"Not yet\")) {\r\n                                updateUI(3);\r\n                            } else if (document.get(\"approval\").toString().matches(\"Denied\")) {\r\n                                updateUI(4);\r\n                            } else if (document.get(\"approval\").toString().matches(\"Blocked\")) {\r\n                                updateUI(5);\r\n                            }\r\n\r\n                        }\r\n\r\n                    } else {\r\n                        Log.d(TAG, \"No such document\");\r\n\r\n                    }\r\n                } else {\r\n                    Log.d(TAG, \"get failed with \", task.getException());\r\n                }\r\n            }\r\n        });\r\n\r\n\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignIn.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignIn.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignIn.java	
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignIn.java	
+@@ -7,6 +7,7 @@
+ 
+ import android.content.Context;
+ import android.content.Intent;
++import android.graphics.drawable.AnimationDrawable;
+ import android.os.Bundle;
+ import android.util.Log;
+ import android.view.LayoutInflater;
+@@ -15,7 +16,7 @@
+ import android.view.inputmethod.InputMethodManager;
+ import android.widget.Button;
+ import android.widget.EditText;
+-import android.widget.ProgressBar;
++import android.widget.ImageView;
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+@@ -48,7 +49,7 @@
+ 
+     //Others
+     View view;
+-    ProgressBar progressBar;
++    ImageView loadingLogo;
+ 
+ 
+     @Override
+@@ -105,6 +106,8 @@
+     }
+ 
+     void setup() {
++        loadingLogo = view.findViewById(R.id.loadingLogo);
++        loadingLogo.setImageResource(R.drawable.loading_logo);
+         //Fields
+         signUpTextView = view.findViewById(R.id.signUp);
+         emailField = view.findViewById(R.id.emailField);
+@@ -121,12 +124,14 @@
+         }
+ 
+         //Others
+-        progressBar = view.findViewById(R.id.progressBar);
++
+ 
+     }
+ 
+     void signIn() {
+-        progressBar.setVisibility(View.VISIBLE);
++        startLoadingAnimation();
++
++
+         String email = emailField.getText().toString();
+         String password = passwordField.getText().toString();
+ 
+@@ -145,8 +150,8 @@
+ 
+                     Log.w(TAG, "signInWithEmail:failure", task.getException());
+                     toast("Sign in Failed:\n" + task.getException().getMessage());
+-                    progressBar.setVisibility(View.INVISIBLE);
+ 
++                    stopLoadingAnimation();
+ 
+ 
+                 }
+@@ -189,16 +194,20 @@
+     }
+ 
+     private void checkUserApproval(FirebaseUser user) {
++        startLoadingAnimation();
++
+         DocumentReference docRef = db.collection("Users").document(user.getUid());
+         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+             @Override
+             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+-                progressBar.setVisibility(View.INVISIBLE);
++                loadingLogo.setVisibility(View.INVISIBLE);
+                 if (task.isSuccessful()) {
+                     DocumentSnapshot document = task.getResult();
+                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+ 
+                     if (document.exists()) {
++                        stopLoadingAnimation();
++
+                         if (document.get("role").toString().matches("Moderator")) {
+                             updateUI(1);
+                         } else if (document.get("role").toString().matches("Student")) {
+@@ -217,10 +226,13 @@
+ 
+                     } else {
+                         Log.d(TAG, "No such document");
++                        stopLoadingAnimation();
+ 
+                     }
+                 } else {
+                     Log.d(TAG, "get failed with ", task.getException());
++                    stopLoadingAnimation();
++
+                 }
+             }
+         });
+@@ -228,4 +240,14 @@
+ 
+     }
+ 
++    void startLoadingAnimation(){
++        //Loading start
++        ((AnimationDrawable) loadingLogo.getDrawable()).start();
++    }
++
++    void stopLoadingAnimation(){
++        //Loading stop
++        ((AnimationDrawable) loadingLogo.getDrawable()).stop();
++    }
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignUp.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.fragments.authFragments;\r\n\r\nimport static android.content.ContentValues.TAG;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.updatePlayerId;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;\r\n\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageButton;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.RadioButton;\r\nimport android.widget.RadioGroup;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\nimport com.abdulghffar.gju_outgoings_app.activities.authentication;\r\nimport com.abdulghffar.gju_outgoings_app.objects.user;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.auth.UserProfileChangeRequest;\r\n\r\nimport javax.annotation.Nullable;\r\n\r\n\r\npublic class fragmentSignUp extends Fragment {\r\n    //Vars\r\n    String name;\r\n    String email;\r\n    String password;\r\n    String confirmPassword;\r\n    String gender;\r\n\r\n    //Fields\r\n    EditText emailField;\r\n    EditText passwordField;\r\n    EditText confirmPasswordField;\r\n    EditText nameField;\r\n\r\n    TextView signInTextView;\r\n\r\n    //Buttons\r\n    Button signUpButton;\r\n    ImageButton facebookButton;\r\n\r\n\r\n    //RadioGroup\r\n    RadioGroup radioGroup;\r\n    RadioButton maleRadioButton;\r\n    RadioButton femaleRadioButton;\r\n\r\n    //others\r\n    ProgressBar progressBar;\r\n    View view;\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {\r\n        // Defines the xml file for the fragment\r\n        view = inflater.inflate(R.layout.activity_fragment_sign_up, parent, false);\r\n        setup();\r\n        // Check if user is signed in (non-null) and update UI accordingly.\r\n        signUpButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                getValues();\r\n            }\r\n        });\r\n\r\n        signInTextView.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                authentication authentication = (authentication) getActivity();\r\n                fragmentSignIn fragmentSignIn = new fragmentSignIn();\r\n                assert authentication != null;\r\n                authentication.replaceFragment(fragmentSignIn);\r\n            }\r\n        });\r\n\r\n\r\n        return view;\r\n    }\r\n\r\n    // This event is triggered soon after onCreateView().\r\n    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.\r\n    @Override\r\n    public void onViewCreated(View view, Bundle savedInstanceState) {\r\n\r\n    }\r\n\r\n\r\n    void setup() {\r\n        //Fields\r\n        emailField = view.findViewById(R.id.email);\r\n        nameField = view.findViewById(R.id.fullName);\r\n        passwordField = view.findViewById(R.id.password);\r\n        confirmPasswordField = view.findViewById(R.id.confirmPassword);\r\n\r\n        signInTextView = view.findViewById(R.id.signIn);\r\n\r\n        //Buttons\r\n        signUpButton = view.findViewById(R.id.signUpButton);\r\n        facebookButton = view.findViewById(R.id.facebookButton);\r\n\r\n\r\n        //RadioGroup\r\n        radioGroup = view.findViewById(R.id.genderRadioGroup);\r\n        maleRadioButton = view.findViewById(R.id.maleRadioButton);\r\n        femaleRadioButton = view.findViewById(R.id.femaleRadioButton);\r\n\r\n        //others\r\n        progressBar = view.findViewById(R.id.progressBar);\r\n\r\n    }\r\n\r\n    void toast(String message) {\r\n        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT);\r\n        toast.show();\r\n    }\r\n\r\n\r\n    //Get User data from edittext fields\r\n    void getValues() {\r\n        //Data from fields\r\n        name = nameField.getText().toString();\r\n        email = emailField.getText().toString();\r\n        password = passwordField.getText().toString();\r\n        confirmPassword = confirmPasswordField.getText().toString();\r\n\r\n\r\n        //Check if the fields are filled in appropriate way\r\n        //check name\r\n        if (name.matches(\"\")) {\r\n            toast(\"Please enter your name\");\r\n            return;\r\n        }\r\n        //Check email\r\n        if (email.matches(\"\")) {\r\n            toast(\"Please enter your email\");\r\n            return;\r\n        }\r\n        if ((!email.contains(\"@\")) || (!email.contains(\".com\"))) {\r\n            toast(\"Invalid email format\");\r\n            return;\r\n        }\r\n        //Check password\r\n        if (password.matches(\"\")) {\r\n            toast(\"Please enter your password\");\r\n            return;\r\n        }\r\n        if (password.length() < 7) {\r\n            toast(\"Your password is too short\");\r\n            return;\r\n        }\r\n        if (confirmPassword.matches(\"\")) {\r\n            toast(\"Please confirm your password\");\r\n            return;\r\n        }\r\n        if (!confirmPassword.equals(password)) {\r\n            toast(\"Both passwords does not math\");\r\n            return;\r\n        }\r\n        if (radioGroup.getCheckedRadioButtonId() == -1) {\r\n            toast(\"Please pick your gender\");\r\n            return;\r\n        }\r\n        int selectedId = radioGroup.getCheckedRadioButtonId();\r\n        RadioButton radioButton = view.findViewById(selectedId);\r\n        gender = radioButton.getText().toString();\r\n\r\n        FirebaseRegistration(email, password);\r\n\r\n\r\n    }\r\n\r\n\r\n    private void FirebaseRegistration(String email, String password) {\r\n        progressBar.setVisibility(View.VISIBLE);\r\n        if(mAuth==null) mAuth = FirebaseAuth.getInstance();\r\n        mAuth.createUserWithEmailAndPassword(email, password)\r\n                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<AuthResult> task) {\r\n\r\n                        if (task.isSuccessful()) {\r\n                            // Sign in success, update UI with the signed-in user's information\r\n                            Log.d(TAG, \"createUserWithEmail:success\");\r\n                            toast(\"You signed up successfully\");\r\n                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();\r\n                            if(user==null)user = mAuth.getCurrentUser();\r\n                            user.updateProfile(profileUpdates);\r\n                            updateUI(user);\r\n\r\n                        } else {\r\n                            // If sign in fails, display a message to the user.\r\n                            Log.w(TAG, \"createUserWithEmail:failure\", task.getException());\r\n                            toast(\"Authentication failed\" + task.getException());\r\n                        }\r\n                        progressBar.setVisibility(View.INVISIBLE);\r\n                    }\r\n\r\n\r\n                });\r\n\r\n\r\n    }\r\n\r\n    private void updateUI(FirebaseUser user) {\r\n        checkUserInfo(user);\r\n        authentication registration = (authentication) getActivity();\r\n        fragmentMoreInfo fragmentMoreInfo = new fragmentMoreInfo();\r\n        assert registration != null;\r\n        updatePlayerId();\r\n        registration.replaceFragment(fragmentMoreInfo);\r\n    }\r\n\r\n    private void checkUserInfo(FirebaseUser user) {\r\n        System.out.println(user.getUid());\r\n\r\n        String timeStamp = new java.util.Date().toString();\r\n        user userData = new user(user.getUid(), \"Not yet\", user.getEmail(), gender, null, name, null, timeStamp, \"Student\", null, null);\r\n\r\n        authentication authentication = (authentication) getActivity();\r\n        assert authentication != null;\r\n        authentication.setUserData(userData);\r\n\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignUp.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignUp.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignUp.java	
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/authFragments/fragmentSignUp.java	
+@@ -13,7 +13,7 @@
+ import android.widget.Button;
+ import android.widget.EditText;
+ import android.widget.ImageButton;
+-import android.widget.ProgressBar;
++import android.widget.ImageView;
+ import android.widget.RadioButton;
+ import android.widget.RadioGroup;
+ import android.widget.TextView;
+@@ -62,7 +62,7 @@
+     RadioButton femaleRadioButton;
+ 
+     //others
+-    ProgressBar progressBar;
++    ImageView loadingLogo;
+     View view;
+ 
+     @Override
+@@ -120,7 +120,7 @@
+         femaleRadioButton = view.findViewById(R.id.femaleRadioButton);
+ 
+         //others
+-        progressBar = view.findViewById(R.id.progressBar);
++        loadingLogo = view.findViewById(R.id.loadingLogo);
+ 
+     }
+ 
+@@ -186,7 +186,7 @@
+ 
+ 
+     private void FirebaseRegistration(String email, String password) {
+-        progressBar.setVisibility(View.VISIBLE);
++        loadingLogo.setVisibility(View.VISIBLE);
+         if(mAuth==null) mAuth = FirebaseAuth.getInstance();
+         mAuth.createUserWithEmailAndPassword(email, password)
+                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+@@ -207,7 +207,7 @@
+                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                             toast("Authentication failed" + task.getException());
+                         }
+-                        progressBar.setVisibility(View.INVISIBLE);
++                        loadingLogo.setVisibility(View.INVISIBLE);
+                     }
+ 
+ 
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAccount.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.fragments.navFragments;\r\n\r\nimport static android.content.ContentValues.TAG;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;\r\n\r\nimport android.app.Activity;\r\nimport android.app.AlertDialog;\r\nimport android.content.DialogInterface;\r\nimport android.content.Intent;\r\nimport android.net.Uri;\r\nimport android.os.Bundle;\r\nimport android.provider.MediaStore;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ArrayAdapter;\r\nimport android.widget.ImageView;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.Spinner;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.activity.result.ActivityResultLauncher;\r\nimport androidx.activity.result.contract.ActivityResultContracts;\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\nimport com.abdulghffar.gju_outgoings_app.objects.user;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.firestore.DocumentSnapshot;\r\nimport com.google.firebase.storage.FirebaseStorage;\r\nimport com.google.firebase.storage.StorageReference;\r\nimport com.google.firebase.storage.UploadTask;\r\nimport com.squareup.picasso.Picasso;\r\n\r\nimport javax.annotation.Nullable;\r\n\r\npublic class fragmentAccount extends Fragment {\r\n\r\n    user userData;\r\n    FirebaseStorage storage;\r\n\r\n    ImageView profileImage;\r\n    ImageView editMajor;\r\n    ImageView editStatus;\r\n\r\n    TextView fullName;\r\n    TextView sID;\r\n    TextView email;\r\n    TextView major;\r\n    TextView status;\r\n    TextView changeImage;\r\n\r\n    ProgressBar progressBar;\r\n\r\n    View view;\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {\r\n        // Defines the xml file for the fragment\r\n        view = inflater.inflate(R.layout.activity_fragment_account, parent, false);\r\n        user = mAuth.getCurrentUser();\r\n\r\n\r\n        setup();\r\n\r\n        editMajor.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n\r\n                updateUserMajor();\r\n                getProfileData();\r\n            }\r\n        });\r\n\r\n        changeImage.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);\r\n                launcher.launch(intent);\r\n\r\n\r\n            }\r\n        });\r\n\r\n\r\n        getProfileData();\r\n\r\n        return view;\r\n    }\r\n\r\n    // This event is triggered soon after onCreateView().\r\n    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.\r\n    @Override\r\n    public void onViewCreated(View view, Bundle savedInstanceState) {\r\n        // Setup any handles to view objects here\r\n    }\r\n\r\n    public void getProfileData() {\r\n\r\n\r\n        DocumentReference docRef = db.collection(\"Users\").document(user.getUid());\r\n        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<DocumentSnapshot> task) {\r\n                if (task.isSuccessful()) {\r\n                    DocumentSnapshot document = task.getResult();\r\n                    if (document.exists()) {\r\n                        Log.d(TAG, \"DocumentSnapshot data: \" + document.getData());\r\n                        userData = document.toObject(user.class);\r\n                        assert userData != null;\r\n                        //Using Picasso\r\n                        if (userData.getProfilePic() != null) {\r\n\r\n                            Picasso.get().load(userData.getProfilePic()).into(profileImage);\r\n\r\n\r\n                        }\r\n                        fullName.setText(userData.getName().toString());\r\n                        sID.setText(userData.getStudentID().toString());\r\n                        email.setText(userData.getEmail().toString());\r\n                        major.setText(userData.getMajor().toString());\r\n                        status.setText(\"None\");\r\n\r\n                    } else {\r\n                        Log.d(TAG, \"No such document\");\r\n                    }\r\n                } else {\r\n                    Log.d(TAG, \"get failed with \", task.getException());\r\n                }\r\n            }\r\n        });\r\n    }\r\n\r\n    void setup() {\r\n        profileImage = view.findViewById(R.id.uPic);\r\n        fullName = view.findViewById(R.id.uFullName);\r\n        sID = view.findViewById(R.id.sId);\r\n        email = view.findViewById(R.id.uEmail);\r\n        major = view.findViewById(R.id.uMajor);\r\n        status = view.findViewById(R.id.uStatus);\r\n        changeImage = view.findViewById(R.id.changeImage);\r\n        editMajor = view.findViewById(R.id.editMajor);\r\n        editStatus = view.findViewById(R.id.editStatus);\r\n        progressBar = view.findViewById(R.id.progressBar);\r\n    }\r\n\r\n    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(\r\n            new ActivityResultContracts.StartActivityForResult(),\r\n            result -> {\r\n                if (result.getResultCode() == Activity.RESULT_OK\r\n                        && result.getData() != null) {\r\n                    Uri photoUri = result.getData().getData();\r\n                    //use photoUri here\r\n\r\n                    profileImage.setImageURI(photoUri);\r\n                    uploadImage(photoUri);\r\n                }\r\n            }\r\n    );\r\n\r\n\r\n    private void uploadImage(Uri photo) {\r\n        progressBar.setVisibility(View.VISIBLE);\r\n        storage = FirebaseStorage.getInstance();\r\n        if (photo != null) {\r\n\r\n            // Code for showing progressDialog while uploading\r\n            ProgressBar ProgressBar\r\n                    = new ProgressBar(getActivity());\r\n            ProgressBar.setVisibility(View.VISIBLE);\r\n\r\n            // Defining the child of storageReference\r\n            StorageReference ref\r\n                    = storage.getReference()\r\n                    .child(\r\n                            \"Users/ProfilePics/\"\r\n                                    + user.getUid());\r\n\r\n            // adding listeners on upload\r\n            // or failure of image\r\n            ref.putFile(photo)\r\n                    .addOnSuccessListener(\r\n                            new OnSuccessListener<UploadTask.TaskSnapshot>() {\r\n\r\n                                @Override\r\n                                public void onSuccess(\r\n                                        UploadTask.TaskSnapshot taskSnapshot) {\r\n\r\n                                    // Image uploaded successfully\r\n                                    // Dismiss dialog\r\n                                    ProgressBar.setVisibility(View.INVISIBLE);\r\n                                    Toast\r\n                                            .makeText(getActivity(),\r\n                                                    \"Done\",\r\n                                                    Toast.LENGTH_SHORT)\r\n                                            .show();\r\n\r\n                                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {\r\n                                        @Override\r\n                                        public void onSuccess(Uri uri) {\r\n                                            Uri downloadUrl = uri;\r\n                                            //Set Image Link in user\r\n                                            changeData(\"profilePic\", downloadUrl.toString());\r\n                                        }\r\n\r\n                                    });\r\n\r\n\r\n                                }\r\n                            })\r\n\r\n                    .addOnFailureListener(new OnFailureListener() {\r\n                        @Override\r\n                        public void onFailure(@NonNull Exception e) {\r\n\r\n                            // Error, Image not uploaded\r\n                            ProgressBar.setVisibility(View.INVISIBLE);\r\n                            Toast\r\n                                    .makeText(getActivity(),\r\n                                            \"Failed \" + e.getMessage(),\r\n                                            Toast.LENGTH_SHORT)\r\n                                    .show();\r\n                        }\r\n                    });\r\n\r\n        }\r\n\r\n    }\r\n\r\n\r\n    void changeData(String field, String newData) {\r\n        progressBar.setVisibility(View.VISIBLE);\r\n        DocumentReference docRef = db.collection(\"Users\").document(user.getUid());\r\n        docRef.update(field, newData).addOnSuccessListener(new OnSuccessListener<Void>() {\r\n            @Override\r\n            public void onSuccess(Void aVoid) {\r\n                System.out.println(\"Updated\");\r\n                progressBar.setVisibility(View.INVISIBLE);\r\n                getProfileData();\r\n\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n\r\n//    public void updateUserData(String field, String message) {\r\n//        ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view\r\n//                inflate(R.layout.update_data_dialog, null, false);\r\n//        EditText newData = subView.findViewById(R.id.editText);\r\n//        TextView messageField = subView.findViewById(R.id.text);\r\n//\r\n//        messageField.setText(message);\r\n//        // Create the object of\r\n//        // AlertDialog Builder class\r\n//        AlertDialog.Builder builder\r\n//                = new AlertDialog\r\n//                .Builder(getActivity(), R.style.AlertDialogCustom);\r\n//\r\n//        builder.setView(subView);\r\n//\r\n//        // Set the message show for the Alert time\r\n//\r\n//        // Set Alert Title\r\n////        builder.setTitle(\"Update user \" + field);\r\n//\r\n//        // Set Cancelable false\r\n//        // for when the user clicks on the outside\r\n//        // the Dialog Box then it will remain show\r\n//        builder.setCancelable(false);\r\n//\r\n//        // Set the positive button with yes name\r\n//        // OnClickListener method is use of\r\n//        // DialogInterface interface.\r\n//\r\n//        builder\r\n//                .setPositiveButton(\r\n//                        \"Save\",\r\n//                        new DialogInterface\r\n//                                .OnClickListener() {\r\n//\r\n//                            @Override\r\n//                            public void onClick(DialogInterface dialog,\r\n//                                                int which) {\r\n//                                changeData(field, newData.getText().toString());\r\n//                            }\r\n//                        });\r\n//\r\n//        // Set the Negative button with No name\r\n//        // OnClickListener method is use\r\n//        // of DialogInterface interface.\r\n//        builder\r\n//                .setNegativeButton(\r\n//                        \"Cancel\",\r\n//                        new DialogInterface\r\n//                                .OnClickListener() {\r\n//\r\n//                            @Override\r\n//                            public void onClick(DialogInterface dialog,\r\n//                                                int which) {\r\n//\r\n//                                // If user click no\r\n//                                // then dialog box is canceled.\r\n//                                dialog.cancel();\r\n//                            }\r\n//                        });\r\n//\r\n//        // Create the Alert dialog\r\n//        AlertDialog alertDialog = builder.create();\r\n//\r\n//        // Show the Alert Dialog box\r\n//        alertDialog.show();\r\n//\r\n//    }\r\n\r\n    public void updateUserMajor() {\r\n        ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view\r\n                inflate(R.layout.update_major_dialog, null, false);\r\n        Spinner majorsSpinner = subView.findViewById(R.id.majorsSpinner);\r\n        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.Majors, android.R.layout.simple_spinner_item);\r\n        majorsSpinner.setAdapter(spinnerAdapter);\r\n        TextView messageField = subView.findViewById(R.id.text);\r\n\r\n        messageField.setText(\"Enter the new major\");\r\n        // Create the object of\r\n        // AlertDialog Builder class\r\n        AlertDialog.Builder builder\r\n                = new AlertDialog\r\n                .Builder(getActivity(), R.style.AlertDialogCustom);\r\n\r\n        builder.setView(subView);\r\n\r\n        // Set the message show for the Alert time\r\n\r\n        // Set Alert Title\r\n//        builder.setTitle(\"Update user \" + field);\r\n\r\n        // Set Cancelable false\r\n        // for when the user clicks on the outside\r\n        // the Dialog Box then it will remain show\r\n        builder.setCancelable(false);\r\n\r\n        // Set the positive button with yes name\r\n        // OnClickListener method is use of\r\n        // DialogInterface interface.\r\n\r\n        builder\r\n                .setPositiveButton(\r\n                        \"Save\",\r\n                        new DialogInterface\r\n                                .OnClickListener() {\r\n\r\n                            @Override\r\n                            public void onClick(DialogInterface dialog,\r\n                                                int which) {\r\n                                if (majorsSpinner.getSelectedItemPosition() == 0) {\r\n                                    toast(\"Choose a major\");\r\n                                } else {\r\n                                    changeData(\"major\", majorsSpinner.getSelectedItem().toString());\r\n                                }\r\n                            }\r\n                        });\r\n\r\n        // Set the Negative button with No name\r\n        // OnClickListener method is use\r\n        // of DialogInterface interface.\r\n        builder\r\n                .setNegativeButton(\r\n                        \"Cancel\",\r\n                        new DialogInterface\r\n                                .OnClickListener() {\r\n\r\n                            @Override\r\n                            public void onClick(DialogInterface dialog,\r\n                                                int which) {\r\n\r\n                                // If user click no\r\n                                // then dialog box is canceled.\r\n                                dialog.cancel();\r\n                            }\r\n                        });\r\n\r\n        // Create the Alert dialog\r\n        AlertDialog alertDialog = builder.create();\r\n\r\n        // Show the Alert Dialog box\r\n        alertDialog.show();\r\n\r\n    }\r\n\r\n    void toast(String message) {\r\n        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT);\r\n        toast.show();\r\n    }\r\n\r\n\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAccount.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAccount.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAccount.java	
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAccount.java	
+@@ -9,6 +9,7 @@
+ import android.app.AlertDialog;
+ import android.content.DialogInterface;
+ import android.content.Intent;
++import android.graphics.drawable.AnimationDrawable;
+ import android.net.Uri;
+ import android.os.Bundle;
+ import android.provider.MediaStore;
+@@ -59,7 +60,7 @@
+     TextView status;
+     TextView changeImage;
+ 
+-    ProgressBar progressBar;
++    ImageView loadingLogo;
+ 
+     View view;
+ 
+@@ -150,7 +151,7 @@
+         changeImage = view.findViewById(R.id.changeImage);
+         editMajor = view.findViewById(R.id.editMajor);
+         editStatus = view.findViewById(R.id.editStatus);
+-        progressBar = view.findViewById(R.id.progressBar);
++        loadingLogo = view.findViewById(R.id.loadingLogo);
+     }
+ 
+     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+@@ -169,8 +170,8 @@
+ 
+ 
+     private void uploadImage(Uri photo) {
+-        progressBar.setVisibility(View.VISIBLE);
+-        storage = FirebaseStorage.getInstance();
++startLoadingAnimation();
++storage = FirebaseStorage.getInstance();
+         if (photo != null) {
+ 
+             // Code for showing progressDialog while uploading
+@@ -238,13 +239,13 @@
+ 
+ 
+     void changeData(String field, String newData) {
+-        progressBar.setVisibility(View.VISIBLE);
++        startLoadingAnimation();
+         DocumentReference docRef = db.collection("Users").document(user.getUid());
+         docRef.update(field, newData).addOnSuccessListener(new OnSuccessListener<Void>() {
+             @Override
+             public void onSuccess(Void aVoid) {
+                 System.out.println("Updated");
+-                progressBar.setVisibility(View.INVISIBLE);
++stopLoadingAnimation();
+                 getProfileData();
+ 
+             }
+@@ -402,7 +403,15 @@
+         toast.show();
+     }
+ 
++    void startLoadingAnimation(){
++        //Loading start
++        ((AnimationDrawable) loadingLogo.getDrawable()).start();
++    }
+ 
++    void stopLoadingAnimation(){
++        //Loading stop
++        ((AnimationDrawable) loadingLogo.getDrawable()).stop();
++    }
+ }
+ 
+ 
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAddPost.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.fragments.navFragments;\r\n\r\nimport static android.content.ContentValues.TAG;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;\r\nimport static com.abdulghffar.gju_outgoings_app.utils.notificationsSender.sendNotificationToAllUsers;\r\n\r\nimport android.app.Activity;\r\nimport android.content.Intent;\r\nimport android.content.res.AssetFileDescriptor;\r\nimport android.net.Uri;\r\nimport android.os.Bundle;\r\nimport android.provider.MediaStore;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageView;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.activity.result.ActivityResultLauncher;\r\nimport androidx.activity.result.contract.ActivityResultContracts;\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\nimport com.abdulghffar.gju_outgoings_app.activities.MainActivity;\r\nimport com.abdulghffar.gju_outgoings_app.admin.Admin;\r\nimport com.abdulghffar.gju_outgoings_app.database.firebaseDb;\r\nimport com.abdulghffar.gju_outgoings_app.objects.post;\r\nimport com.abdulghffar.gju_outgoings_app.objects.user;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.storage.FirebaseStorage;\r\nimport com.google.firebase.storage.StorageReference;\r\nimport com.google.firebase.storage.UploadTask;\r\n\r\nimport java.io.FileNotFoundException;\r\n\r\nimport javax.annotation.Nullable;\r\n\r\npublic class fragmentAddPost extends Fragment {\r\n\r\n    user userData;\r\n    MainActivity MainActivity;\r\n    //Buttons\r\n    //Tags\r\n    Button accommodationsTag;\r\n    Button eventsTag;\r\n    Button vacanciesTag;\r\n    Button visaTag;\r\n    Button moneyAndBanksTag;\r\n    Button lookingForHelpTag;\r\n    Button otherTag;\r\n    Button submit;\r\n\r\n    EditText titleField;\r\n    EditText bodyField;\r\n\r\n\r\n    ImageView attachImage;\r\n    ProgressBar progressBar;\r\n    FirebaseStorage storage;\r\n\r\n    FirebaseDatabase realTimeDB = firebaseDb.realDb;\r\n\r\n\r\n\r\n    Uri currentImage;\r\n\r\n\r\n    View view;\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {\r\n        // Defines the xml file for the fragment\r\n        view = inflater.inflate(R.layout.activity_fragment_add, parent, false);\r\n\r\n        setup();\r\n        submit.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                publishPost();\r\n            }\r\n        });\r\n        accommodationsTag.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                selectButton(accommodationsTag);\r\n\r\n\r\n            }\r\n        });\r\n        eventsTag.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                selectButton(eventsTag);\r\n\r\n            }\r\n        });\r\n        vacanciesTag.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                selectButton(vacanciesTag);\r\n\r\n            }\r\n        });\r\n        visaTag.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                selectButton(visaTag);\r\n\r\n            }\r\n        });\r\n        moneyAndBanksTag.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                selectButton(moneyAndBanksTag);\r\n\r\n            }\r\n        });\r\n        lookingForHelpTag.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                selectButton(lookingForHelpTag);\r\n\r\n            }\r\n        });\r\n        otherTag.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                selectButton(otherTag);\r\n\r\n            }\r\n        });\r\n\r\n        attachImage.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);\r\n                launcher.launch(intent);\r\n\r\n            }\r\n        });\r\n\r\n\r\n        return view;\r\n    }\r\n\r\n    // This event is triggered soon after onCreateView().\r\n    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.\r\n    @Override\r\n    public void onViewCreated(View view, Bundle savedInstanceState) {\r\n        // Setup any handles to view objects here\r\n    }\r\n\r\n    void setup() {\r\n        //Tags\r\n        accommodationsTag = view.findViewById(R.id.accommodationsTag);\r\n        eventsTag = view.findViewById(R.id.eventsTag);\r\n        vacanciesTag = view.findViewById(R.id.vacanciesTag);\r\n        visaTag = view.findViewById(R.id.visaTag);\r\n        moneyAndBanksTag = view.findViewById(R.id.moneyAndBanksTag);\r\n        lookingForHelpTag = view.findViewById(R.id.lookingForHelpTag);\r\n        otherTag = view.findViewById(R.id.otherTag);\r\n\r\n        submit = view.findViewById(R.id.postButton);\r\n\r\n        attachImage = view.findViewById(R.id.attachImage);\r\n        progressBar = view.findViewById(R.id.progressBar);\r\n        user = mAuth.getCurrentUser();\r\n\r\n        try {\r\n            MainActivity = (MainActivity) getActivity();\r\n            assert MainActivity != null;\r\n            userData = MainActivity.getUser();\r\n        } catch (Exception e) {\r\n            Admin Admin = (Admin) getActivity();\r\n            assert Admin != null;\r\n            userData = Admin.getUser();\r\n        }\r\n\r\n\r\n        titleField = view.findViewById(R.id.postTitle);\r\n        bodyField = view.findViewById(R.id.postBody);\r\n    }\r\n\r\n    void selectButton(Button button) {\r\n        accommodationsTag.setSelected(false);\r\n        eventsTag.setSelected(false);\r\n        vacanciesTag.setSelected(false);\r\n        visaTag.setSelected(false);\r\n        moneyAndBanksTag.setSelected(false);\r\n        lookingForHelpTag.setSelected(false);\r\n        otherTag.setSelected(false);\r\n\r\n        button.setSelected(true);\r\n    }\r\n\r\n\r\n    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(\r\n            new ActivityResultContracts.StartActivityForResult(),\r\n            result -> {\r\n                if (result.getResultCode() == Activity.RESULT_OK\r\n                        && result.getData() != null) {\r\n                    Uri photoUri = result.getData().getData();\r\n                    //use photoUri here\r\n\r\n\r\n                    AssetFileDescriptor fileDescriptor = null;\r\n                    try {\r\n                        fileDescriptor = getActivity().getContentResolver().openAssetFileDescriptor(photoUri, \"r\");\r\n                        long fileSize = fileDescriptor.getLength();\r\n                        if (fileSize >= 10000000) {\r\n                            toast(\"Image exceeds the maximum size 10MB\");\r\n                            return;\r\n                        }\r\n                    } catch (FileNotFoundException e) {\r\n                        e.printStackTrace();\r\n                        return;\r\n                    }\r\n                    attachImage.setImageURI(photoUri);\r\n                    currentImage = photoUri;\r\n                }\r\n            }\r\n    );\r\n\r\n\r\n    private void publishPost() {\r\n        String collection;\r\n        if (userData.getRole().equals(\"Student\")) {\r\n            collection = \"Posts\";\r\n        } else {\r\n            collection = \"PinnedPosts\";\r\n        }\r\n        String timeStamp = new java.util.Date().toString();\r\n        String tag = getSelectedTag();\r\n        if (tag == null) {\r\n            toast(\"Choose a category for your post\");\r\n            return;\r\n        }\r\n        if (titleField.getText().toString().length() < 5) {\r\n            toast(\"Add post title\");\r\n            return;\r\n        }\r\n        if (bodyField.getText().toString().length() < 10) {\r\n            toast(\"Add more words to the post\");\r\n            return;\r\n        }\r\n        progressBar.setVisibility(View.VISIBLE);\r\n        storage = FirebaseStorage.getInstance();\r\n        if (currentImage != null) {\r\n\r\n            // Code for showing progressDialog while uploading\r\n            ProgressBar ProgressBar\r\n                    = new ProgressBar(getActivity());\r\n            ProgressBar.setVisibility(View.VISIBLE);\r\n\r\n            // Defining the child of storageReference\r\n            StorageReference ref\r\n                    = storage.getReference()\r\n                    .child(\r\n                            \"Users/\" + collection + \"/\"\r\n                                    + user.getUid() + timeStamp);\r\n\r\n            // adding listeners on upload\r\n            // or failure of image\r\n            ref.putFile(currentImage)\r\n                    .addOnSuccessListener(\r\n                            new OnSuccessListener<UploadTask.TaskSnapshot>() {\r\n\r\n                                @Override\r\n                                public void onSuccess(\r\n                                        UploadTask.TaskSnapshot taskSnapshot) {\r\n\r\n                                    // Image uploaded successfully\r\n                                    // Dismiss dialog\r\n                                    Toast\r\n                                            .makeText(getActivity(),\r\n                                                    \"Done\",\r\n                                                    Toast.LENGTH_SHORT)\r\n                                            .show();\r\n\r\n                                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {\r\n                                        @Override\r\n                                        public void onSuccess(Uri uri) {\r\n                                            Uri downloadUrl = uri;\r\n                                            //Set Image Link in user\r\n                                            post post = new post(null, userData, downloadUrl.toString(), tag, titleField.getText().toString(), bodyField.getText().toString(), timeStamp);\r\n                                            addToFirebase(post);\r\n\r\n                                        }\r\n\r\n                                    });\r\n\r\n\r\n                                }\r\n                            })\r\n\r\n                    .addOnFailureListener(new OnFailureListener() {\r\n                        @Override\r\n                        public void onFailure(@NonNull Exception e) {\r\n\r\n                            // Error, Image not uploaded\r\n                            ProgressBar.setVisibility(View.INVISIBLE);\r\n                            Toast\r\n                                    .makeText(getActivity(),\r\n                                            \"Failed \" + e.getMessage(),\r\n                                            Toast.LENGTH_SHORT)\r\n                                    .show();\r\n                        }\r\n                    });\r\n\r\n\r\n        } else {\r\n            post post = new post(null, userData, null, tag, titleField.getText().toString(), bodyField.getText().toString(), timeStamp);\r\n            addToFirebase(post);\r\n        }\r\n\r\n    }\r\n\r\n    String getSelectedTag() {\r\n        if (accommodationsTag.isSelected()) return accommodationsTag.getText().toString();\r\n        if (eventsTag.isSelected()) return eventsTag.getText().toString();\r\n        if (vacanciesTag.isSelected()) return vacanciesTag.getText().toString();\r\n        if (visaTag.isSelected()) return visaTag.getText().toString();\r\n        if (moneyAndBanksTag.isSelected()) return moneyAndBanksTag.getText().toString();\r\n        if (lookingForHelpTag.isSelected()) return lookingForHelpTag.getText().toString();\r\n        if (otherTag.isSelected()) return otherTag.getText().toString();\r\n\r\n        return null;\r\n    }\r\n\r\n    void addToFirebase(post post) {\r\n        String collection;\r\n        if (userData.getRole().equals(\"Student\")) {\r\n            collection = \"Posts\";\r\n        } else {\r\n            collection = \"PinnedPosts\";\r\n        }\r\n        DocumentReference ref = db.collection(collection).document();\r\n        post.setPostID(ref.getId());\r\n        ref.set(post)\r\n                .addOnSuccessListener(new OnSuccessListener<Void>() {\r\n                    @Override\r\n                    public void onSuccess(Void aVoid) {\r\n                        Log.d(TAG, \"DocumentSnapshot successfully written!\");\r\n                        progressBar.setVisibility(View.INVISIBLE);\r\n\r\n                        //add to RealTimeDB for comments\r\n\r\n                        String ref = \"/Posts/\" + \"/Users/\" + user.getUid() + \"/UserPosts/\" + post.getPostID();\r\n                        DatabaseReference mDatabase = realTimeDB.getReference(ref);\r\n                        mDatabase.child(\"Comments\").setValue(\"\");\r\n\r\n                        toast(\"Post added\");\r\n                        fragmentHome fragmentHome = new fragmentHome();\r\n                        MainActivity.replaceFragment(fragmentHome, \"Home\");\r\n\r\n                        if (userData.getRole().equals(\"Moderator\")) {\r\n                            sendNotificationToAllUsers(\"The moderator shared a post\");\r\n                        }\r\n                    }\r\n                })\r\n                .addOnFailureListener(new OnFailureListener() {\r\n                    @Override\r\n                    public void onFailure(@NonNull Exception e) {\r\n                        Log.w(TAG, \"Error writing document\", e);\r\n                        progressBar.setVisibility(View.INVISIBLE);\r\n\r\n                    }\r\n                });\r\n\r\n\r\n    }\r\n\r\n    void toast(String message) {\r\n        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG);\r\n        toast.show();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAddPost.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAddPost.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAddPost.java	
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/navFragments/fragmentAddPost.java	
+@@ -66,7 +66,7 @@
+ 
+ 
+     ImageView attachImage;
+-    ProgressBar progressBar;
++    ImageView loadingLogo;
+     FirebaseStorage storage;
+ 
+     FirebaseDatabase realTimeDB = firebaseDb.realDb;
+@@ -174,7 +174,7 @@
+         submit = view.findViewById(R.id.postButton);
+ 
+         attachImage = view.findViewById(R.id.attachImage);
+-        progressBar = view.findViewById(R.id.progressBar);
++        loadingLogo = view.findViewById(R.id.loadingLogo);
+         user = mAuth.getCurrentUser();
+ 
+         try {
+@@ -254,7 +254,7 @@
+             toast("Add more words to the post");
+             return;
+         }
+-        progressBar.setVisibility(View.VISIBLE);
++        loadingLogo.setVisibility(View.VISIBLE);
+         storage = FirebaseStorage.getInstance();
+         if (currentImage != null) {
+ 
+@@ -352,7 +352,7 @@
+                     @Override
+                     public void onSuccess(Void aVoid) {
+                         Log.d(TAG, "DocumentSnapshot successfully written!");
+-                        progressBar.setVisibility(View.INVISIBLE);
++                        loadingLogo.setVisibility(View.INVISIBLE);
+ 
+                         //add to RealTimeDB for comments
+ 
+@@ -373,7 +373,7 @@
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         Log.w(TAG, "Error writing document", e);
+-                        progressBar.setVisibility(View.INVISIBLE);
++                        loadingLogo.setVisibility(View.INVISIBLE);
+ 
+                     }
+                 });
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/admin/Admin.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.admin;\r\n\r\nimport static android.content.ContentValues.TAG;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.db;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.fragment.app.FragmentManager;\r\nimport androidx.fragment.app.FragmentTransaction;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\nimport com.abdulghffar.gju_outgoings_app.admin.fragments.fragmentDashboard;\r\nimport com.abdulghffar.gju_outgoings_app.objects.user;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.firestore.DocumentSnapshot;\r\n\r\npublic class Admin extends AppCompatActivity {\r\n\r\n    user userData;\r\n\r\n    FragmentManager fragmentManager;\r\n    ProgressBar progressBar;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_admin);\r\n\r\n        setup();\r\n\r\n        DocumentReference docRef = db.collection(\"Users\").document(user.getUid());\r\n        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<DocumentSnapshot> task) {\r\n                if (task.isSuccessful()) {\r\n                    DocumentSnapshot document = task.getResult();\r\n                    if (document.exists()) {\r\n                        Log.d(TAG, \"DocumentSnapshot data: \" + document.getData());\r\n                        userData = document.toObject(user.class);\r\n                        assert userData != null;\r\n                        if (userData.getUid() == null) {\r\n                            userData.setUid(user.getUid());\r\n                        }\r\n                        System.out.println(user.getUid());\r\n                        System.out.println(userData.getUid());\r\n                        assert userData != null;\r\n                        setUser(userData);\r\n\r\n\r\n                    } else {\r\n                        Log.d(TAG, \"No such document\");\r\n                    }\r\n                } else {\r\n                    Log.d(TAG, \"get failed with \", task.getException());\r\n                }\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    void setup() {\r\n        fragmentManager = getSupportFragmentManager();\r\n        replaceFragment(new fragmentDashboard());\r\n        progressBar = findViewById(R.id.progressBar);\r\n    }\r\n\r\n    public void replaceFragment(Fragment fragment) {\r\n        user = mAuth.getCurrentUser();\r\n        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();\r\n        fragmentTransaction.replace(R.id.fragmentContainer, fragment);\r\n        fragmentTransaction.commit();\r\n    }\r\n\r\n\r\n    void toast(String message) {\r\n        Toast toast = Toast.makeText(Admin.this, message, Toast.LENGTH_LONG);\r\n        toast.show();\r\n    }\r\n\r\n    void setUser(user userData) {\r\n        this.userData = userData;\r\n    }\r\n\r\n    public user getUser() {\r\n        return userData;\r\n    }\r\n\r\n    @Override\r\n    public void onBackPressed() {\r\n\r\n        if (fragmentManager.getBackStackEntryCount() > 0) {\r\n            Log.i(\"MainActivity\", \"popping backstack\");\r\n            fragmentManager.popBackStack();\r\n        } else {\r\n            Log.i(\"MainActivity\", \"nothing on backstack, calling super\");\r\n            Intent i = new Intent(Admin.this, Admin.class);\r\n            startActivity(i);\r\n\r\n        }\r\n    }\r\n\r\n    public void setProgressBar(boolean i) {\r\n        if (i) {\r\n            progressBar.setVisibility(View.VISIBLE);\r\n        }\r\n        if (!i) {\r\n            progressBar.setVisibility(View.INVISIBLE);\r\n        }\r\n\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/admin/Admin.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/admin/Admin.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/admin/Admin.java	
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/admin/Admin.java	
+@@ -9,7 +9,7 @@
+ import android.os.Bundle;
+ import android.util.Log;
+ import android.view.View;
+-import android.widget.ProgressBar;
++import android.widget.ImageView;
+ import android.widget.Toast;
+ 
+ import androidx.annotation.NonNull;
+@@ -31,7 +31,7 @@
+     user userData;
+ 
+     FragmentManager fragmentManager;
+-    ProgressBar progressBar;
++    ImageView loadingLogo;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -73,7 +73,7 @@
+     void setup() {
+         fragmentManager = getSupportFragmentManager();
+         replaceFragment(new fragmentDashboard());
+-        progressBar = findViewById(R.id.progressBar);
++        loadingLogo = findViewById(R.id.loadingLogo);
+     }
+ 
+     public void replaceFragment(Fragment fragment) {
+@@ -113,10 +113,10 @@
+ 
+     public void setProgressBar(boolean i) {
+         if (i) {
+-            progressBar.setVisibility(View.VISIBLE);
++            loadingLogo.setVisibility(View.VISIBLE);
+         }
+         if (!i) {
+-            progressBar.setVisibility(View.INVISIBLE);
++            loadingLogo.setVisibility(View.INVISIBLE);
+         }
+ 
+     }
+Index: app/src/main/res/layout/activity_admin.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".activities.navBarActivities\">\r\n\r\n    <ProgressBar\r\n        android:id=\"@+id/progressBar\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_centerInParent=\"true\"\r\n        android:indeterminateTint=\"@android:color/holo_blue_dark\"\r\n        android:translationZ=\"1dp\"\r\n        android:visibility=\"invisible\" />\r\n\r\n    <FrameLayout\r\n        android:id=\"@+id/fragmentContainer\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\" />\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_admin.xml b/app/src/main/res/layout/activity_admin.xml
+--- a/app/src/main/res/layout/activity_admin.xml	
++++ b/app/src/main/res/layout/activity_admin.xml	
+@@ -6,8 +6,8 @@
+     android:layout_height="match_parent"
+     tools:context=".activities.navBarActivities">
+ 
+-    <ProgressBar
+-        android:id="@+id/progressBar"
++    <ImageView
++        android:id="@+id/loadingLogo"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerInParent="true"
+Index: app/src/main/res/layout/activity_fragment_sign_up.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".fragments.authFragments.fragmentSignUp\">\r\n\r\n    <ProgressBar\r\n        android:id=\"@+id/progressBar\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_centerInParent=\"true\"\r\n        android:indeterminateTint=\"@android:color/holo_blue_dark\"\r\n        android:visibility=\"invisible\" />\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"vertical\"\r\n        android:paddingHorizontal=\"35dp\">\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:fontFamily=\"@font/ubuntu_bold\"\r\n            android:gravity=\"center\"\r\n            android:text=\"@string/create_an_account\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"25sp\" />\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/fullName\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:autofillHints=\"\"\r\n            android:background=\"@drawable/borders\"\r\n            android:drawableStart=\"@drawable/ic_name\"\r\n            android:drawablePadding=\"15dp\"\r\n            android:fontFamily=\"@font/ubuntu_regular\"\r\n            android:hint=\"@string/full_name\"\r\n            android:inputType=\"text\"\r\n            android:padding=\"10dp\"\r\n            android:textColor=\"@color/black\" />\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/email\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:background=\"@drawable/borders\"\r\n            android:drawableStart=\"@drawable/ic_email\"\r\n            android:drawablePadding=\"15dp\"\r\n            android:fontFamily=\"@font/ubuntu_regular\"\r\n            android:hint=\"@string/e_mail\"\r\n            android:importantForAutofill=\"no\"\r\n            android:inputType=\"textEmailAddress\"\r\n            android:padding=\"10dp\"\r\n            android:textColor=\"@color/black\" />\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/password\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:autofillHints=\"\"\r\n            android:background=\"@drawable/borders\"\r\n            android:drawableStart=\"@drawable/ic_password\"\r\n            android:drawablePadding=\"15dp\"\r\n            android:fontFamily=\"@font/ubuntu_regular\"\r\n            android:hint=\"@string/choosePassword\"\r\n            android:inputType=\"textPassword\"\r\n            android:padding=\"10dp\"\r\n            android:textColor=\"@color/black\" />\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/confirmPassword\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:autofillHints=\"\"\r\n            android:background=\"@drawable/borders\"\r\n            android:drawableStart=\"@drawable/ic_password\"\r\n            android:drawablePadding=\"15dp\"\r\n            android:fontFamily=\"@font/ubuntu_regular\"\r\n            android:hint=\"@string/rePassword\"\r\n            android:inputType=\"textPassword\"\r\n            android:padding=\"10dp\"\r\n            android:textColor=\"@color/black\" />\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"50dp\" />\r\n\r\n        <RadioGroup\r\n            android:id=\"@+id/genderRadioGroup\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center\"\r\n            android:orientation=\"horizontal\"\r\n            android:textColor=\"@color/black\">\r\n\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:fontFamily=\"@font/ubuntu_bold\"\r\n                android:paddingHorizontal=\"5dp\"\r\n                android:text=\"@string/gender\"\r\n                android:textColor=\"#F2A832\"\r\n                android:textSize=\"15sp\"\r\n                android:textStyle=\"bold\"\r\n\r\n                />\r\n\r\n            <com.google.android.material.radiobutton.MaterialRadioButton\r\n                android:id=\"@+id/maleRadioButton\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:buttonTint=\"#2197D8\"\r\n                android:fontFamily=\"@font/ubuntu_regular\"\r\n                android:paddingHorizontal=\"10dp\"\r\n                android:text=\"@string/male\" />\r\n\r\n            <com.google.android.material.radiobutton.MaterialRadioButton\r\n                android:id=\"@+id/femaleRadioButton\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:buttonTint=\"#2197D8\"\r\n                android:fontFamily=\"@font/ubuntu_regular\"\r\n                android:paddingHorizontal=\"10dp\"\r\n                android:text=\"@string/female\" />\r\n\r\n\r\n        </RadioGroup>\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <androidx.appcompat.widget.AppCompatButton\r\n            android:id=\"@+id/signUpButton\"\r\n            android:layout_width=\"200dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:background=\"@drawable/borders\"\r\n            android:backgroundTint=\"#F2A832\"\r\n            android:fontFamily=\"@font/ubuntu_bold\"\r\n            android:text=\"@string/signup\"\r\n            android:textAllCaps=\"false\"\r\n            android:textColor=\"@color/white\"\r\n            android:textSize=\"18sp\"\r\n            android:textStyle=\"bold\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/signIn\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:fontFamily=\"@font/ubuntu_bold\"\r\n            android:gravity=\"center\"\r\n            android:padding=\"5dp\"\r\n            android:text=\"@string/do_you_have_an_account\"\r\n            android:textColor=\"#FF9800\"\r\n            android:textStyle=\"italic\"\r\n\r\n            />\r\n\r\n        <ImageView\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:paddingVertical=\"20dp\"\r\n            android:src=\"@drawable/ic_or_sign_up_with\" />\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center\"\r\n            android:orientation=\"horizontal\">\r\n\r\n            <ImageButton\r\n                android:id=\"@+id/googleButton\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:background=\"@null\"\r\n                android:src=\"@drawable/ic_google_button\"\r\n\r\n                />\r\n\r\n            <ImageButton\r\n                android:id=\"@+id/facebookButton\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:background=\"@null\"\r\n                android:src=\"@drawable/ic_facebook_button\" />\r\n\r\n\r\n        </LinearLayout>\r\n\r\n\r\n    </LinearLayout>\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_fragment_sign_up.xml b/app/src/main/res/layout/activity_fragment_sign_up.xml
+--- a/app/src/main/res/layout/activity_fragment_sign_up.xml	
++++ b/app/src/main/res/layout/activity_fragment_sign_up.xml	
+@@ -6,8 +6,8 @@
+     android:layout_height="match_parent"
+     tools:context=".fragments.authFragments.fragmentSignUp">
+ 
+-    <ProgressBar
+-        android:id="@+id/progressBar"
++    <ImageView
++        android:id="@+id/loadingLogo"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerInParent="true"
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/navBarActivities.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.activities;\r\n\r\nimport static android.content.ContentValues.TAG;\r\n\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.ImageView;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.fragment.app.FragmentManager;\r\nimport androidx.fragment.app.FragmentTransaction;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\nimport com.abdulghffar.gju_outgoings_app.database.firebaseDb;\r\nimport com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;\r\nimport com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;\r\nimport com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;\r\nimport com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentEvents;\r\nimport com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentRating;\r\nimport com.abdulghffar.gju_outgoings_app.objects.city;\r\nimport com.abdulghffar.gju_outgoings_app.objects.university;\r\nimport com.abdulghffar.gju_outgoings_app.objects.user;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.firestore.DocumentSnapshot;\r\nimport com.google.firebase.firestore.FirebaseFirestore;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\n\r\npublic class navBarActivities extends AppCompatActivity {\r\n\r\n    ImageView backButton;\r\n    TextView label;\r\n    ArrayList<city> citiesArrayList;\r\n    city cityData;\r\n    HashMap<String, university> cityUniversities;\r\n\r\n    university universityData;\r\n    ArrayList<user> userArrayList;\r\n    ProgressBar progressBar;\r\n\r\n    FragmentManager fragmentManager;\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_nav_bar_activites);\r\n\r\n        backButton = findViewById(R.id.backButton);\r\n        label = findViewById(R.id.activityLabel);\r\n        progressBar = findViewById(R.id.progressBar);\r\n        fragmentManager = getSupportFragmentManager();\r\n\r\n\r\n        backButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                onBackPressed();\r\n            }\r\n        });\r\n\r\n        String newString;\r\n        if (savedInstanceState == null) {\r\n            Bundle extras = getIntent().getExtras();\r\n            if (extras == null) {\r\n                newString = null;\r\n            } else {\r\n                newString = extras.getString(\"fragmentName\");\r\n            }\r\n        } else {\r\n            newString = (String) savedInstanceState.getSerializable(\"fragmentName\");\r\n        }\r\n\r\n\r\n        assert newString != null;\r\n        pickFragment(newString);\r\n\r\n\r\n    }\r\n\r\n\r\n    public void replaceFragment(Fragment fragment) {\r\n\r\n        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();\r\n        fragmentTransaction.replace(R.id.fragmentContainer, fragment);\r\n        fragmentTransaction.addToBackStack(null);\r\n        fragmentTransaction.commit();\r\n    }\r\n\r\n    public void pickFragment(String fragmentName) {\r\n        switch (fragmentName) {\r\n            case \"Rating\":\r\n                label.setText(\"Cities and Universities\");\r\n                fragmentRating fragmentRating = new fragmentRating();\r\n                replaceFragment(fragmentRating);\r\n                break;\r\n            case \"City\":\r\n                label.setText(\"Cities and Universities\");\r\n                fragmentCity fragmentCity = new fragmentCity();\r\n                replaceFragment(fragmentCity);\r\n                break;\r\n            case \"accountSettings\":\r\n                label.setText(\"Account Settings\");\r\n                fragmentAccount fragmentAccount = new fragmentAccount();\r\n                replaceFragment(fragmentAccount);\r\n                break;\r\n            case \"contactUs\":\r\n                label.setText(\"Contact Us\");\r\n                fragmentContactUs fragmentContactUs = new fragmentContactUs();\r\n                replaceFragment(fragmentContactUs);\r\n                break;\r\n            case \"Events\":\r\n                label.setText(\"Events\");\r\n                fragmentEvents fragmentEvents = new fragmentEvents();\r\n                replaceFragment(fragmentEvents);\r\n                break;\r\n\r\n\r\n        }\r\n\r\n\r\n    }\r\n\r\n    public void setCitiesArrayList(ArrayList<city> citiesArrayList) {\r\n        this.citiesArrayList = citiesArrayList;\r\n    }\r\n\r\n    public ArrayList<city> getCitiesArrayList() {\r\n        return citiesArrayList;\r\n    }\r\n\r\n\r\n    public void setCityData(city cityData) {\r\n        this.cityData = cityData;\r\n        getUniversities();\r\n    }\r\n\r\n    public city getCityData() {\r\n        return cityData;\r\n    }\r\n\r\n    public void getUniversities() {\r\n        cityUniversities = new HashMap<>();\r\n        for (DocumentReference ref : cityData.getUniversities().values()) {\r\n            System.out.println(\"This is the ref \" + ref.toString());\r\n            ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {\r\n                @Override\r\n                public void onComplete(@NonNull Task<DocumentSnapshot> task) {\r\n                    if (task.isSuccessful()) {\r\n                        DocumentSnapshot document = task.getResult();\r\n                        if (document.exists()) {\r\n                            Log.d(TAG, \"DocumentSnapshot data: \" + document.getData());\r\n                            university university = document.toObject(university.class);\r\n                            assert university != null;\r\n                            cityUniversities.put(university.getUniversityName(), university);\r\n                        } else {\r\n                            Log.d(TAG, \"No such document\");\r\n                        }\r\n                    } else {\r\n                        Log.d(TAG, \"get failed with \", task.getException());\r\n                    }\r\n                    setCityUniversities(cityUniversities);\r\n                }\r\n            });\r\n        }\r\n\r\n\r\n    }\r\n\r\n    public void setCityUniversities(HashMap<String, university> cityUniversities) {\r\n        this.cityUniversities = cityUniversities;\r\n    }\r\n//   cityUniversities public void seteventsArrayList(HashMap<event> events) {\r\n//        this.events = events;\r\n//    }\r\n//\r\n\r\n    public void setUniversity(int position) {\r\n        ArrayList<university> universities = new ArrayList<>(cityUniversities.values());\r\n        universityData = universities.get(position);\r\n\r\n    }\r\n\r\n    public university getUniversity() {\r\n        ArrayList<university> universities = new ArrayList<>(cityUniversities.values());\r\n        return universityData;\r\n    }\r\n\r\n\r\n    public void setUserArrayList(ArrayList<user> userArrayList) {\r\n        this.userArrayList = userArrayList;\r\n    }\r\n\r\n    public ArrayList<user> getUserArrayList() {\r\n        return userArrayList;\r\n    }\r\n\r\n    public void progressBarStatus(boolean status) {\r\n        if (status) progressBar.setVisibility(View.VISIBLE);\r\n        else {\r\n            progressBar.setVisibility(View.INVISIBLE);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void onBackPressed() {\r\n\r\n        if (fragmentManager.getBackStackEntryCount() > 1) {\r\n            Log.i(\"MainActivity\", \"popping backstack\");\r\n            fragmentManager.popBackStack();\r\n        } else if (fragmentManager.getBackStackEntryCount() == 1) {\r\n            super.onBackPressed();\r\n            super.onBackPressed();\r\n\r\n        }\r\n\r\n\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/navBarActivities.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/navBarActivities.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/navBarActivities.java	
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/navBarActivities.java	
+@@ -2,11 +2,11 @@
+ 
+ import static android.content.ContentValues.TAG;
+ 
++import android.graphics.drawable.AnimationDrawable;
+ import android.os.Bundle;
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.ImageView;
+-import android.widget.ProgressBar;
+ import android.widget.TextView;
+ 
+ import androidx.annotation.NonNull;
+@@ -16,7 +16,6 @@
+ import androidx.fragment.app.FragmentTransaction;
+ 
+ import com.abdulghffar.gju_outgoings_app.R;
+-import com.abdulghffar.gju_outgoings_app.database.firebaseDb;
+ import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentAccount;
+ import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentCity;
+ import com.abdulghffar.gju_outgoings_app.fragments.navFragments.fragmentContactUs;
+@@ -29,7 +28,6 @@
+ import com.google.android.gms.tasks.Task;
+ import com.google.firebase.firestore.DocumentReference;
+ import com.google.firebase.firestore.DocumentSnapshot;
+-import com.google.firebase.firestore.FirebaseFirestore;
+ 
+ import java.util.ArrayList;
+ import java.util.HashMap;
+@@ -44,7 +42,7 @@
+ 
+     university universityData;
+     ArrayList<user> userArrayList;
+-    ProgressBar progressBar;
++    ImageView loadingLogo;
+ 
+     FragmentManager fragmentManager;
+ 
+@@ -56,7 +54,9 @@
+ 
+         backButton = findViewById(R.id.backButton);
+         label = findViewById(R.id.activityLabel);
+-        progressBar = findViewById(R.id.progressBar);
++        loadingLogo = findViewById(R.id.loadingLogo);
++        loadingLogo.setImageResource(R.drawable.loading_logo);
++
+         fragmentManager = getSupportFragmentManager();
+ 
+ 
+@@ -178,10 +178,6 @@
+     public void setCityUniversities(HashMap<String, university> cityUniversities) {
+         this.cityUniversities = cityUniversities;
+     }
+-//   cityUniversities public void seteventsArrayList(HashMap<event> events) {
+-//        this.events = events;
+-//    }
+-//
+ 
+     public void setUniversity(int position) {
+         ArrayList<university> universities = new ArrayList<>(cityUniversities.values());
+@@ -203,12 +199,6 @@
+         return userArrayList;
+     }
+ 
+-    public void progressBarStatus(boolean status) {
+-        if (status) progressBar.setVisibility(View.VISIBLE);
+-        else {
+-            progressBar.setVisibility(View.INVISIBLE);
+-        }
+-    }
+ 
+     @Override
+     public void onBackPressed() {
+@@ -225,4 +215,14 @@
+ 
+     }
+ 
++    public void startLoadingAnimation() {
++        //Loading start
++        ((AnimationDrawable) loadingLogo.getDrawable()).start();
++    }
++
++    public void stopLoadingAnimation() {
++        //Loading stop
++        ((AnimationDrawable) loadingLogo.getDrawable()).stop();
++    }
++
+ }
+Index: app/src/main/res/layout/activity_fragment_more_info.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".fragments.authFragments.fragmentMoreInfo\">\r\n\r\n    <ProgressBar\r\n        android:id=\"@+id/progressBar\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_centerInParent=\"true\"\r\n        android:indeterminateTint=\"@android:color/holo_blue_dark\"\r\n        android:visibility=\"invisible\" />\r\n\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:gravity=\"center\"\r\n        android:orientation=\"vertical\"\r\n        android:padding=\"35dp\">\r\n\r\n        <FrameLayout\r\n            android:id=\"@+id/uPicFrame\"\r\n            android:layout_width=\"200dp\"\r\n            android:layout_height=\"200dp\">\r\n\r\n            <de.hdodenhof.circleimageview.CircleImageView\r\n                android:id=\"@+id/uPic\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"match_parent\"\r\n                android:layout_gravity=\"center\"\r\n                android:src=\"@drawable/ic_profile\"\r\n                app:civ_border_color=\"@color/Primary_orange\"\r\n                app:civ_border_width=\"3dp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/addImage\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"match_parent\"\r\n                android:layout_gravity=\"center\"\r\n                android:fontFamily=\"@font/ubuntu_bold\"\r\n                android:gravity=\"center\"\r\n                android:text=\"add\\nprofile\\npicture\"\r\n                android:textSize=\"20sp\" />\r\n        </FrameLayout>\r\n\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:fontFamily=\"@font/ubuntu_regular\"\r\n            android:gravity=\"center\"\r\n            android:text=\"@string/moreInfoHeader\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"25sp\" />\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <EditText\r\n\r\n            android:id=\"@+id/studentID\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:autofillHints=\"\"\r\n            android:background=\"@drawable/borders\"\r\n            android:drawableStart=\"@drawable/ic_studentid\"\r\n            android:drawablePadding=\"15dp\"\r\n            android:fontFamily=\"@font/ubuntu_regular\"\r\n            android:hint=\"@string/studentid\"\r\n            android:inputType=\"number\"\r\n            android:padding=\"10dp\" />\r\n\r\n        <View\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"20dp\" />\r\n\r\n        <RelativeLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:background=\"@drawable/borders\"\r\n            >\r\n\r\n            <Spinner\r\n                android:id=\"@+id/majorsSpinner\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"50dp\"\r\n                android:layout_gravity=\"center\"\r\n                android:layout_toEndOf=\"@+id/icon\"\r\n                android:drawablePadding=\"15dp\"\r\n                android:fontFamily=\"@font/ubuntu_regular\"\r\n                android:importantForAutofill=\"no\"\r\n                android:inputType=\"text\"\r\n                android:padding=\"10dp\" />\r\n\r\n            <ImageView\r\n                android:id=\"@+id/icon\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_alignParentStart=\"true\"\r\n                android:layout_centerVertical=\"true\"\r\n                android:layout_gravity=\"center\"\r\n                android:padding=\"10dp\"\r\n                android:src=\"@drawable/ic_study_field\" />\r\n        </RelativeLayout>\r\n                <View\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"40dp\" />\r\n\r\n                <androidx.appcompat.widget.AppCompatButton\r\n                    android:id=\"@+id/doneButton\"\r\n                    android:layout_width=\"200dp\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_gravity=\"center\"\r\n                    android:background=\"@drawable/borders\"\r\n                    android:backgroundTint=\"#F2A832\"\r\n                    android:fontFamily=\"@font/ubuntu_bold\"\r\n                    android:text=\"Done\"\r\n                    android:textAllCaps=\"false\"\r\n                    android:textColor=\"@color/white\"\r\n                    android:textSize=\"18sp\"\r\n                    android:textStyle=\"bold\" />\r\n\r\n\r\n            </LinearLayout>\r\n\r\n\r\n        </RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_fragment_more_info.xml b/app/src/main/res/layout/activity_fragment_more_info.xml
+--- a/app/src/main/res/layout/activity_fragment_more_info.xml	
++++ b/app/src/main/res/layout/activity_fragment_more_info.xml	
+@@ -6,8 +6,8 @@
+     android:layout_height="match_parent"
+     tools:context=".fragments.authFragments.fragmentMoreInfo">
+ 
+-    <ProgressBar
+-        android:id="@+id/progressBar"
++    <ImageView
++        android:id="@+id/loadingLogo"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerInParent="true"
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/splashScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.activities;\r\n\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.mAuth;\r\nimport static com.abdulghffar.gju_outgoings_app.database.firebaseDb.user;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\n\r\npublic class splashScreen extends AppCompatActivity {\r\n\r\n    ProgressBar progressBar;\r\n\r\n    private static final String ONESIGNAL_APP_ID = \"5dd645a1-2b50-4708-b7ae-a297bc750799\";\r\n    static String playerId;\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_splash_screen);\r\n        progressBar = findViewById(R.id.progressBar);\r\n        user = mAuth.getCurrentUser();\r\n        Intent intent = new Intent(splashScreen.this, authentication.class);\r\n        startActivity(intent);\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/splashScreen.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/splashScreen.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/splashScreen.java	
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/activities/splashScreen.java	
+@@ -5,17 +5,12 @@
+ 
+ import android.content.Intent;
+ import android.os.Bundle;
+-import android.widget.ProgressBar;
+-import android.widget.Toast;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+ import com.abdulghffar.gju_outgoings_app.R;
+ 
+ public class splashScreen extends AppCompatActivity {
+-
+-    ProgressBar progressBar;
+-
+     private static final String ONESIGNAL_APP_ID = "5dd645a1-2b50-4708-b7ae-a297bc750799";
+     static String playerId;
+ 
+@@ -24,7 +19,6 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_splash_screen);
+-        progressBar = findViewById(R.id.progressBar);
+         user = mAuth.getCurrentUser();
+         Intent intent = new Intent(splashScreen.this, authentication.class);
+         startActivity(intent);

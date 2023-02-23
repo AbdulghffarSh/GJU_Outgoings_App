@@ -1,0 +1,126 @@
+Index: app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/fragmentSignIn.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.abdulghffar.gju_outgoings_app.fragments;\r\n\r\nimport static android.content.ContentValues.TAG;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.view.inputmethod.InputMethodManager;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.abdulghffar.gju_outgoings_app.R;\r\nimport com.abdulghffar.gju_outgoings_app.activities.MainActivity;\r\nimport com.abdulghffar.gju_outgoings_app.activities.authentication;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.firestore.DocumentReference;\r\nimport com.google.firebase.firestore.DocumentSnapshot;\r\nimport com.google.firebase.firestore.FirebaseFirestore;\r\n\r\nimport javax.annotation.Nullable;\r\n\r\npublic class fragmentSignIn extends Fragment {\r\n\r\n    //Fields\r\n    TextView signUpTextView;\r\n    EditText emailField;\r\n    EditText passwordField;\r\n    //Buttons\r\n    Button signInButton;\r\n\r\n    //Firebase\r\n    private FirebaseAuth mAuth;\r\n    FirebaseFirestore db;\r\n\r\n    //Others\r\n    View view;\r\n    ProgressBar progressBar;\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {\r\n        // Defines the xml file for the fragment\r\n        view = inflater.inflate(R.layout.activity_fragment_sign_in, parent, false);\r\n\r\n        setup();\r\n\r\n        signInButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                //Check email\r\n                if (emailField.getText().toString().matches(\"\")) {\r\n                    toast(\"Please enter your email\");\r\n                    return;\r\n                }\r\n                if ((!emailField.getText().toString().contains(\"@\")) || (!emailField.getText().toString().contains(\".com\"))) {\r\n                    toast(\"Invalid email format\");\r\n                    return;\r\n                }\r\n                //Check password\r\n                if (passwordField.getText().toString().matches(\"\")) {\r\n                    toast(\"Please enter your password\");\r\n                    return;\r\n                }\r\n                if (getActivity() != null) {\r\n                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);\r\n                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);\r\n                }\r\n                signIn();\r\n            }\r\n        });\r\n\r\n        signUpTextView.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                authentication registration = (authentication) getActivity();\r\n                fragmentSignUp fragmentSignUp = new fragmentSignUp();\r\n                assert registration != null;\r\n                registration.replaceFragment(fragmentSignUp);\r\n            }\r\n        });\r\n\r\n        return view;\r\n    }\r\n\r\n    // This event is triggered soon after onCreateView().\r\n    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.\r\n    @Override\r\n    public void onViewCreated(View view, Bundle savedInstanceState) {\r\n        // Setup any handles to view objects here\r\n        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);\r\n    }\r\n\r\n    void setup() {\r\n        //Fields\r\n        signUpTextView = view.findViewById(R.id.signUp);\r\n        emailField = view.findViewById(R.id.emailField);\r\n        passwordField = view.findViewById(R.id.passwordField);\r\n\r\n        //Buttons\r\n        signInButton = view.findViewById(R.id.signInButton);\r\n\r\n        //Firebase\r\n        mAuth = FirebaseAuth.getInstance();\r\n        db = FirebaseFirestore.getInstance();\r\n\r\n        // Check if user is signed in (non-null) and update UI accordingly.\r\n        FirebaseUser currentUser = mAuth.getCurrentUser();\r\n        if (currentUser != null) {\r\n            checkUserApproval(currentUser);\r\n        }\r\n\r\n        //Others\r\n        progressBar = view.findViewById(R.id.progressBar);\r\n\r\n    }\r\n\r\n    void signIn() {\r\n        progressBar.setVisibility(View.VISIBLE);\r\n        String email = emailField.getText().toString();\r\n        String password = passwordField.getText().toString();\r\n\r\n        mAuth.signInWithEmailAndPassword(email, password)\r\n                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<AuthResult> task) {\r\n                        if (task.isSuccessful()) {\r\n                            // Sign in success, update UI with the signed-in user's information\r\n                            Log.d(TAG, \"signInWithEmail:success\");\r\n                            FirebaseUser user = mAuth.getCurrentUser();\r\n                            if (user != null) {\r\n                                checkUserApproval(user);\r\n                            }\r\n                        } else {\r\n                            // If sign in fails, display a message to the user.\r\n                            Log.w(TAG, \"signInWithEmail:failure\", task.getException());\r\n                            toast(\"Sign in Failed:\\n\" + task.getException());\r\n                            progressBar.setVisibility(View.INVISIBLE);\r\n                        }\r\n                    }\r\n                });\r\n\r\n    }\r\n\r\n    void updateUI(int x) {\r\n        if (x == 0) {\r\n            Intent i = new Intent(getActivity(), MainActivity.class);\r\n            startActivity(i);\r\n        } else {\r\n            authentication authentication = (authentication) getActivity();\r\n            fragmentWaiting fragmentWaiting = new fragmentWaiting();\r\n            assert authentication != null;\r\n            authentication.replaceFragment(fragmentWaiting);\r\n        }\r\n    }\r\n\r\n\r\n    void toast(String message) {\r\n        Toast toast = Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG);\r\n        toast.show();\r\n    }\r\n\r\n    private void checkUserApproval(FirebaseUser user) {\r\n        DocumentReference docRef = db.collection(\"Users\").document(user.getUid());\r\n        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {\r\n            @Override\r\n            public void onComplete(@NonNull Task<DocumentSnapshot> task) {\r\n                progressBar.setVisibility(View.INVISIBLE);\r\n                if (task.isSuccessful()) {\r\n                    DocumentSnapshot document = task.getResult();\r\n                    if (document.exists()) {\r\n                        Log.d(TAG, \"DocumentSnapshot data: \" + document.getData());\r\n                        if (document.get(\"approval\").toString().matches(\"Not yet\")) {\r\n                            updateUI(1);\r\n                        } else {\r\n                            updateUI(0);\r\n                        }\r\n\r\n                    } else {\r\n                        Log.d(TAG, \"No such document\");\r\n\r\n                    }\r\n                } else {\r\n                    Log.d(TAG, \"get failed with \", task.getException());\r\n                }\r\n            }\r\n        });\r\n\r\n\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/fragmentSignIn.java b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/fragmentSignIn.java
+--- a/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/fragmentSignIn.java	(revision 6176286f0b95eb0587b5299685cfc6c2914fc3c3)
++++ b/app/src/main/java/com/abdulghffar/gju_outgoings_app/fragments/fragmentSignIn.java	(date 1661467684678)
+@@ -50,6 +50,7 @@
+     View view;
+     ProgressBar progressBar;
+ 
++
+     @Override
+     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
+         // Defines the xml file for the fragment
+@@ -132,8 +133,7 @@
+         String email = emailField.getText().toString();
+         String password = passwordField.getText().toString();
+ 
+-        mAuth.signInWithEmailAndPassword(email, password)
+-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
++        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if (task.isSuccessful()) {
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'com.android.application'\r\n    id 'com.google.gms.google-services'\r\n}\r\n\r\nandroid {\r\n    compileSdk 32\r\n\r\n    defaultConfig {\r\n        applicationId \"com.abdulghffar.gju_outgoings_app_mac\"\r\n        minSdk 26\r\n        targetSdk 32\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n    dataBinding {\r\n        enabled = true\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation 'androidx.appcompat:appcompat:1.5.0'\r\n    implementation 'com.google.android.material:material:1.6.1'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'\r\n    implementation 'com.google.firebase:firebase-analytics'\r\n    implementation 'com.google.firebase:firebase-auth'\r\n    implementation 'com.google.firebase:firebase-database:20.0.5'\r\n    implementation 'com.google.firebase:firebase-storage:20.0.1'\r\n    implementation 'com.google.firebase:firebase-messaging:23.0.7'\r\n    implementation 'com.google.firebase:firebase-firestore:24.2.2'\r\n    implementation 'com.google.firebase:firebase-inappmessaging-display:20.1.2'\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\r\n    implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n    implementation platform('com.google.firebase:firebase-bom:30.3.2')\r\n    implementation 'com.squareup.picasso:picasso:2.8'\r\n\r\n\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 6176286f0b95eb0587b5299685cfc6c2914fc3c3)
++++ b/app/build.gradle	(date 1661468544629)
+@@ -35,18 +35,10 @@
+     implementation 'androidx.appcompat:appcompat:1.5.0'
+     implementation 'com.google.android.material:material:1.6.1'
+     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+-    implementation 'com.google.firebase:firebase-analytics'
+-    implementation 'com.google.firebase:firebase-auth'
+-    implementation 'com.google.firebase:firebase-database:20.0.5'
+-    implementation 'com.google.firebase:firebase-storage:20.0.1'
+-    implementation 'com.google.firebase:firebase-messaging:23.0.7'
+-    implementation 'com.google.firebase:firebase-firestore:24.2.2'
+-    implementation 'com.google.firebase:firebase-inappmessaging-display:20.1.2'
+     testImplementation 'junit:junit:4.13.2'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+     implementation 'de.hdodenhof:circleimageview:3.1.0'
+-    implementation platform('com.google.firebase:firebase-bom:30.3.2')
+     implementation 'com.squareup.picasso:picasso:2.8'
+ 
+ 
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.abdulghffar.gju_outgoings_app\">\r\n\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.GJU_Outgoings_App\">\r\n        <activity\r\n            android:name=\".activities.navBarActivities\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".activities.authentication\"\r\n            android:exported=\"false\"\r\n            />\r\n\r\n        <meta-data\r\n            android:name=\"com.google.firebase.messaging.default_notification_channel_id\"\r\n            android:value=\"HEllo there\" />\r\n\r\n        <activity\r\n            android:name=\".activities.MainActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".activities.splashScreen\"\r\n            android:exported=\"true\"\r\n            android:windowSoftInputMode=\"stateAlwaysHidden|adjustResize|adjustPan\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n        <service\r\n            android:name=\".utils.MessagingService\"\r\n            android:exported=\"false\">\r\n            <intent-filter>\r\n                <action android:name=\"com.google.firebase.MESSAGING_EVENT\"/>\r\n            </intent-filter>\r\n        </service>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 6176286f0b95eb0587b5299685cfc6c2914fc3c3)
++++ b/app/src/main/AndroidManifest.xml	(date 1661466936382)
+@@ -10,7 +10,9 @@
+         android:label="@string/app_name"
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
+-        android:theme="@style/Theme.GJU_Outgoings_App">
++        android:theme="@style/Theme.GJU_Outgoings_App"
++        android:usesCleartextTraffic="true"
++        >
+         <activity
+             android:name=".activities.navBarActivities"
+             android:exported="false" />
+Index: app/google-services.json
+===================================================================
+diff --git a/app/google-services.json b/app/google-services.json
+deleted file mode 100644
+--- a/app/google-services.json	(revision 6176286f0b95eb0587b5299685cfc6c2914fc3c3)
++++ /dev/null	(revision 6176286f0b95eb0587b5299685cfc6c2914fc3c3)
+@@ -1,40 +0,0 @@
+-{
+-  "project_info": {
+-    "project_number": "777923854158",
+-    "firebase_url": "https://gju-outgings-app-24c61-default-rtdb.europe-west1.firebasedatabase.app",
+-    "project_id": "gju-outgings-app-24c61",
+-    "storage_bucket": "gju-outgings-app-24c61.appspot.com"
+-  },
+-  "client": [
+-    {
+-      "client_info": {
+-        "mobilesdk_app_id": "1:777923854158:android:2aa6dab29ec6e99457281f",
+-        "android_client_info": {
+-          "package_name": "com.abdulghffar.gju_outgoings_app_mac"
+-        }
+-      },
+-      "oauth_client": [
+-        {
+-          "client_id": "777923854158-354nd7cvl9njho3obnic5p88cuh2rnvt.apps.googleusercontent.com",
+-          "client_type": 3
+-        }
+-      ],
+-      "api_key": [
+-        {
+-          "current_key": "AIzaSyAXxfLksa0vUBJAHzPSpFZy4uO6QSRMaik"
+-        }
+-      ],
+-      "services": {
+-        "appinvite_service": {
+-          "other_platform_oauth_client": [
+-            {
+-              "client_id": "777923854158-354nd7cvl9njho3obnic5p88cuh2rnvt.apps.googleusercontent.com",
+-              "client_type": 3
+-            }
+-          ]
+-        }
+-      }
+-    }
+-  ],
+-  "configuration_version": "1"
+-}
+\ No newline at end of file
