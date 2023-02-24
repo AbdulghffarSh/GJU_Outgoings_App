@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".fragments.authFragments.fragmentMoreInfo">
 
-    <ImageView
-        android:id="@+id/loadingLogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:translationZ="90dp"
+<!--    <ImageView-->
+<!--        android:id="@+id/loadingLogo"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:translationZ="90dp"-->
 
-        />
+<!--        />-->
 
 
     <LinearLayout

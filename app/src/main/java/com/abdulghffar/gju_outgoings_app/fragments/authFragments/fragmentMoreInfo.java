@@ -62,7 +62,6 @@ public class fragmentMoreInfo extends Fragment {
     //Spinner
     Spinner majorsSpinner;
 
-    ImageView loadingLogo;
     View view;
 
     @Override
@@ -75,8 +74,7 @@ public class fragmentMoreInfo extends Fragment {
         doneButton = view.findViewById(R.id.doneButton);
         studentIDField = view.findViewById(R.id.studentID);
         majorsSpinner = view.findViewById(R.id.majorsSpinner);
-        loadingLogo = view.findViewById(R.id.loadingLogo);
-        loadingLogo.setImageResource(R.drawable.loading_logo);
+
 
         userData = authentication.getUserData();
         addImage = view.findViewById(R.id.addImage);

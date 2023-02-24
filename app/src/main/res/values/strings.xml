@@ -17,9 +17,6 @@
     <string name="don_t_have_an_account">Don\'t have an account ?</string>
     <string name="your_request_is_under_process_we_will_check_it_as_soon_as_possible">Your request is under process we will check it as soon as possible</string>
 
-    <string name="facebook_app_id">837197497649647</string>
-    <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token">c2afa8db7103f0d8e4872c237eaf5b9e</string>
     <string name="password">Password</string>
 
 

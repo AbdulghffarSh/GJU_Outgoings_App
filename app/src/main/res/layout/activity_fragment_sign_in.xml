@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.authFragments.fragmentSignIn"
-    >
+    tools:context=".fragments.authFragments.fragmentSignIn">
 
     <ImageView
         android:id="@+id/loadingLogo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
-        android:translationZ="90dp"
- />
+        android:translationZ="90dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +53,7 @@
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:padding="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <View
             android:layout_width="match_parent"
@@ -74,7 +72,7 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <View
             android:layout_width="match_parent"
@@ -109,34 +107,12 @@
             android:textColor="#FF9800"
             android:textStyle="italic" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingVertical="20dp"
-            android:src="@drawable/ic_or_sign_in_with" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/googleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_google_button"
-
-                />
-
-            <ImageButton
-                android:id="@+id/facebookButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_facebook_button" />
 
 
         </LinearLayout>

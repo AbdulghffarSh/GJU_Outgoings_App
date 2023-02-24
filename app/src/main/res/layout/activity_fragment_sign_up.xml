@@ -185,37 +185,7 @@
 
             />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingVertical="20dp"
-            android:src="@drawable/ic_or_sign_up_with" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/googleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_google_button"
-
-                />
-
-            <ImageButton
-                android:id="@+id/facebookButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_facebook_button" />
-
-
-        </LinearLayout>
 
 
     </LinearLayout>

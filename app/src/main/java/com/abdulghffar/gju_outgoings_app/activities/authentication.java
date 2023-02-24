@@ -31,11 +31,13 @@ public class authentication extends AppCompatActivity {
 
 
     void setup() {
+        loadingLogo = findViewById(R.id.loadingLogo);
+        loadingLogo.setImageResource(R.drawable.loading_logo);
+        loadingUI(0);
         //FragmentChang
         fragmentSignIn fragmentSignIn = new fragmentSignIn();
         replaceFragment(fragmentSignIn);
-        loadingLogo = findViewById(R.id.loadingLogo);
-        loadingLogo.setImageResource(R.drawable.loading_logo);
+
 
     }
 

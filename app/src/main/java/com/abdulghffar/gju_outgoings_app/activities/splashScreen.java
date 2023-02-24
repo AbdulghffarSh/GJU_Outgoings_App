@@ -88,7 +88,9 @@ public class splashScreen extends AppCompatActivity {
 
                         } else {
                             Log.d(TAG, "No such document");
-
+                            mAuth.signOut();
+                            Intent intent = new Intent(splashScreen.this, authentication.class);
+                            startActivity(intent);
                         }
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());

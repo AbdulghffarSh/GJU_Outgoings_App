@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -50,7 +49,6 @@ public class fragmentSignUp extends Fragment {
 
     //Buttons
     Button signUpButton;
-    ImageButton facebookButton;
 
 
     //Firebase
@@ -110,7 +108,6 @@ public class fragmentSignUp extends Fragment {
 
         //Buttons
         signUpButton = view.findViewById(R.id.signUpButton);
-        facebookButton = view.findViewById(R.id.facebookButton);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
