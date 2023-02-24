@@ -1,22 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
 
-
-    <TextView
-        android:id="@+id/textViewSearch"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="Search"
-        android:textSize="100sp" />
+        android:background="@drawable/borders"
+        android:iconifiedByDefault="false"
+        app:defaultQueryHint="search"
 
-    <ImageView
-        android:id="@+id/loadingLogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true" />
+        app:queryHint="search" />
 
-</RelativeLayout>
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/accommodationsTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/selector"
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="5dp"
+                android:text="Accommodations"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/eventsTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/selector"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="5dp"
+                android:text="Events"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/vacanciesTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/selector"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="5dp"
+                android:text="Vacancies"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/visaTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/selector"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="5dp"
+                android:text="Visa"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/moneyAndBanksTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/selector"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="5dp"
+                android:text="Money &amp; Banks"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/lookingForHelpTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/selector"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="5dp"
+                android:text="Looking for help"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/otherTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/selector"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingHorizontal="5dp"
+                android:text="Other"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
@@ -78,22 +79,25 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        post currentItem = postsArrayList.get(position);
-        try {
+        // Sort the postsArrayList by timestamp
+        Collections.sort(postsArrayList, (post1, post2) -> post2.getTimeStamp().compareTo(post1.getTimeStamp()));
 
+        // Get the current item at the specified position
+        post currentItem = postsArrayList.get(position);
+
+        try {
+            // Convert the timestamp to a Date object
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
             Date parsedDate = dateFormat.parse(currentItem.getTimeStamp());
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
             SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm   dd/MM/yyyy");
             holder.postTimeStamp.setText(outputFormat.format(parsedDate));
-
-
-        } catch (Exception e) { //this generic but you can control another types of exception
-            // look the origin of exception
-            System.out.println("this is the error " + e);
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
         }
-        String textBody, textTitle;
 
+        // Set the post title and body
+        String textBody, textTitle;
         if (currentItem.getTitle().length() > 30) {
             textTitle = currentItem.getTitle().substring(0, 30) + "...";
         } else {
@@ -106,6 +110,8 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
             textBody = currentItem.getBody();
         }
         holder.postBody.setText(textBody);
+
+        // Set the post image if it exists
         if (currentItem.getImage() != null) {
             holder.postImage.setVisibility(View.VISIBLE);
             Glide.with(holder.itemView)
@@ -113,16 +119,15 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
                     .into(holder.postImage);
         }
 
+        // Set the user's profile picture and name
         if (currentItem.getUser() != null) {
-            System.out.println(currentItem.getUser().getName());
             Glide.with(holder.itemView)
                     .load(currentItem.getUser().getProfilePic())
                     .into(holder.accountPic);
             holder.userName.setText(currentItem.getUser().getName());
-
         }
-
     }
+
 
     @Override
     public int getItemCount() {
