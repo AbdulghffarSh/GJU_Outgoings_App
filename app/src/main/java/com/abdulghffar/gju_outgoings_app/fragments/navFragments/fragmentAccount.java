@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.abdulghffar.gju_outgoings_app.R;
+import com.abdulghffar.gju_outgoings_app.activities.MainActivity;
 import com.abdulghffar.gju_outgoings_app.activities.navBarActivities;
 import com.abdulghffar.gju_outgoings_app.objects.user;
 import com.bumptech.glide.Glide;
@@ -132,7 +133,6 @@ public class fragmentAccount extends Fragment {
                         sID.setText(userData.getStudentID());
                         email.setText(userData.getEmail());
                         major.setText(userData.getMajor());
-//                        status.setText(userData.getStatus());
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -143,6 +143,7 @@ public class fragmentAccount extends Fragment {
                 navBarActivities.loadingUI(0);
             }
         });
+
     }
 
     void setup() {
@@ -151,7 +152,6 @@ public class fragmentAccount extends Fragment {
         sID = view.findViewById(R.id.sId);
         email = view.findViewById(R.id.uEmail);
         major = view.findViewById(R.id.uMajor);
-//        status = view.findViewById(R.id.uStatus);
         changeImage = view.findViewById(R.id.changeImage);
         editMajor = view.findViewById(R.id.editMajor);
         navBarActivities = (navBarActivities) getActivity();
@@ -248,6 +248,7 @@ public class fragmentAccount extends Fragment {
                 System.out.println("Updated");
                 navBarActivities.loadingUI(0);
                 getProfileData();
+
 
             }
         });

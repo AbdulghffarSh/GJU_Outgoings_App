@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.abdulghffar.gju_outgoings_app.R;
 import com.abdulghffar.gju_outgoings_app.admin.Admin;
@@ -61,6 +62,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Call your getData() method to refresh the data
+                fragmentHome fragmentHome = new fragmentHome();
+                replaceFragment(fragmentHome, "Home");
+                // Hide the refresh indicator after the data is refreshed
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         profileImage = findViewById(R.id.accountPic);
         activityNameField = findViewById(R.id.activityName);
