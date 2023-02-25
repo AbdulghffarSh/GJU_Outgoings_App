@@ -154,7 +154,6 @@ public class fragmentAccount extends Fragment {
 //        status = view.findViewById(R.id.uStatus);
         changeImage = view.findViewById(R.id.changeImage);
         editMajor = view.findViewById(R.id.editMajor);
-        editStatus = view.findViewById(R.id.editStatus);
         navBarActivities = (navBarActivities) getActivity();
     }
 
