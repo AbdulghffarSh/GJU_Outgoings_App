@@ -135,11 +135,10 @@ public class fragmentHome extends Fragment {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
                                 postsArraylist.add(dc.getDocument().toObject(post.class));
                             }
-
-
                         }
                         postAdapter.notifyDataSetChanged();
                         MainActivity.loadingUI(0);
+
                     }
                 });
 

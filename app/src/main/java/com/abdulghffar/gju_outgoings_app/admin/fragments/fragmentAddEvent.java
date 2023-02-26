@@ -155,6 +155,7 @@ public class fragmentAddEvent extends Fragment {
         toDateField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set the minimum date for the date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -164,7 +165,10 @@ public class fragmentAddEvent extends Fragment {
                                 toDateField.setText(dateFormatter.format(toTimeStamp.getTime()));
                             }
                         }, toTimeStamp.get(Calendar.YEAR), toTimeStamp.get(Calendar.MONTH), toTimeStamp.get(Calendar.DAY_OF_MONTH));
+
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000); // set the minimum date to today
                 datePickerDialog.show();
+
             }
         });
 
@@ -189,16 +193,18 @@ public class fragmentAddEvent extends Fragment {
         fromDateField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set the minimum date for the date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                                 //todo
                                 fromTimeStamp.set(year, month, dayOfMonth);
-                                fromDateField.setText(dateFormatter.format(fromTimeStamp.getTime()));
-
+                                fromDateField.setText(dateFormatter.format(toTimeStamp.getTime()));
                             }
-                        }, fromTimeStamp.get(Calendar.YEAR), fromTimeStamp.get(Calendar.MONTH), fromTimeStamp.get(Calendar.DAY_OF_MONTH));
+                        }, fromTimeStamp.get(Calendar.YEAR), toTimeStamp.get(Calendar.MONTH), fromTimeStamp.get(Calendar.DAY_OF_MONTH));
+
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000); // set the minimum date to today
                 datePickerDialog.show();
             }
         });

@@ -392,10 +392,11 @@ public class fragmentAddPost extends Fragment {
     void sendNotification(String body) {
         notificationsSender.sendNotificationToAllUsers(body);
     }
-    void loadingUI(int value){
+
+    void loadingUI(int value) {
         loadingLogo.setImageResource(R.drawable.loading_logo);
 
-        switch (value){
+        switch (value) {
 
             case 0:
                 ((AnimationDrawable) loadingLogo.getDrawable()).stop();

@@ -82,6 +82,7 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.viewHolder> {
         // Sort the postsArrayList by timestamp
         Collections.sort(postsArrayList, (post1, post2) -> post2.getTimeStamp().compareTo(post1.getTimeStamp()));
 
+
         // Get the current item at the specified position
         post currentItem = postsArrayList.get(position);
 

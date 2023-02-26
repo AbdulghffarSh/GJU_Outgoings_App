@@ -75,6 +75,7 @@ public class Admin extends AppCompatActivity {
         replaceFragment(new fragmentDashboard());
         loadingLogo = findViewById(R.id.loadingLogo);
         loadingLogo.setImageResource(R.drawable.loading_logo);
+        loadingUI(0);
 
     }
 
